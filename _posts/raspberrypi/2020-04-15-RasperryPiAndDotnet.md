@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Dotnet Core on Raspberry Pi"
-date:   2020-04-02 17:43:00 +0100
+date:   2020-04-15 16:00:00 +0100
 categories: jekyll
 ---
 
@@ -36,4 +36,3 @@ Next: [Creating the solution in Visual Studio Code...][RPI-dotnet-software]
 
 [gpio-board-github]: https://github.com/codewrite/rPiLedButtonFanBoard
 [hanselman-remote-debugging]: https://www.hanselman.com/blog/RemoteDebuggingWithVSCodeOnWindowsToARaspberryPiUsingNETCoreOnARM.aspx
-
