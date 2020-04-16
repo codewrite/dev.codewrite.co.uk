@@ -18,7 +18,9 @@ In launch.json there are two configurations:
 1. Run remotely
 2. Run locally
 
-I may remote the run local configuration because this will only on the Raspberry Pi.
+My plan is to write a simulator so that I can test the local configuration on a PC. The simulator would probably look something like:
+
+![RPI LED Board Simulator](/assets/images/RPI-dotnet/LedButtonBoardSimulator.png)
 
 <hr/><br/>
 Prev: [Creating the solution in Visual Studio Code...][RPI-dotnet-software]
