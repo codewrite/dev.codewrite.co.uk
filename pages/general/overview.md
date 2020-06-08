@@ -18,7 +18,7 @@ The topics I am hoping to cover are:
 - Docker
 - VueJS
 
-I've been using [Visual Studio Code][VS Code]{:target="_blank"} the last year and a half, so most of my code will be using that.
+I've been using [Visual Studio Code][VS Code] the last year and a half, so most of my code will be using that.
 
 I'm also interested in electronics and amateur radio - so there will some of that as well.
 

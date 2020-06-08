@@ -5,11 +5,11 @@ date:   2020-04-02 17:43:00 +0100
 categories: jekyll
 ---
 
-The first thing I did was [installed Ubuntu on windows][Ubuntu Install]{:target="_blank"}
+The first thing I did was [installed Ubuntu on windows][Ubuntu Install]
 
-Then I [installed NodeJS and NPM][Install NodeJS]{:target="_blank"} (which I'm not sure if I needed).
+Then I [installed NodeJS and NPM][Install NodeJS] (which I'm not sure if I needed).
 
-And then [installed Jekyll][Install Jekyll]{:target="_blank"}
+And then [installed Jekyll][Install Jekyll]
 
 To run it: `jekyll serve --host=0.0.0.0`
 

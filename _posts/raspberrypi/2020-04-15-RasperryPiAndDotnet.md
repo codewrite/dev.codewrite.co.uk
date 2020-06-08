@@ -2,7 +2,7 @@
 layout: post
 title:  "Dotnet Core on Raspberry Pi"
 date:   2020-04-15 16:00:00 +0100
-categories: jekyll
+categories: raspberryPi dotnet
 ---
 
 > [Source Code on GitHub][gpio-board-github]
@@ -24,7 +24,7 @@ This is the case with the board in it:
 ![RPI LED Board](/assets/images/RPI-dotnet/GpioBoard.jpg)
 
 
-I followed a few articles from the internet, [this one from Scott Hanselman][hanselman-remote-debugging]{:target="_blank"} was very useful to get me started.
+I followed a few articles from the internet, [this one from Scott Hanselman][hanselman-remote-debugging] was very useful to get me started.
 
 Click [here for more information about the board including a schematic][RPI-dotnet-hardware].
 
