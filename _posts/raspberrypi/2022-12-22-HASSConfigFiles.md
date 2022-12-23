@@ -41,6 +41,57 @@ If you click on any of the lights you get a properties screen like this:
 
 This allows you to change the brighness of the COB lights.
 
+My config.yaml file looks like this (some bits removed for brevity)
+
+````yaml
+default_config:
+
+recorder:
+  db_url: !secret recorder_db_url
+
+config:
+
+sensor: !include sensors.yaml
+automation: !include automations.yaml
+script: !include scripts.yaml
+rest_command: !include rest_command.yaml
+rest: !include rest.yaml
+light: !include light.yaml
+````
+
+The bits of this file that are relevant to our REST devices are sensors.yaml, rest_command.yaml, rest.yaml and light.yaml. The overall concept is that we will have sensors that tell us the current state of the lights (on, off, brightness etc.) and commands (in rest_command.yaml) that change the state of the lights (again, on, off and brightness). Let's start with the sensors. This is what is in the rest.yaml file:
+
+````yaml
+- authentication: basic
+  resource: !secret cob_leds_get_url
+  username: apikey
+  password: !secret coblights_password
+  sensor:
+    - name: Cob Light 1
+      value_template: "{{ value_json[0].on }}"
+      json_attributes_path: "$[0]"
+      json_attributes:
+        - brightness
+    - name: Cob Light 2
+      value_template: "{{ value_json[1].on }}"
+      json_attributes_path: "$[1]"
+      json_attributes:
+        - brightness
+    - name: Cob Light 3
+      value_template: "{{ value_json[2].on }}"
+      json_attributes_path: "$[2]"
+      json_attributes:
+        - brightness
+    - name: Cob Light 4
+      value_template: "{{ value_json[3].on }}"
+      json_attributes_path: "$[3]"
+      json_attributes:
+        - brightness
+````
+
+We'll come to the secrets file later, but for now all we need to know is that it contains URLs and passwords (because having that information here would be a bad idea). 
+
+
 TODO: Watch this space! I'm i the middle of writing this... I'll describe the files in HA that make the above possible...
 
 [//]: # (# -------------)
