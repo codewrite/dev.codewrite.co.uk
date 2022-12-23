@@ -9,7 +9,7 @@ A while back (before I was using Home Assistant) I built a COB light controller 
 
 ![COB Lights under Eaves](/assets/images/COBLightsInHASS/LightsUnderEaves.jpg)
 
-In this picture there are three lights, but in around the rest of the house there are about 15 in total on 4 different circuits. I won't go into the detail here other than to say that there is a controller board up in the loft that uses a Wemos D1 mini which serves up a REST interface to turn the lights on and off. I did a presentation for the London Raspberry Pi group. The link to my GitHub page is here:
+In this picture there are three lights, but around the rest of the house there are about 15 in total on 4 different circuits. I won't go into the detail here other than to say that there is a controller board up in the loft that uses a Wemos D1 mini which serves up a REST interface to turn the lights on and off. I did a presentation for the London Raspberry Pi group. The link to my GitHub page is here:
 
 [COBHouseLights github repo][COBLights Github Repo]
 
