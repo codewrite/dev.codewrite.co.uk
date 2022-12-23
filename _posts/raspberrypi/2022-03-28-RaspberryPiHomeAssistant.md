@@ -27,6 +27,7 @@ The way I wanted the lights to behave was to come on near sunset and go off at a
 - Outside Lights Off Sequenced
 
 In the following example script the lights are turned on with a 20 second delay between each:
+
 ````yaml
 alias: Inside Lights On Sequenced
 sequence:
@@ -41,6 +42,7 @@ sequence:
     data: {}
 mode: single
 ````
+
 I then wrote the following automations to call the scripts:
 - Turn inside lights on at dusk when overcast.
 - Turn outside lights on at dusk when overcast.
@@ -51,6 +53,8 @@ I then wrote the following automations to call the scripts:
 - Turn all lights off when table lamp is turned off
 
 In the following automation we check the weather and if it is overcast we turn the lights on:
+
+{% raw %}
 ````yaml
 alias: Turn inside lights on at dusk when overcast
 description: ''
@@ -68,9 +72,12 @@ action:
     data: {}
 mode: single
 ````
+{% endraw %}
+
 The other automations are similar and because they are separated out enable us to (for instance) turn the outside lights on at a different time to the inside lights.
 
 In case we want to override the automatic switch on/off we can press a button on the table lamp. This triggers the following automation that turns all the lights off:
+
 ````yaml
 alias: Turn off all the lights when table lamp is turned off
 description: ''
