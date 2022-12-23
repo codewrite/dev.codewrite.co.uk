@@ -146,7 +146,7 @@ cob_light_set:
 ````
 {% endraw %}
 
-This is slightly more complicated than the sensors because we have a single service that takes three parameters - led, on and brightness. The led is mandatory, the on and brightness parameters are optional (in case you are wondering where the led parameter is, it is in the secrets.yaml file which will talk about shortly). So let's see what is in the secrets.yaml file now:
+This is slightly more complicated than the sensors because we have a single service that takes three parameters - led, on and brightness. The led is mandatory, the on and brightness parameters are optional (in case you are wondering where the led parameter is, it is in the secrets.yaml file). So let's see what is in the secrets.yaml file now:
 
 {% raw %}
 ````yaml
@@ -157,7 +157,7 @@ cob_leds_status_url: http://192.168.1.234:5678/status
 ````
 {% endraw %}
 
-Obviously thee will be other secrets in here too, but this is the ones that are relevent to our REST API. Only one of these is a real secret, the others are URLs, but it is a good idea to have them here because then we are keeping implementation details out of the configuration files. Notice that the cob_led_set_url has a parameter in it. If you refer back to sensors.yaml you should be able to see how this allows us to call the relevant API service and control a specific group of COB lights (1, 2, 3 or 4). It would be nice to do a similar thing for the sensors (rather than having four very similar defintions), but unfortunately sensors cannot be parameterized.
+Obviously there will be other secrets in here too, but this is the ones that are relevent to our REST API. Only one of these is a real secret, the others are URLs, but it is a good idea to have them here because then we are keeping implementation details out of the configuration files. Notice that the cob_led_set_url has a parameter in it. If you refer back to sensors.yaml you should be able to see how this allows us to call the relevant API service and control a specific group of COB lights (1, 2, 3 or 4). It would be nice to do a similar thing for the sensors (rather than having four very similar defintions), but unfortunately sensors cannot be parameterized.
 
 The final part of our REST devices is the actual definition of the devices. This is done in the lights.yaml file:
 
