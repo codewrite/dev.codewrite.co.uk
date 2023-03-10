@@ -54,3 +54,5 @@ plugins:
 #   - vendor/ruby/
 
 markdown: CommonMarkGhPages
+commonmark:
+  options: ["UNSAFE"]
