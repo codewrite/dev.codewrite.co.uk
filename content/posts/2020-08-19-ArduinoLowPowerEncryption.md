@@ -4,8 +4,7 @@ date: 2020-08-19
 draft: false
 categories:
   - arduino
-  - low
-  - power
+  - low-power
   - encryption
 ---
 

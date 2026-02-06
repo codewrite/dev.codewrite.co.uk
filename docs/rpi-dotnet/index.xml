@@ -1,1 +1,32 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>RPI-Dotnets on Codewrite Dev Blog</title><link>https://dev.codewrite.co.uk/rpi-dotnet/</link><description>Recent content in RPI-Dotnets on Codewrite Dev Blog</description><generator>Hugo</generator><language>en-us</language><atom:link href="https://dev.codewrite.co.uk/rpi-dotnet/index.xml" rel="self" type="application/rss+xml"/></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>RPI-Dotnets on Codewrite Dev Blog</title>
+    <link>http://localhost:1313/rpi-dotnet/</link>
+    <description>Recent content in RPI-Dotnets on Codewrite Dev Blog</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <atom:link href="http://localhost:1313/rpi-dotnet/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>GPIO Board Hardware</title>
+      <link>http://localhost:1313/rpi-dotnet/gpioboard-hardware/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/rpi-dotnet/gpioboard-hardware/</guid>
+      <description>&lt;blockquote&gt;&#xA;&lt;p&gt;Prev: [Dotnet Core on Raspberry Pi Main Page][RPI-dotnet-mainPage]&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;hr/&gt;&lt;br/&gt;&#xD;&#xA;&lt;p&gt;The schematic for the board is:&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/images/RPI-dotnet/GpioBoard-Schematic.png&#34; alt=&#34;RPI LED Board&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;Where the components are as shown here:&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/images/RPI-dotnet/GpioBoard-Legend.jpg&#34; alt=&#34;RPI LED Board&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;Some points to note:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;The switch inputs (GPIO24 and GPIO23) would be set as pulled up inputs so that they would normally read HIGH and then go LOW when the button was pressed.&lt;/li&gt;&#xA;&lt;li&gt;The signal on GPIO4 to control the fan is a 3.3V signal whereas the fan needs a 5V supply to run at full speed.&lt;/li&gt;&#xA;&lt;li&gt;GPIO19 is one of the hardware PWM channels. The audio output also uses this so they can&amp;rsquo;t be used at the same time.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;hr/&gt;&#xD;&#xA;Prev: [Dotnet Core on Raspberry Pi Main Page][RPI-dotnet-mainPage]&#xD;&#xA;&lt;p&gt;[RPI-dotnet-mainPage]: {% post_url raspberrypi/2020-04-15-RasperryPiAndDotnet %}&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>GPIO Board Software</title>
+      <link>http://localhost:1313/rpi-dotnet/gpioboard-software/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/rpi-dotnet/gpioboard-software/</guid>
+      <description>&lt;blockquote&gt;&#xA;&lt;p&gt;Prev: [Dotnet Core on Raspberry Pi][RPI-dotnet-mainPage]&lt;/p&gt;&#xA;&lt;p&gt;Next: [Building and running the App&amp;hellip;][RPI-dotnet-build-and-run]&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;hr/&gt;&lt;br/&gt;&#xD;&#xA;&lt;p style=&#34;float:left;margin-right:30px&#34;&gt;&#xD;&#xA;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/images/RPI-dotnet/VSCodeFolders.png&#34; alt=&#34;VS Code Folders&#34;&gt;&lt;/p&gt;&#xA;&lt;/p&gt;&#xD;&#xA;&lt;p&gt;This was the projects that I created for the solution. There are three projects &lt;em&gt;LEDButtonApp&lt;/em&gt;, &lt;em&gt;LEDButtonLib&lt;/em&gt; and &lt;em&gt;LEDButtonLibTests&lt;/em&gt;.&#xA;The other files &lt;em&gt;tasks.json&lt;/em&gt;, &lt;em&gt;launch.json&lt;/em&gt; and &lt;em&gt;publish.ps1&lt;/em&gt; are scripts to build, publish (to the Raspberry Pi), and run the code. The remaining items are &lt;em&gt;.gitignore&lt;/em&gt; for git and &lt;em&gt;Doc&lt;/em&gt; which is where I would store all the documentation for GitHub.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>GPIO Board Software - build and run</title>
+      <link>http://localhost:1313/rpi-dotnet/gpioboard-buildandrun/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/rpi-dotnet/gpioboard-buildandrun/</guid>
+      <description>&lt;blockquote&gt;&#xA;&lt;p&gt;Prev: [Creating the solution in Visual Studio Code&amp;hellip;][RPI-dotnet-software]&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;hr/&gt;&lt;br/&gt;&#xD;&#xA;&lt;p&gt;In tasks.json there are three tasks:&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;build&lt;/li&gt;&#xA;&lt;li&gt;publish&lt;/li&gt;&#xA;&lt;li&gt;test&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;In launch.json there are two configurations:&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;Run remotely&lt;/li&gt;&#xA;&lt;li&gt;Run locally&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;My plan is to write a simulator so that I can test the local configuration on a PC. The simulator would probably look something like:&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;http://localhost:1313/images/RPI-dotnet/LedButtonBoardSimulator.png&#34; alt=&#34;RPI LED Board Simulator&#34;&gt;&lt;/p&gt;&#xA;&lt;hr/&gt;&lt;br/&gt;&#xD;&#xA;Prev: [Creating the solution in Visual Studio Code...][RPI-dotnet-software]&#xD;&#xA;&lt;p&gt;[RPI-dotnet-software]: {% link pages/RPI-dotnet/GPIOBoard-Software.md %}&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

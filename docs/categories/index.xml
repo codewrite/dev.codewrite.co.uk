@@ -1,1 +1,89 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Categories on Codewrite Dev Blog</title><link>https://dev.codewrite.co.uk/categories/</link><description>Recent content in Categories on Codewrite Dev Blog</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Fri, 06 Feb 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://dev.codewrite.co.uk/categories/index.xml" rel="self" type="application/rss+xml"/><item><title>Jekyll</title><link>https://dev.codewrite.co.uk/categories/jekyll/</link><pubDate>Fri, 06 Feb 2026 00:00:00 +0000</pubDate><guid>https://dev.codewrite.co.uk/categories/jekyll/</guid><description/></item><item><title>RaspberryPi</title><link>https://dev.codewrite.co.uk/categories/raspberrypi/</link><pubDate>Tue, 21 Feb 2023 00:00:00 +0000</pubDate><guid>https://dev.codewrite.co.uk/categories/raspberrypi/</guid><description/></item><item><title>Arduino</title><link>https://dev.codewrite.co.uk/categories/arduino/</link><pubDate>Wed, 19 Aug 2020 00:00:00 +0000</pubDate><guid>https://dev.codewrite.co.uk/categories/arduino/</guid><description/></item><item><title>Encryption</title><link>https://dev.codewrite.co.uk/categories/encryption/</link><pubDate>Wed, 19 Aug 2020 00:00:00 +0000</pubDate><guid>https://dev.codewrite.co.uk/categories/encryption/</guid><description/></item><item><title>Low</title><link>https://dev.codewrite.co.uk/categories/low/</link><pubDate>Wed, 19 Aug 2020 00:00:00 +0000</pubDate><guid>https://dev.codewrite.co.uk/categories/low/</guid><description/></item><item><title>Power</title><link>https://dev.codewrite.co.uk/categories/power/</link><pubDate>Wed, 19 Aug 2020 00:00:00 +0000</pubDate><guid>https://dev.codewrite.co.uk/categories/power/</guid><description/></item><item><title>Libraries</title><link>https://dev.codewrite.co.uk/categories/libraries/</link><pubDate>Fri, 14 Aug 2020 00:00:00 +0000</pubDate><guid>https://dev.codewrite.co.uk/categories/libraries/</guid><description/></item><item><title>Mosfet</title><link>https://dev.codewrite.co.uk/categories/mosfet/</link><pubDate>Thu, 13 Aug 2020 00:00:00 +0000</pubDate><guid>https://dev.codewrite.co.uk/categories/mosfet/</guid><description/></item><item><title>Wav</title><link>https://dev.codewrite.co.uk/categories/wav/</link><pubDate>Thu, 13 Aug 2020 00:00:00 +0000</pubDate><guid>https://dev.codewrite.co.uk/categories/wav/</guid><description/></item><item><title>Nrf24l01</title><link>https://dev.codewrite.co.uk/categories/nrf24l01/</link><pubDate>Sun, 07 Jun 2020 00:00:00 +0000</pubDate><guid>https://dev.codewrite.co.uk/categories/nrf24l01/</guid><description/></item><item><title>Dotnet</title><link>https://dev.codewrite.co.uk/categories/dotnet/</link><pubDate>Wed, 15 Apr 2020 00:00:00 +0000</pubDate><guid>https://dev.codewrite.co.uk/categories/dotnet/</guid><description/></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Categories on Codewrite Dev Blog</title>
+    <link>http://localhost:1313/categories/</link>
+    <description>Recent content in Categories on Codewrite Dev Blog</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 06 Feb 2026 00:00:00 +0000</lastBuildDate>
+    <atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Jekyll</title>
+      <link>http://localhost:1313/categories/jekyll/</link>
+      <pubDate>Fri, 06 Feb 2026 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/jekyll/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>RaspberryPi</title>
+      <link>http://localhost:1313/categories/raspberrypi/</link>
+      <pubDate>Tue, 21 Feb 2023 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/raspberrypi/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Arduino</title>
+      <link>http://localhost:1313/categories/arduino/</link>
+      <pubDate>Wed, 19 Aug 2020 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/arduino/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Encryption</title>
+      <link>http://localhost:1313/categories/encryption/</link>
+      <pubDate>Wed, 19 Aug 2020 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/encryption/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Low-Power</title>
+      <link>http://localhost:1313/categories/low-power/</link>
+      <pubDate>Wed, 19 Aug 2020 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/low-power/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Libraries</title>
+      <link>http://localhost:1313/categories/libraries/</link>
+      <pubDate>Fri, 14 Aug 2020 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/libraries/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Mosfet</title>
+      <link>http://localhost:1313/categories/mosfet/</link>
+      <pubDate>Thu, 13 Aug 2020 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/mosfet/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Wav</title>
+      <link>http://localhost:1313/categories/wav/</link>
+      <pubDate>Thu, 13 Aug 2020 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/wav/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Nrf24l01</title>
+      <link>http://localhost:1313/categories/nrf24l01/</link>
+      <pubDate>Sun, 07 Jun 2020 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/nrf24l01/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Dotnet</title>
+      <link>http://localhost:1313/categories/dotnet/</link>
+      <pubDate>Wed, 15 Apr 2020 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/dotnet/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Update</title>
+      <link>http://localhost:1313/categories/update/</link>
+      <pubDate>Thu, 02 Apr 2020 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/categories/update/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>

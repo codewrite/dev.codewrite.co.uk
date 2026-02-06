@@ -1,13 +1,25 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Generals on Codewrite Dev Blog</title><link>https://dev.codewrite.co.uk/general/</link><description>Recent content in Generals on Codewrite Dev Blog</description><generator>Hugo</generator><language>en-us</language><atom:link href="https://dev.codewrite.co.uk/general/index.xml" rel="self" type="application/rss+xml"/><item><title>Overview</title><link>https://dev.codewrite.co.uk/general/overview/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://dev.codewrite.co.uk/general/overview/</guid><description>&lt;p&gt;This blog is really for my benefit. In years to come I&amp;rsquo;ll forget how I did some of this stuff. If I&amp;rsquo;ve got it written down somewhere I&amp;rsquo;ll be able to figure it out again. If it helps you too that&amp;rsquo;s just a bonus!&lt;/p&gt;
-&lt;p&gt;The topics I am hoping to cover are:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;C# and dotnet core&lt;/li&gt;
-&lt;li&gt;Visual Studio Code&lt;/li&gt;
-&lt;li&gt;MySQL and SQL server&lt;/li&gt;
-&lt;li&gt;Amazon Web Services (AWS)&lt;/li&gt;
-&lt;li&gt;Raspberry Pi&lt;/li&gt;
-&lt;li&gt;Arduino(s)&lt;/li&gt;
-&lt;li&gt;Docker&lt;/li&gt;
-&lt;li&gt;VueJS&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;I&amp;rsquo;ve been using &lt;a href="https://code.visualstudio.com/"&gt;Visual Studio Code&lt;/a&gt; the last year and a half, so most of my code will be using that.&lt;/p&gt;</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Generals on Codewrite Dev Blog</title>
+    <link>http://localhost:1313/general/</link>
+    <description>Recent content in Generals on Codewrite Dev Blog</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <atom:link href="http://localhost:1313/general/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Overview</title>
+      <link>http://localhost:1313/general/overview/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/general/overview/</guid>
+      <description>&lt;p&gt;This blog is really for my benefit. In years to come I&amp;rsquo;ll forget how I did some of this stuff. If I&amp;rsquo;ve got it written down somewhere I&amp;rsquo;ll be able to figure it out again. If it helps you too that&amp;rsquo;s just a bonus!&lt;/p&gt;&#xA;&lt;p&gt;The topics I am hoping to cover are:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;C# and dotnet core&lt;/li&gt;&#xA;&lt;li&gt;Visual Studio Code&lt;/li&gt;&#xA;&lt;li&gt;MySQL and SQL server&lt;/li&gt;&#xA;&lt;li&gt;Amazon Web Services (AWS)&lt;/li&gt;&#xA;&lt;li&gt;Raspberry Pi&lt;/li&gt;&#xA;&lt;li&gt;Arduino(s)&lt;/li&gt;&#xA;&lt;li&gt;Docker&lt;/li&gt;&#xA;&lt;li&gt;VueJS&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;I&amp;rsquo;ve been using &lt;a href=&#34;https://code.visualstudio.com/&#34;&gt;Visual Studio Code&lt;/a&gt; the last year and a half, so most of my code will be using that.&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Marconi</title>
+      <link>http://localhost:1313/general/marconi/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      <guid>http://localhost:1313/general/marconi/</guid>
+      <description>&lt;p&gt;I was at Marconi for about four years. I was actually sponsored by them, so I spent nine months before my final year working for them over in Frimley.&#xA;During that time I was working on a new CMOS 8086 interrupt controller. There were only five of these in the whole of Europe, so I was told to try and not blow it up!&#xA;One of the senior engineers (Dr someone or other&amp;hellip;) had written a program to test this chip. It failed the test but they didn&amp;rsquo;t know why. So that was my task. The NMOS version worked, so I had something to compare it against. Anyway, long story short, it turned out that there was a masking error, and if you configured the chip in a certain way the interrupts wouldn&amp;rsquo;t get processed correctly because two tracks were effectively too close together. In later years I would come across similar problems in memory chips - where they worked with certain data patterns but not others. That lead to a me writing a memory test that I believe is still is still used in Phoenix BIOSes - but thats another story.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
