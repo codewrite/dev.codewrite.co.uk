@@ -21,64 +21,10 @@
             <ul class="nav-list" id="nav-list">
                 <li><a href="/">Home</a></li>
                 
-                    
-                        <li><a href="/posts/2023-02-21-picamobjectdetection1/">Camera Object Detection in Python, Part 1</a></li>
-                    
+                
                 
                     
-                        <li><a href="/posts/2022-12-22-hassconfigfiles/">Home Assistant REST Devices and Sensors</a></li>
-                    
-                
-                    
-                        <li><a href="/posts/2022-03-28-raspberrypihomeassistant/">Home Assistant on the Raspberry Pi</a></li>
-                    
-                
-                    
-                        <li><a href="/posts/2020-08-19-arduinolowpowerencryption/">Arduino Low Power Encryption</a></li>
-                    
-                
-                    
-                        <li><a href="/posts/2020-08-14-arduinodefaultlibraries/">Arduino Default Libraries</a></li>
-                    
-                
-                    
-                        <li><a href="/posts/2020-08-13-arduinoclassdsound/">Generating sounds on the Arduino</a></li>
-                    
-                
-                    
-                        <li><a href="/posts/2020-06-07-raspberrypinrf24l01/">NRF24L01 on Raspberry Pi</a></li>
-                    
-                
-                    
-                        <li><a href="/posts/2020-04-15-rasperrypianddotnet/">Dotnet Core on Raspberry Pi</a></li>
-                    
-                
-                    
-                        <li><a href="/posts/2020-04-02-post1/">My first post</a></li>
-                    
-                
-                    
-                        <li><a href="/posts/2020-04-02-setupjekyll/">Setting Up Jekyll</a></li>
-                    
-                
-                    
-                        <li><a href="/posts/2020-04-02-welcome-to-jekyll/">Welcome to Jekyll!</a></li>
-                    
-                
-                    
-                        <li><a href="/rpi-dotnet/gpioboard-hardware/">GPIO Board Hardware</a></li>
-                    
-                
-                    
-                        <li><a href="/rpi-dotnet/gpioboard-software/">GPIO Board Software</a></li>
-                    
-                
-                    
-                        <li><a href="/rpi-dotnet/gpioboard-buildandrun/">GPIO Board Software - build and run</a></li>
-                    
-                
-                    
-                        <li><a href="/general/marconi/">Marconi</a></li>
+                        <li><a href="/about/">About</a></li>
                     
                 
                     
@@ -135,74 +81,74 @@ I&rsquo;ll state upfront that this isn&rsquo;t the easiest way to do this (there
 I realized early on that PWM was the easiest way to generate the sound - and after some investigation and calculations worked out that I could have 8 bit audio with a PWM running at 62.5KHz (16MHz clock divided by 256).<br/><br/>
 <details>
 <summary>PWM code (62.5KHz):</summary>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">inline</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">fastWriteD3</span>(<span style="color:#66d9ef">int</span> value)
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (value) PORTD <span style="color:#f92672">|=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">3</span>;
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">else</span> PORTD <span style="color:#f92672">&amp;=</span> <span style="color:#f92672">~</span>(<span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">3</span>);
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// Using Timer 2 B = pin D3, 62.5KHz i.e. no prescaler
-</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setupPWMTimer</span>()
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">pinMode</span>(<span style="color:#ae81ff">3</span>, OUTPUT);
-</span></span><span style="display:flex;"><span>  <span style="color:#75715e">//pinMode(11, OUTPUT);
-</span></span></span><span style="display:flex;"><span>  TCCR2A <span style="color:#f92672">=</span> <span style="color:#a6e22e">_BV</span>(COM2B1) <span style="color:#f92672">|</span> <span style="color:#a6e22e">_BV</span>(WGM21) <span style="color:#f92672">|</span> <span style="color:#a6e22e">_BV</span>(WGM20);
-</span></span><span style="display:flex;"><span>  TCCR2B <span style="color:#f92672">=</span> <span style="color:#a6e22e">_BV</span>(CS20);
-</span></span><span style="display:flex;"><span>  OCR2B <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x80</span>;
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">updatePWMTimer</span>(<span style="color:#66d9ef">uint8_t</span> val)
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (val <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>)
-</span></span><span style="display:flex;"><span>  {
-</span></span><span style="display:flex;"><span>    TCCR2A <span style="color:#f92672">&amp;=</span> <span style="color:#f92672">~</span><span style="color:#a6e22e">_BV</span>(COM2B1);
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fastWriteD3</span>(<span style="color:#ae81ff">0</span>);
-</span></span><span style="display:flex;"><span>  }
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (val <span style="color:#f92672">==</span> <span style="color:#ae81ff">0xff</span>)
-</span></span><span style="display:flex;"><span>  {
-</span></span><span style="display:flex;"><span>    TCCR2A <span style="color:#f92672">&amp;=</span> <span style="color:#f92672">~</span><span style="color:#a6e22e">_BV</span>(COM2B1);
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fastWriteD3</span>(<span style="color:#ae81ff">1</span>);
-</span></span><span style="display:flex;"><span>  }
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">else</span>
-</span></span><span style="display:flex;"><span>  {
-</span></span><span style="display:flex;"><span>    TCCR2A <span style="color:#f92672">|=</span> <span style="color:#a6e22e">_BV</span>(COM2B1);
-</span></span><span style="display:flex;"><span>    OCR2B <span style="color:#f92672">=</span> val;
-</span></span><span style="display:flex;"><span>  }
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#007020;font-weight:bold">inline</span> <span style="color:#902000">void</span> <span style="color:#06287e">fastWriteD3</span>(<span style="color:#902000">int</span> value)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>{
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>  <span style="color:#007020;font-weight:bold">if</span> (value) PORTD <span style="color:#666">|=</span> <span style="color:#40a070">1</span> <span style="color:#666">&lt;&lt;</span> <span style="color:#40a070">3</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>  <span style="color:#007020;font-weight:bold">else</span> PORTD <span style="color:#666">&amp;=</span> <span style="color:#666">~</span>(<span style="color:#40a070">1</span> <span style="color:#666">&lt;&lt;</span> <span style="color:#40a070">3</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>}
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#60a0b0;font-style:italic">// Using Timer 2 B = pin D3, 62.5KHz i.e. no prescaler
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span><span style="color:#902000">void</span> <span style="color:#06287e">setupPWMTimer</span>()
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>{
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>  <span style="color:#06287e">pinMode</span>(<span style="color:#40a070">3</span>, OUTPUT);
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>  <span style="color:#60a0b0;font-style:italic">//pinMode(11, OUTPUT);
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>  TCCR2A <span style="color:#666">=</span> <span style="color:#06287e">_BV</span>(COM2B1) <span style="color:#666">|</span> <span style="color:#06287e">_BV</span>(WGM21) <span style="color:#666">|</span> <span style="color:#06287e">_BV</span>(WGM20);
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>  TCCR2B <span style="color:#666">=</span> <span style="color:#06287e">_BV</span>(CS20);
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>  OCR2B <span style="color:#666">=</span> <span style="color:#40a070">0x80</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>}
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span><span style="color:#902000">void</span> <span style="color:#06287e">updatePWMTimer</span>(<span style="color:#902000">uint8_t</span> val)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>{
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span>  <span style="color:#007020;font-weight:bold">if</span> (val <span style="color:#666">==</span> <span style="color:#40a070">0</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>  {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>    TCCR2A <span style="color:#666">&amp;=</span> <span style="color:#666">~</span><span style="color:#06287e">_BV</span>(COM2B1);
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>    <span style="color:#06287e">fastWriteD3</span>(<span style="color:#40a070">0</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>  }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>  <span style="color:#007020;font-weight:bold">else</span> <span style="color:#007020;font-weight:bold">if</span> (val <span style="color:#666">==</span> <span style="color:#40a070">0xff</span>)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>  {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span>    TCCR2A <span style="color:#666">&amp;=</span> <span style="color:#666">~</span><span style="color:#06287e">_BV</span>(COM2B1);
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span>    <span style="color:#06287e">fastWriteD3</span>(<span style="color:#40a070">1</span>);
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>  }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span>  <span style="color:#007020;font-weight:bold">else</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30</span><span>  {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31</span><span>    TCCR2A <span style="color:#666">|=</span> <span style="color:#06287e">_BV</span>(COM2B1);
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32</span><span>    OCR2B <span style="color:#666">=</span> val;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33</span><span>  }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34</span><span>}
 </span></span></code></pre></div></details>
 <br/>
 The next thing I needed was to play each sample. I probably could do one channel at 44KHz but decided to use 16KHz - which would mean the upper frequency limit would be 8KHz. Nowhere near HiFi, but easily good enough for what I was trying to achieve. So I created an interrupt routine that occurred 16,000 times a second with the following code:<br/><br/>
 <details>
 <summary>Interrupt code (16KHz):</summary>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#a6e22e">ISR</span>(TIMER1_COMPA_vect)
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (dataFirst <span style="color:#f92672">!=</span> dataLast)
-</span></span><span style="display:flex;"><span>  {
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">uint8_t</span> val <span style="color:#f92672">=</span> dataBuffer[dataFirst<span style="color:#f92672">++</span>];
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (dataFirst <span style="color:#f92672">==</span> DATA_BUFFER_SIZE)
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>      dataFirst <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">updatePWMTimer</span>(val);
-</span></span><span style="display:flex;"><span>  }
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>paused)
-</span></span><span style="display:flex;"><span>  {
-</span></span><span style="display:flex;"><span>    noData <span style="color:#f92672">=</span> true;
-</span></span><span style="display:flex;"><span>  }
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e">// Set timer1 interrupt at 16kHz
-</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup16KHzTimer</span>()
-</span></span><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>  TCCR1A <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
-</span></span><span style="display:flex;"><span>  TCCR1B <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
-</span></span><span style="display:flex;"><span>  TCNT1  <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;               <span style="color:#75715e">//initialize counter value to 0
-</span></span></span><span style="display:flex;"><span>  OCR1A <span style="color:#f92672">=</span> <span style="color:#ae81ff">1000</span>;             <span style="color:#75715e">// = (16*10^6) / (1 * 16000) - 1 (must be &lt;65536)
-</span></span></span><span style="display:flex;"><span>  TCCR1B <span style="color:#f92672">|=</span> (<span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> WGM12);   <span style="color:#75715e">// turn on CTC mode
-</span></span></span><span style="display:flex;"><span>  TCCR1B <span style="color:#f92672">|=</span> (<span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> CS10);    <span style="color:#75715e">// Set CS10 bit for no prescaler
-</span></span></span><span style="display:flex;"><span>  TIMSK1 <span style="color:#f92672">|=</span> (<span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> OCIE1A);  <span style="color:#75715e">// enable timer compare interrupt
-</span></span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">sei</span>();
-</span></span><span style="display:flex;"><span>}
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#06287e">ISR</span>(TIMER1_COMPA_vect)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>{
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>  <span style="color:#007020;font-weight:bold">if</span> (dataFirst <span style="color:#666">!=</span> dataLast)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>  {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>    <span style="color:#902000">uint8_t</span> val <span style="color:#666">=</span> dataBuffer[dataFirst<span style="color:#666">++</span>];
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>    <span style="color:#007020;font-weight:bold">if</span> (dataFirst <span style="color:#666">==</span> DATA_BUFFER_SIZE)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>    {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>      dataFirst <span style="color:#666">=</span> <span style="color:#40a070">0</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>    }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>    <span style="color:#06287e">updatePWMTimer</span>(val);
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>  }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>  <span style="color:#007020;font-weight:bold">else</span> <span style="color:#007020;font-weight:bold">if</span> (<span style="color:#666">!</span>paused)
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>  {
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>    noData <span style="color:#666">=</span> <span style="color:#007020">true</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>  }
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>}
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span><span style="color:#60a0b0;font-style:italic">// Set timer1 interrupt at 16kHz
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span><span style="color:#902000">void</span> <span style="color:#06287e">setup16KHzTimer</span>()
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span>{
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span>  TCCR1A <span style="color:#666">=</span> <span style="color:#40a070">0</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span>  TCCR1B <span style="color:#666">=</span> <span style="color:#40a070">0</span>;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span>  TCNT1  <span style="color:#666">=</span> <span style="color:#40a070">0</span>;               <span style="color:#60a0b0;font-style:italic">//initialize counter value to 0
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span>  OCR1A <span style="color:#666">=</span> <span style="color:#40a070">1000</span>;             <span style="color:#60a0b0;font-style:italic">// = (16*10^6) / (1 * 16000) - 1 (must be &lt;65536)
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span>  TCCR1B <span style="color:#666">|=</span> (<span style="color:#40a070">1</span> <span style="color:#666">&lt;&lt;</span> WGM12);   <span style="color:#60a0b0;font-style:italic">// turn on CTC mode
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26</span><span>  TCCR1B <span style="color:#666">|=</span> (<span style="color:#40a070">1</span> <span style="color:#666">&lt;&lt;</span> CS10);    <span style="color:#60a0b0;font-style:italic">// Set CS10 bit for no prescaler
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27</span><span>  TIMSK1 <span style="color:#666">|=</span> (<span style="color:#40a070">1</span> <span style="color:#666">&lt;&lt;</span> OCIE1A);  <span style="color:#60a0b0;font-style:italic">// enable timer compare interrupt
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28</span><span>  <span style="color:#06287e">sei</span>();
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29</span><span>}
 </span></span></code></pre></div></details>
 <br/>
 Every time the interrupt occurs one sample of the WAV file should be sent to the PWM. You can see this in the ISR.

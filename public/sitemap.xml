@@ -2,6 +2,10 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>http://localhost:1313/about/</loc>
+  </url><url>
+    <loc>http://localhost:1313/general/overview/</loc>
+  </url><url>
     <loc>http://localhost:1313/posts/2023-02-21-picamobjectdetection1/</loc>
     <lastmod>2023-02-21T00:00:00+00:00</lastmod>
   </url><url>
@@ -80,8 +84,6 @@
     <loc>http://localhost:1313/posts/2020-04-02-welcome-to-jekyll/</loc>
     <lastmod>2020-04-02T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>http://localhost:1313/about/</loc>
-  </url><url>
     <loc>http://localhost:1313/general/</loc>
   </url><url>
     <loc>http://localhost:1313/rpi-dotnet/gpioboard-hardware/</loc>
@@ -91,8 +93,6 @@
     <loc>http://localhost:1313/rpi-dotnet/gpioboard-buildandrun/</loc>
   </url><url>
     <loc>http://localhost:1313/general/marconi/</loc>
-  </url><url>
-    <loc>http://localhost:1313/general/overview/</loc>
   </url><url>
     <loc>http://localhost:1313/rpi-dotnet/</loc>
   </url><url>

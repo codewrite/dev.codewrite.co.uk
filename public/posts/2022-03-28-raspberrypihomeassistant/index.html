@@ -21,64 +21,10 @@
             <ul class="nav-list" id="nav-list">
                 <li><a href="/">Home</a></li>
                 
-                    
-                        <li><a href="/posts/2023-02-21-picamobjectdetection1/">Camera Object Detection in Python, Part 1</a></li>
-                    
+                
                 
                     
-                        <li><a href="/posts/2022-12-22-hassconfigfiles/">Home Assistant REST Devices and Sensors</a></li>
-                    
-                
-                    
-                        <li><a href="/posts/2022-03-28-raspberrypihomeassistant/">Home Assistant on the Raspberry Pi</a></li>
-                    
-                
-                    
-                        <li><a href="/posts/2020-08-19-arduinolowpowerencryption/">Arduino Low Power Encryption</a></li>
-                    
-                
-                    
-                        <li><a href="/posts/2020-08-14-arduinodefaultlibraries/">Arduino Default Libraries</a></li>
-                    
-                
-                    
-                        <li><a href="/posts/2020-08-13-arduinoclassdsound/">Generating sounds on the Arduino</a></li>
-                    
-                
-                    
-                        <li><a href="/posts/2020-06-07-raspberrypinrf24l01/">NRF24L01 on Raspberry Pi</a></li>
-                    
-                
-                    
-                        <li><a href="/posts/2020-04-15-rasperrypianddotnet/">Dotnet Core on Raspberry Pi</a></li>
-                    
-                
-                    
-                        <li><a href="/posts/2020-04-02-post1/">My first post</a></li>
-                    
-                
-                    
-                        <li><a href="/posts/2020-04-02-setupjekyll/">Setting Up Jekyll</a></li>
-                    
-                
-                    
-                        <li><a href="/posts/2020-04-02-welcome-to-jekyll/">Welcome to Jekyll!</a></li>
-                    
-                
-                    
-                        <li><a href="/rpi-dotnet/gpioboard-hardware/">GPIO Board Hardware</a></li>
-                    
-                
-                    
-                        <li><a href="/rpi-dotnet/gpioboard-software/">GPIO Board Software</a></li>
-                    
-                
-                    
-                        <li><a href="/rpi-dotnet/gpioboard-buildandrun/">GPIO Board Software - build and run</a></li>
-                    
-                
-                    
-                        <li><a href="/general/marconi/">Marconi</a></li>
+                        <li><a href="/about/">About</a></li>
                     
                 
                     
@@ -135,19 +81,19 @@
 <li>Outside Lights Off Sequenced</li>
 </ul>
 <p>In the following example script the lights are turned on with a 20 second delay between each:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">alias</span>: <span style="color:#ae81ff">Inside Lights On Sequenced</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">sequence</span>:
-</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">service</span>: <span style="color:#ae81ff">switch.turn_on</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">target</span>:
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">entity_id</span>: <span style="color:#ae81ff">switch.tablelamp</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">data</span>: {}
-</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">delay</span>: <span style="color:#ae81ff">20</span>
-</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">service</span>: <span style="color:#ae81ff">switch.turn_on</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">target</span>:
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">entity_id</span>: <span style="color:#ae81ff">switch.cornerlamp</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">data</span>: {}
-</span></span><span style="display:flex;"><span><span style="color:#f92672">mode</span>: <span style="color:#ae81ff">single</span>
-</span></span></code></pre></div><p>I then wrote the following automations to call the scripts:</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#062873;font-weight:bold">alias</span>:<span style="color:#bbb"> </span>Inside Lights On Sequenced<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#062873;font-weight:bold">sequence</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#bbb">  </span>- <span style="color:#062873;font-weight:bold">service</span>:<span style="color:#bbb"> </span>switch.turn_on<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#bbb">    </span><span style="color:#062873;font-weight:bold">target</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span><span style="color:#bbb">      </span><span style="color:#062873;font-weight:bold">entity_id</span>:<span style="color:#bbb"> </span>switch.tablelamp<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span><span style="color:#bbb">    </span><span style="color:#062873;font-weight:bold">data</span>:<span style="color:#bbb"> </span>{}<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#bbb">  </span>- <span style="color:#062873;font-weight:bold">delay</span>:<span style="color:#bbb"> </span><span style="color:#40a070">20</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span><span style="color:#bbb">  </span>- <span style="color:#062873;font-weight:bold">service</span>:<span style="color:#bbb"> </span>switch.turn_on<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="color:#bbb">    </span><span style="color:#062873;font-weight:bold">target</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span><span style="color:#bbb">      </span><span style="color:#062873;font-weight:bold">entity_id</span>:<span style="color:#bbb"> </span>switch.cornerlamp<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span><span style="color:#bbb">    </span><span style="color:#062873;font-weight:bold">data</span>:<span style="color:#bbb"> </span>{}<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span><span style="color:#062873;font-weight:bold">mode</span>:<span style="color:#bbb"> </span>single<span style="color:#bbb">
+</span></span></span></code></pre></div><p>I then wrote the following automations to call the scripts:</p>
 <ul>
 <li>Turn inside lights on at dusk when overcast.</li>
 <li>Turn outside lights on at dusk when overcast.</li>
@@ -158,49 +104,49 @@
 <li>Turn all lights off when table lamp is turned off</li>
 </ul>
 <p>In the following automation we check the weather and if it is overcast we turn the lights on:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">alias</span>: <span style="color:#ae81ff">Turn inside lights on at dusk when overcast</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">description</span>: <span style="color:#e6db74">&#39;&#39;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">trigger</span>:
-</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">platform</span>: <span style="color:#ae81ff">sun</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">event</span>: <span style="color:#ae81ff">sunset</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">offset</span>: <span style="color:#e6db74">&#39;-00:30:00&#39;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">condition</span>:
-</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">condition</span>: <span style="color:#ae81ff">template</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">value_template</span>: &gt;-<span style="color:#e6db74">
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      {{ states(&#39;weather.home&#39;) != &#34;sunny&#34; and states(&#39;weather.home&#39;) !=
-</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      &#34;partlycloudy&#34; }}</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">action</span>:
-</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">service</span>: <span style="color:#ae81ff">script.inside_lights_on_sequenced</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">data</span>: {}
-</span></span><span style="display:flex;"><span><span style="color:#f92672">mode</span>: <span style="color:#ae81ff">single</span>
-</span></span></code></pre></div><p>The other automations are similar and because they are separated out enable us to (for instance) turn the outside lights on at a different time to the inside lights.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#062873;font-weight:bold">alias</span>:<span style="color:#bbb"> </span>Turn inside lights on at dusk when overcast<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#062873;font-weight:bold">description</span>:<span style="color:#bbb"> </span><span style="color:#4070a0">&#39;&#39;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#062873;font-weight:bold">trigger</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#bbb">  </span>- <span style="color:#062873;font-weight:bold">platform</span>:<span style="color:#bbb"> </span>sun<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span><span style="color:#bbb">    </span><span style="color:#062873;font-weight:bold">event</span>:<span style="color:#bbb"> </span>sunset<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span><span style="color:#bbb">    </span><span style="color:#062873;font-weight:bold">offset</span>:<span style="color:#bbb"> </span><span style="color:#4070a0">&#39;-00:30:00&#39;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#062873;font-weight:bold">condition</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span><span style="color:#bbb">  </span>- <span style="color:#062873;font-weight:bold">condition</span>:<span style="color:#bbb"> </span>template<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="color:#bbb">    </span><span style="color:#062873;font-weight:bold">value_template</span>:<span style="color:#bbb"> </span>&gt;-<span style="color:#4070a0;font-style:italic">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span><span style="color:#4070a0;font-style:italic">      {{ states(&#39;weather.home&#39;) != &#34;sunny&#34; and states(&#39;weather.home&#39;) !=
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span><span style="color:#4070a0;font-style:italic">      &#34;partlycloudy&#34; }}</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span><span style="color:#062873;font-weight:bold">action</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span><span style="color:#bbb">  </span>- <span style="color:#062873;font-weight:bold">service</span>:<span style="color:#bbb"> </span>script.inside_lights_on_sequenced<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span><span style="color:#bbb">    </span><span style="color:#062873;font-weight:bold">data</span>:<span style="color:#bbb"> </span>{}<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span><span style="color:#062873;font-weight:bold">mode</span>:<span style="color:#bbb"> </span>single<span style="color:#bbb">
+</span></span></span></code></pre></div><p>The other automations are similar and because they are separated out enable us to (for instance) turn the outside lights on at a different time to the inside lights.</p>
 <p>In case we want to override the automatic switch on/off we can press a button on the table lamp. This triggers the following automation that turns all the lights off:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">alias</span>: <span style="color:#ae81ff">Turn off all the lights when table lamp is turned off</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">description</span>: <span style="color:#e6db74">&#39;&#39;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">trigger</span>:
-</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">platform</span>: <span style="color:#ae81ff">state</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">entity_id</span>: <span style="color:#ae81ff">switch.tablelamp</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">to</span>: <span style="color:#e6db74">&#39;off&#39;</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">condition</span>: []
-</span></span><span style="display:flex;"><span><span style="color:#f92672">action</span>:
-</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">service</span>: <span style="color:#ae81ff">switch.turn_off</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">target</span>:
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">entity_id</span>: <span style="color:#ae81ff">switch.cornerlamp</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">data</span>: {}
-</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">service</span>: <span style="color:#ae81ff">switch.turn_off</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">target</span>:
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">entity_id</span>: <span style="color:#ae81ff">switch.cob_light_1</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">data</span>: {}
-</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">service</span>: <span style="color:#ae81ff">switch.turn_off</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">target</span>:
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">entity_id</span>: <span style="color:#ae81ff">switch.cob_light_2</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">data</span>: {}
-</span></span><span style="display:flex;"><span>  - <span style="color:#f92672">service</span>: <span style="color:#ae81ff">switch.turn_off</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">target</span>:
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">entity_id</span>: <span style="color:#ae81ff">switch.cob_light_3</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#f92672">data</span>: {}
-</span></span><span style="display:flex;"><span><span style="color:#f92672">mode</span>: <span style="color:#ae81ff">single</span>
-</span></span></code></pre></div><p>As I mentioned earlier, I also have temperature sensors that use BLE. I have also plugged an ultrasonic distance measuring board into an ESP32 board and programmed it up with Tasmota. I can then see the distance (I was actually using it to detect the water level in a bucket) in HASS. Creating a water sensor like this and setting it up took me less than a hour from start to finish. Although I haven&rsquo;t created the automations, these could be created in the same was as the light automation scripts above.</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span><span style="color:#062873;font-weight:bold">alias</span>:<span style="color:#bbb"> </span>Turn off all the lights when table lamp is turned off<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span><span style="color:#062873;font-weight:bold">description</span>:<span style="color:#bbb"> </span><span style="color:#4070a0">&#39;&#39;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span><span style="color:#062873;font-weight:bold">trigger</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span><span style="color:#bbb">  </span>- <span style="color:#062873;font-weight:bold">platform</span>:<span style="color:#bbb"> </span>state<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span><span style="color:#bbb">    </span><span style="color:#062873;font-weight:bold">entity_id</span>:<span style="color:#bbb"> </span>switch.tablelamp<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span><span style="color:#bbb">    </span><span style="color:#062873;font-weight:bold">to</span>:<span style="color:#bbb"> </span><span style="color:#4070a0">&#39;off&#39;</span><span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span><span style="color:#062873;font-weight:bold">condition</span>:<span style="color:#bbb"> </span>[]<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span><span style="color:#062873;font-weight:bold">action</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span><span style="color:#bbb">  </span>- <span style="color:#062873;font-weight:bold">service</span>:<span style="color:#bbb"> </span>switch.turn_off<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span><span style="color:#bbb">    </span><span style="color:#062873;font-weight:bold">target</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span><span style="color:#bbb">      </span><span style="color:#062873;font-weight:bold">entity_id</span>:<span style="color:#bbb"> </span>switch.cornerlamp<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span><span style="color:#bbb">    </span><span style="color:#062873;font-weight:bold">data</span>:<span style="color:#bbb"> </span>{}<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span><span style="color:#bbb">  </span>- <span style="color:#062873;font-weight:bold">service</span>:<span style="color:#bbb"> </span>switch.turn_off<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span><span style="color:#bbb">    </span><span style="color:#062873;font-weight:bold">target</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span><span style="color:#bbb">      </span><span style="color:#062873;font-weight:bold">entity_id</span>:<span style="color:#bbb"> </span>switch.cob_light_1<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span><span style="color:#bbb">    </span><span style="color:#062873;font-weight:bold">data</span>:<span style="color:#bbb"> </span>{}<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span><span style="color:#bbb">  </span>- <span style="color:#062873;font-weight:bold">service</span>:<span style="color:#bbb"> </span>switch.turn_off<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span><span style="color:#bbb">    </span><span style="color:#062873;font-weight:bold">target</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19</span><span><span style="color:#bbb">      </span><span style="color:#062873;font-weight:bold">entity_id</span>:<span style="color:#bbb"> </span>switch.cob_light_2<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20</span><span><span style="color:#bbb">    </span><span style="color:#062873;font-weight:bold">data</span>:<span style="color:#bbb"> </span>{}<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21</span><span><span style="color:#bbb">  </span>- <span style="color:#062873;font-weight:bold">service</span>:<span style="color:#bbb"> </span>switch.turn_off<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22</span><span><span style="color:#bbb">    </span><span style="color:#062873;font-weight:bold">target</span>:<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23</span><span><span style="color:#bbb">      </span><span style="color:#062873;font-weight:bold">entity_id</span>:<span style="color:#bbb"> </span>switch.cob_light_3<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24</span><span><span style="color:#bbb">    </span><span style="color:#062873;font-weight:bold">data</span>:<span style="color:#bbb"> </span>{}<span style="color:#bbb">
+</span></span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25</span><span><span style="color:#062873;font-weight:bold">mode</span>:<span style="color:#bbb"> </span>single<span style="color:#bbb">
+</span></span></span></code></pre></div><p>As I mentioned earlier, I also have temperature sensors that use BLE. I have also plugged an ultrasonic distance measuring board into an ESP32 board and programmed it up with Tasmota. I can then see the distance (I was actually using it to detect the water level in a bucket) in HASS. Creating a water sensor like this and setting it up took me less than a hour from start to finish. Although I haven&rsquo;t created the automations, these could be created in the same was as the light automation scripts above.</p>
 <p>There are lots of addons, some that I am using are:</p>
 <ul>
 <li>Wireguard</li>

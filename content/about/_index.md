@@ -1,6 +1,8 @@
 ﻿---
 title: "About"
 draft: false
+menu: true
+weight: 10
 ---
 
 

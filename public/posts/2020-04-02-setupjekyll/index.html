@@ -21,64 +21,10 @@
             <ul class="nav-list" id="nav-list">
                 <li><a href="/">Home</a></li>
                 
-                    
-                        <li><a href="/posts/2023-02-21-picamobjectdetection1/">Camera Object Detection in Python, Part 1</a></li>
-                    
+                
                 
                     
-                        <li><a href="/posts/2022-12-22-hassconfigfiles/">Home Assistant REST Devices and Sensors</a></li>
-                    
-                
-                    
-                        <li><a href="/posts/2022-03-28-raspberrypihomeassistant/">Home Assistant on the Raspberry Pi</a></li>
-                    
-                
-                    
-                        <li><a href="/posts/2020-08-19-arduinolowpowerencryption/">Arduino Low Power Encryption</a></li>
-                    
-                
-                    
-                        <li><a href="/posts/2020-08-14-arduinodefaultlibraries/">Arduino Default Libraries</a></li>
-                    
-                
-                    
-                        <li><a href="/posts/2020-08-13-arduinoclassdsound/">Generating sounds on the Arduino</a></li>
-                    
-                
-                    
-                        <li><a href="/posts/2020-06-07-raspberrypinrf24l01/">NRF24L01 on Raspberry Pi</a></li>
-                    
-                
-                    
-                        <li><a href="/posts/2020-04-15-rasperrypianddotnet/">Dotnet Core on Raspberry Pi</a></li>
-                    
-                
-                    
-                        <li><a href="/posts/2020-04-02-post1/">My first post</a></li>
-                    
-                
-                    
-                        <li><a href="/posts/2020-04-02-setupjekyll/">Setting Up Jekyll</a></li>
-                    
-                
-                    
-                        <li><a href="/posts/2020-04-02-welcome-to-jekyll/">Welcome to Jekyll!</a></li>
-                    
-                
-                    
-                        <li><a href="/rpi-dotnet/gpioboard-hardware/">GPIO Board Hardware</a></li>
-                    
-                
-                    
-                        <li><a href="/rpi-dotnet/gpioboard-software/">GPIO Board Software</a></li>
-                    
-                
-                    
-                        <li><a href="/rpi-dotnet/gpioboard-buildandrun/">GPIO Board Software - build and run</a></li>
-                    
-                
-                    
-                        <li><a href="/general/marconi/">Marconi</a></li>
+                        <li><a href="/about/">About</a></li>
                     
                 
                     
@@ -121,54 +67,54 @@
 <p>And then <a href="https://computingforgeeks.com/how-to-install-jekyll-on-ubuntu-18-04/">installed Jekyll</a></p>
 <p>To run it: <code>jekyll serve --host=0.0.0.0</code></p>
 <p>I edited .bashrc to add the GEM exports</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Ruby exports</span>
-</span></span><span style="display:flex;"><span>export GEM_HOME<span style="color:#f92672">=</span>$HOME/gems
-</span></span><span style="display:flex;"><span>export PATH<span style="color:#f92672">=</span>$HOME/gems/bin:$PATH
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1</span><span><span style="color:#60a0b0;font-style:italic"># Ruby exports</span>
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2</span><span><span style="color:#007020">export</span> <span style="color:#bb60d5">GEM_HOME</span><span style="color:#666">=</span><span style="color:#bb60d5">$HOME</span>/gems
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3</span><span><span style="color:#007020">export</span> <span style="color:#bb60d5">PATH</span><span style="color:#666">=</span><span style="color:#bb60d5">$HOME</span>/gems/bin:<span style="color:#bb60d5">$PATH</span>
 </span></span></code></pre></div><p>I added a couple of files to the _includes folder:</p>
 <p><em>head.html</em></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>&lt;<span style="color:#f92672">head</span>&gt;
-</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">meta</span> <span style="color:#a6e22e">charset</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;utf-8&#34;</span>&gt;
-</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">meta</span> <span style="color:#a6e22e">http-equiv</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;X-UA-Compatible&#34;</span> <span style="color:#a6e22e">content</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;IE=edge&#34;</span>&gt;
-</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">meta</span> <span style="color:#a6e22e">name</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;viewport&#34;</span> <span style="color:#a6e22e">content</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;width=device-width, initial-scale=1&#34;</span>&gt;
-</span></span><span style="display:flex;"><span>    {%- seo -%}
-</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">link</span> <span style="color:#a6e22e">rel</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;stylesheet&#34;</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;{{ &#34;</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#a6e22e">assets</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#a6e22e">main</span><span style="color:#960050;background-color:#1e0010">.</span><span style="color:#a6e22e">css</span><span style="color:#960050;background-color:#1e0010">&#34;</span> <span style="color:#960050;background-color:#1e0010">|</span> <span style="color:#a6e22e">relative_url</span> <span style="color:#960050;background-color:#1e0010">}}&#34;</span>&gt;
-</span></span><span style="display:flex;"><span>    &lt;<span style="color:#f92672">link</span> <span style="color:#a6e22e">rel</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;stylesheet&#34;</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;{{ &#34;</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#a6e22e">assets</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#a6e22e">css</span><span style="color:#960050;background-color:#1e0010">/</span><span style="color:#a6e22e">main</span><span style="color:#960050;background-color:#1e0010">.</span><span style="color:#a6e22e">css</span><span style="color:#960050;background-color:#1e0010">&#34;</span> <span style="color:#960050;background-color:#1e0010">|</span> <span style="color:#a6e22e">relative_url</span> <span style="color:#960050;background-color:#1e0010">}}&#34;</span>&gt;
-</span></span><span style="display:flex;"><span>    {%- feed_meta -%}
-</span></span><span style="display:flex;"><span>    {%- if jekyll.environment == &#39;production&#39; and site.google_analytics -%}
-</span></span><span style="display:flex;"><span>      {%- include google-analytics.html -%}
-</span></span><span style="display:flex;"><span>    {%- endif -%}
-</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">head</span>&gt;
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-html" data-lang="html"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>&lt;<span style="color:#062873;font-weight:bold">head</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    &lt;<span style="color:#062873;font-weight:bold">meta</span> <span style="color:#4070a0">charset</span><span style="color:#666">=</span><span style="color:#4070a0">&#34;utf-8&#34;</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>    &lt;<span style="color:#062873;font-weight:bold">meta</span> <span style="color:#4070a0">http-equiv</span><span style="color:#666">=</span><span style="color:#4070a0">&#34;X-UA-Compatible&#34;</span> <span style="color:#4070a0">content</span><span style="color:#666">=</span><span style="color:#4070a0">&#34;IE=edge&#34;</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>    &lt;<span style="color:#062873;font-weight:bold">meta</span> <span style="color:#4070a0">name</span><span style="color:#666">=</span><span style="color:#4070a0">&#34;viewport&#34;</span> <span style="color:#4070a0">content</span><span style="color:#666">=</span><span style="color:#4070a0">&#34;width=device-width, initial-scale=1&#34;</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>    {%- seo -%}
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>    &lt;<span style="color:#062873;font-weight:bold">link</span> <span style="color:#4070a0">rel</span><span style="color:#666">=</span><span style="color:#4070a0">&#34;stylesheet&#34;</span> <span style="color:#4070a0">href</span><span style="color:#666">=</span><span style="color:#4070a0">&#34;{{ &#34;</span><span style="">/</span><span style="color:#4070a0">assets</span><span style="">/</span><span style="color:#4070a0">main</span><span style="">.</span><span style="color:#4070a0">css</span><span style="">&#34;</span> <span style="">|</span> <span style="color:#4070a0">relative_url</span> <span style="">}}&#34;</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>    &lt;<span style="color:#062873;font-weight:bold">link</span> <span style="color:#4070a0">rel</span><span style="color:#666">=</span><span style="color:#4070a0">&#34;stylesheet&#34;</span> <span style="color:#4070a0">href</span><span style="color:#666">=</span><span style="color:#4070a0">&#34;{{ &#34;</span><span style="">/</span><span style="color:#4070a0">assets</span><span style="">/</span><span style="color:#4070a0">css</span><span style="">/</span><span style="color:#4070a0">main</span><span style="">.</span><span style="color:#4070a0">css</span><span style="">&#34;</span> <span style="">|</span> <span style="color:#4070a0">relative_url</span> <span style="">}}&#34;</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>    {%- feed_meta -%}
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>    {%- if jekyll.environment == &#39;production&#39; and site.google_analytics -%}
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>      {%- include google-analytics.html -%}
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>    {%- endif -%}
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>&lt;/<span style="color:#062873;font-weight:bold">head</span>&gt;
 </span></span></code></pre></div><p>in the file above I added a link to my css file - which is built from main.scss in the assets/css folder.</p>
 <p>and the in <em>header.html</em> I added <em>if my_page.hidden != true</em> so I could have posts thant wouldn&rsquo;t get listed:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>    &lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;trigger&#34;</span>&gt;
-</span></span><span style="display:flex;"><span>    {%- for path in page_paths -%}
-</span></span><span style="display:flex;"><span>        {%- assign my_page = site.pages | where: &#34;path&#34;, path | first -%}
-</span></span><span style="display:flex;"><span>        {%- if my_page.title -%}
-</span></span><span style="display:flex;"><span>        {%- if my_page.hidden != true -%}
-</span></span><span style="display:flex;"><span>            &lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;page-link&#34;</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;{{ my_page.url | relative_url }}&#34;</span>&gt;{{ my_page.title | escape }}&lt;/<span style="color:#f92672">a</span>&gt;
-</span></span><span style="display:flex;"><span>        {%- endif -%}
-</span></span><span style="display:flex;"><span>        {%- endif -%}
-</span></span><span style="display:flex;"><span>    {%- endfor -%}
-</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">div</span>&gt;
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-html" data-lang="html"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>    &lt;<span style="color:#062873;font-weight:bold">div</span> <span style="color:#4070a0">class</span><span style="color:#666">=</span><span style="color:#4070a0">&#34;trigger&#34;</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>    {%- for path in page_paths -%}
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>        {%- assign my_page = site.pages | where: &#34;path&#34;, path | first -%}
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>        {%- if my_page.title -%}
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>        {%- if my_page.hidden != true -%}
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>            &lt;<span style="color:#062873;font-weight:bold">a</span> <span style="color:#4070a0">class</span><span style="color:#666">=</span><span style="color:#4070a0">&#34;page-link&#34;</span> <span style="color:#4070a0">href</span><span style="color:#666">=</span><span style="color:#4070a0">&#34;{{ my_page.url | relative_url }}&#34;</span>&gt;{{ my_page.title | escape }}&lt;/<span style="color:#062873;font-weight:bold">a</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>        {%- endif -%}
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>        {%- endif -%}
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>    {%- endfor -%}
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>    &lt;/<span style="color:#062873;font-weight:bold">div</span>&gt;
 </span></span></code></pre></div><p>I did a similar thing for <em>home.html</em> in the _layouts folder:</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-html" data-lang="html"><span style="display:flex;"><span>    &lt;<span style="color:#f92672">ul</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;post-list&#34;</span>&gt;
-</span></span><span style="display:flex;"><span>      {%- assign date_format = site.minima.date_format | default: &#34;%b %-d, %Y&#34; -%}
-</span></span><span style="display:flex;"><span>      {%- for post in posts -%}
-</span></span><span style="display:flex;"><span>        {%- if post.hidden != true -%}
-</span></span><span style="display:flex;"><span>          &lt;<span style="color:#f92672">li</span>&gt;
-</span></span><span style="display:flex;"><span>            &lt;<span style="color:#f92672">span</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;post-meta&#34;</span>&gt;{{ post.date | date: date_format }}&lt;/<span style="color:#f92672">span</span>&gt;
-</span></span><span style="display:flex;"><span>            &lt;<span style="color:#f92672">h3</span>&gt;
-</span></span><span style="display:flex;"><span>              &lt;<span style="color:#f92672">a</span> <span style="color:#a6e22e">class</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;post-link&#34;</span> <span style="color:#a6e22e">href</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;{{ post.url | relative_url }}&#34;</span>&gt;
-</span></span><span style="display:flex;"><span>                {{ post.title | escape }}
-</span></span><span style="display:flex;"><span>              &lt;/<span style="color:#f92672">a</span>&gt;
-</span></span><span style="display:flex;"><span>            &lt;/<span style="color:#f92672">h3</span>&gt;
-</span></span><span style="display:flex;"><span>            {%- if site.show_excerpts -%}
-</span></span><span style="display:flex;"><span>              {{ post.excerpt }}
-</span></span><span style="display:flex;"><span>            {%- endif -%}
-</span></span><span style="display:flex;"><span>          &lt;/<span style="color:#f92672">li</span>&gt;
-</span></span><span style="display:flex;"><span>        {%- endif -%}
-</span></span><span style="display:flex;"><span>      {%- endfor -%}
-</span></span><span style="display:flex;"><span>    &lt;/<span style="color:#f92672">ul</span>&gt;
+<div class="highlight"><pre tabindex="0" style="background-color:#f0f0f0;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-html" data-lang="html"><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1</span><span>    &lt;<span style="color:#062873;font-weight:bold">ul</span> <span style="color:#4070a0">class</span><span style="color:#666">=</span><span style="color:#4070a0">&#34;post-list&#34;</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2</span><span>      {%- assign date_format = site.minima.date_format | default: &#34;%b %-d, %Y&#34; -%}
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3</span><span>      {%- for post in posts -%}
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4</span><span>        {%- if post.hidden != true -%}
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5</span><span>          &lt;<span style="color:#062873;font-weight:bold">li</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6</span><span>            &lt;<span style="color:#062873;font-weight:bold">span</span> <span style="color:#4070a0">class</span><span style="color:#666">=</span><span style="color:#4070a0">&#34;post-meta&#34;</span>&gt;{{ post.date | date: date_format }}&lt;/<span style="color:#062873;font-weight:bold">span</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7</span><span>            &lt;<span style="color:#062873;font-weight:bold">h3</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8</span><span>              &lt;<span style="color:#062873;font-weight:bold">a</span> <span style="color:#4070a0">class</span><span style="color:#666">=</span><span style="color:#4070a0">&#34;post-link&#34;</span> <span style="color:#4070a0">href</span><span style="color:#666">=</span><span style="color:#4070a0">&#34;{{ post.url | relative_url }}&#34;</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9</span><span>                {{ post.title | escape }}
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10</span><span>              &lt;/<span style="color:#062873;font-weight:bold">a</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11</span><span>            &lt;/<span style="color:#062873;font-weight:bold">h3</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12</span><span>            {%- if site.show_excerpts -%}
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13</span><span>              {{ post.excerpt }}
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14</span><span>            {%- endif -%}
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15</span><span>          &lt;/<span style="color:#062873;font-weight:bold">li</span>&gt;
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16</span><span>        {%- endif -%}
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17</span><span>      {%- endfor -%}
+</span></span><span style="display:flex;"><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18</span><span>    &lt;/<span style="color:#062873;font-weight:bold">ul</span>&gt;
 </span></span></code></pre></div><p>All these files came from the Github repo at the end of this article.</p>
 <hr/>
 <p>This is the base Jekyll theme. You can find out more info about customizing your Jekyll theme, as well as basic Jekyll usage documentation at <a href="https://jekyllrb.com/">jekyllrb.com</a></p>

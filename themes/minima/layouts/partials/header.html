@@ -8,7 +8,9 @@
             <label for="nav-trigger" class="nav-toggle">Menu</label>
             <ul class="nav-list" id="nav-list">
                 <li><a href="{{ "/" | relURL }}">Home</a></li>
-                {{ range .Site.RegularPages.ByWeight }}
+                {{ $items := where .Site.Pages "Params.menu" true }}
+                {{ $filtered := where (where $items "Kind" "in" (slice "page" "section")) "Section" "!=" "posts" }}
+                {{ range $filtered.ByWeight }}
                     {{ if not .Params.Hidden }}
                         <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
                     {{ end }}
