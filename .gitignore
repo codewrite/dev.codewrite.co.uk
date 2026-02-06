@@ -1,6 +1,8 @@
 resources/
 /public/
 /public/*
+/docs/
+/docs/*
 .venv/
 __pycache__/
 *.pyc
