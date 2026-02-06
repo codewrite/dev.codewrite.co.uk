@@ -1,7 +1,5 @@
-/public/
-/public/*
-/docs/
-/docs/*
+/public
+/docs
 .venv/
 __pycache__/
 *.pyc
