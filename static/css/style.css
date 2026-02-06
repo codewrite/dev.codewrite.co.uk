@@ -1,0 +1,124 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-size: 16px;
+  line-height: 1.5;
+  color: #111;
+  background-color: #fdfdfd;
+}
+
+.wrapper {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.site-header {
+  border-top: 5px solid #424242;
+  border-bottom: 1px solid #e8e8e8;
+  min-height: 56px;
+  position: relative;
+}
+
+.site-title {
+  display: inline-block;
+  font-size: 26px;
+  font-weight: 300;
+  letter-spacing: -1px;
+  margin-bottom: 0;
+  float: left;
+  line-height: 56px;
+  color: #424242;
+  text-decoration: none;
+}
+
+.site-nav {
+  float: right;
+  line-height: 56px;
+}
+
+.page-content {
+  padding: 30px 0;
+  flex: 1;
+}
+
+.post-list {
+  list-style: none;
+  margin-left: 0;
+}
+
+.post-list > li {
+  margin-bottom: 30px;
+}
+
+.post-meta {
+  font-size: 14px;
+  color: #828282;
+}
+
+.post-link {
+  display: inline-block;
+  font-size: 24px;
+  color: #1756a9;
+  text-decoration: none;
+}
+
+.post-link:hover {
+  text-decoration: underline;
+}
+
+.post-title {
+  font-size: 42px;
+  letter-spacing: -1px;
+  line-height: 1;
+  margin-bottom: 10px;
+  font-weight: 300;
+}
+
+.post-header {
+  margin-bottom: 30px;
+}
+
+.post-content {
+  margin-bottom: 30px;
+}
+
+.post-content > h2:first-child {
+  margin-top: 30px;
+}
+
+.site-footer {
+  border-top: 1px solid #e8e8e8;
+  padding: 30px 0;
+  margin-top: 30px;
+  background-color: #f9f9f9;
+}
+
+.feed-subscribe {
+  text-align: center;
+}
+
+.feed-subscribe a {
+  color: #1756a9;
+  text-decoration: none;
+}
+
+@media screen and (max-width: 600px) {
+  .site-nav {
+    float: none;
+    line-height: 1;
+  }
+  
+  .site-nav input {
+    display: none;
+  }
+  
+  .site-nav .trigger {
+    display: block;
+  }
+}

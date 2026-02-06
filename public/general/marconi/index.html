@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Marconi - Codewrite Dev Blog</title>
+    <meta name="description" content="C#, Python, VueJS, C&#43;&#43; for Linux, Windows, Raspberry Pi and Arduino. Real Projects from a software engineer who is also an amateur radio enthusiast">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="alternate" type="application/rss+xml" title="Codewrite Dev Blog" href="/index.xml">
+</head>
+<body>
+    <header class="site-header">
+    <div class="wrapper">
+        <a class="site-title" href="/">Codewrite Dev Blog</a>
+        
+        
+        <nav class="site-nav">
+            <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+            <label for="nav-trigger">
+                <span class="menu-icon">
+                    <svg viewBox="0 0 18 15" width="18px" height="15px">
+                        <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+                    </svg>
+                </span>
+            </label>
+            <div class="trigger">
+                
+                    
+                        <a class="page-link" href="/posts/2020-08-14-arduinodefaultlibraries/">Arduino Default Libraries</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2020-08-19-arduinolowpowerencryption/">Arduino Low Power Encryption</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2023-02-21-picamobjectdetection1/">Camera Object Detection in Python, Part 1</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2020-04-15-rasperrypianddotnet/">Dotnet Core on Raspberry Pi</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2020-08-13-arduinoclassdsound/">Generating sounds on the Arduino</a>
+                    
+                
+                    
+                        <a class="page-link" href="/rpi-dotnet/gpioboard-hardware/">GPIO Board Hardware</a>
+                    
+                
+                    
+                        <a class="page-link" href="/rpi-dotnet/gpioboard-software/">GPIO Board Software</a>
+                    
+                
+                    
+                        <a class="page-link" href="/rpi-dotnet/gpioboard-buildandrun/">GPIO Board Software - build and run</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2022-03-28-raspberrypihomeassistant/">Home Assistant on the Raspberry Pi</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2022-12-22-hassconfigfiles/">Home Assistant REST Devices and Sensors</a>
+                    
+                
+                    
+                        <a class="page-link" href="/general/marconi/">Marconi</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2020-04-02-post1/">My first post</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2020-06-07-raspberrypinrf24l01/">NRF24L01 on Raspberry Pi</a>
+                    
+                
+                    
+                        <a class="page-link" href="/general/overview/">Overview</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2020-04-02-setupjekyll/">Setting Up Jekyll</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2020-04-02-welcome-to-jekyll/">Welcome to Jekyll!</a>
+                    
+                
+            </div>
+        </nav>
+        
+    </div>
+</header>
+
+    <main class="page-content">
+        <div class="wrapper">
+            
+<article class="post">
+    <header class="post-header">
+        <h1 class="post-title">Marconi</h1>
+    </header>
+    <div class="post-content">
+        <p>I was at Marconi for about four years. I was actually sponsored by them, so I spent nine months before my final year working for them over in Frimley.
+During that time I was working on a new CMOS 8086 interrupt controller. There were only five of these in the whole of Europe, so I was told to try and not blow it up!
+One of the senior engineers (Dr someone or other&hellip;) had written a program to test this chip. It failed the test but they didn&rsquo;t know why. So that was my task. The NMOS version worked, so I had something to compare it against. Anyway, long story short, it turned out that there was a masking error, and if you configured the chip in a certain way the interrupts wouldn&rsquo;t get processed correctly because two tracks were effectively too close together. In later years I would come across similar problems in memory chips - where they worked with certain data patterns but not others. That lead to a me writing a memory test that I believe is still is still used in Phoenix BIOSes - but thats another story.</p>
+<p>When I started having graduated I quickly started working on test software and firmware using Pascal and 8086 assembler on IBM PCs.
+But I enjoyed working on all sorts of computers - one of the tasks I took on was hacking into a CPM system where everyone had forgotten their password. There was still a way to get in (I think via an admin account) which allowed me to view the password &ldquo;database&rdquo;. That gave me hashed passwords. Rather naively (with hindsight) I thought if I could work out the hashing algorithm I could work out the passwords. So I tried creating accounts with passwords &ldquo;a&rdquo;, &ldquo;b&rdquo;, &ldquo;c&rdquo; etc., and then &ldquo;aa&rdquo;, &ldquo;ab&rdquo; etc. It didn&rsquo;t take me long to reverse engineer their hacking algorithm (it was a good job they didn&rsquo;t have a non-reversible algorithm). I&rsquo;m still interested in security and reading about security failures and how to avoid them; I&rsquo;m not a security expert, but I know enough to know that you don&rsquo;t try and invent your own security algorithms and systems!</p>
+<p>After about a year I moved over to the application software group writing the real code in Coral66. I was made team leader of the &ldquo;Intelligence and Meteorology&rdquo; team. Looking back, the architecture was quite advanced for it&rsquo;s time.</p>
+
+    </div>
+</article>
+
+        </div>
+    </main>
+    <footer class="site-footer">
+        <div class="wrapper">
+            <div class="footer-col-wrapper">
+                <div class="footer-col">
+                    <p class="feed-subscribe">
+                        <a href="/index.xml">
+                            <svg class="svg-icon orange">
+                                <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+                            </svg><span>Subscribe</span>
+                        </a>
+                    </p>
+                </div>
+                <div class="footer-col">
+                    <p>C#, Python, VueJS, C&#43;&#43; for Linux, Windows, Raspberry Pi and Arduino. Real Projects from a software engineer who is also an amateur radio enthusiast</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

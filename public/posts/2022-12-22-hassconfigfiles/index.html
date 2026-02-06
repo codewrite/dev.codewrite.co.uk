@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Home Assistant REST Devices and Sensors - Codewrite Dev Blog</title>
+    <meta name="description" content="C#, Python, VueJS, C&#43;&#43; for Linux, Windows, Raspberry Pi and Arduino. Real Projects from a software engineer who is also an amateur radio enthusiast">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="alternate" type="application/rss+xml" title="Codewrite Dev Blog" href="/index.xml">
+</head>
+<body>
+    <header class="site-header">
+    <div class="wrapper">
+        <a class="site-title" href="/">Codewrite Dev Blog</a>
+        
+        
+        <nav class="site-nav">
+            <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+            <label for="nav-trigger">
+                <span class="menu-icon">
+                    <svg viewBox="0 0 18 15" width="18px" height="15px">
+                        <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+                    </svg>
+                </span>
+            </label>
+            <div class="trigger">
+                
+                    
+                        <a class="page-link" href="/posts/2020-08-14-arduinodefaultlibraries/">Arduino Default Libraries</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2020-08-19-arduinolowpowerencryption/">Arduino Low Power Encryption</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2023-02-21-picamobjectdetection1/">Camera Object Detection in Python, Part 1</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2020-04-15-rasperrypianddotnet/">Dotnet Core on Raspberry Pi</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2020-08-13-arduinoclassdsound/">Generating sounds on the Arduino</a>
+                    
+                
+                    
+                        <a class="page-link" href="/rpi-dotnet/gpioboard-hardware/">GPIO Board Hardware</a>
+                    
+                
+                    
+                        <a class="page-link" href="/rpi-dotnet/gpioboard-software/">GPIO Board Software</a>
+                    
+                
+                    
+                        <a class="page-link" href="/rpi-dotnet/gpioboard-buildandrun/">GPIO Board Software - build and run</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2022-03-28-raspberrypihomeassistant/">Home Assistant on the Raspberry Pi</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2022-12-22-hassconfigfiles/">Home Assistant REST Devices and Sensors</a>
+                    
+                
+                    
+                        <a class="page-link" href="/general/marconi/">Marconi</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2020-04-02-post1/">My first post</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2020-06-07-raspberrypinrf24l01/">NRF24L01 on Raspberry Pi</a>
+                    
+                
+                    
+                        <a class="page-link" href="/general/overview/">Overview</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2020-04-02-setupjekyll/">Setting Up Jekyll</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2020-04-02-welcome-to-jekyll/">Welcome to Jekyll!</a>
+                    
+                
+            </div>
+        </nav>
+        
+    </div>
+</header>
+
+    <main class="page-content">
+        <div class="wrapper">
+            
+<article class="post">
+    <header class="post-header">
+        <h1 class="post-title">Home Assistant REST Devices and Sensors</h1>
+    </header>
+    <div class="post-content">
+        <p>A while back (before I was using Home Assistant) I built a COB light controller board. The idea was to have lights under the eaves all round the outside of our house (bungalow). They look like this:</p>
+<p><img src="/images/COBLightsInHASS/LightsUnderEaves.jpg" alt="COB Lights under Eaves"></p>
+<p>In this picture there are three lights, but around the rest of the house there are about 15 in total on 4 different circuits. I won&rsquo;t go into the detail here other than to say that there is a controller board up in the loft that uses a Wemos D1 mini which serves up a REST interface to turn the lights on and off. I did a presentation for the London Raspberry Pi group. The link to my GitHub page is here:</p>
+<p><a href="https://github.com/codewrite/COBHouseLights">COBHouseLights github repo</a></p>
+<p>The Doc folder contains the presentation (.pptx) which describes how it all works. I added current monitoring that also switches all the lights off in the unlikely event that a short occurs in the wiring or lights (the whole thing is powered by a 12V 5A transformer). I created a VueJS front end that was hosted on a Raspberry Pi using Nginx.</p>
+<p>The web page looked like this (there&rsquo;s actually two pages, this is one of them):</p>
+<p><img src="/images/COBLightsInHASS/COBLightWebsite.png" alt="COB Lights Web Page"></p>
+<p>Because I am using Swagger (OpenAPI) you can access the API via a web page, which looks like this:</p>
+<p><img src="/images/COBLightsInHASS/COBLightSwaggerAPI.png" alt="COB Lights API"></p>
+<p>That all worked well, and I could have carried on adding features like turning the lights on and off automatically.</p>
+<p>But then&hellip;</p>
+<p>I started using Home Assistant. Needless to say if I was starting again I would use either ESPHome or Tasmota for the controller board. But I&rsquo;m glad I have done it this way because I now have an example of how to interface between Home Assistant and a REST interface (which means being able to interface to almost anything). The rest of this article is how I acheived that.</p>
+<p>This is how the lights will appear in Home Assistant:</p>
+<p><img src="/images/COBLightsInHASS/HACOBLightsDashboard.png" alt="HA COB Lights Dashboard"></p>
+<p>The other devices (tablelamp, cornerlamp and sidelight) are commercial smart plugs and light that I reflashed with Tasmota (they came with Tuya firmware).</p>
+<p>If you click on any of the lights you get a properties screen like this:</p>
+<p><img src="/images/COBLightsInHASS/HACOBLightsProperties.png" alt="HA COB Light Properties"></p>
+<p>This allows you to change the brighness of the COB lights.</p>
+<p>My config.yaml file looks like this (some bits removed for brevity)</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">default_config</span>:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">recorder</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">db_url</span>: !<span style="color:#ae81ff">secret recorder_db_url</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">config</span>:
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">sensor</span>: !<span style="color:#ae81ff">include sensors.yaml</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">automation</span>: !<span style="color:#ae81ff">include automations.yaml</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">script</span>: !<span style="color:#ae81ff">include scripts.yaml</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">rest_command</span>: !<span style="color:#ae81ff">include rest_command.yaml</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">rest</span>: !<span style="color:#ae81ff">include rest.yaml</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">light</span>: !<span style="color:#ae81ff">include light.yaml</span>
+</span></span></code></pre></div><p>The bits of this file that are relevant to our REST devices are sensors.yaml, rest_command.yaml, rest.yaml and light.yaml. The overall concept is that we will have sensors that tell us the current state of the lights (on, off, brightness etc.) and commands (in rest_command.yaml) that change the state of the lights (again, on, off and brightness). Let&rsquo;s start with the sensors. This is what is in the rest.yaml file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span>- <span style="color:#f92672">authentication</span>: <span style="color:#ae81ff">basic</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">resource</span>: !<span style="color:#ae81ff">secret cob_leds_get_url</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">username</span>: <span style="color:#ae81ff">apikey</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">password</span>: !<span style="color:#ae81ff">secret coblights_password</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">sensor</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Cob Light 1</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">value_template</span>: <span style="color:#e6db74">&#34;{{ value_json[0].on }}&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">json_attributes_path</span>: <span style="color:#e6db74">&#34;$[0]&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">json_attributes</span>:
+</span></span><span style="display:flex;"><span>        - <span style="color:#ae81ff">brightness</span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Cob Light 2</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">value_template</span>: <span style="color:#e6db74">&#34;{{ value_json[1].on }}&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">json_attributes_path</span>: <span style="color:#e6db74">&#34;$[1]&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">json_attributes</span>:
+</span></span><span style="display:flex;"><span>        - <span style="color:#ae81ff">brightness</span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Cob Light 3</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">value_template</span>: <span style="color:#e6db74">&#34;{{ value_json[2].on }}&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">json_attributes_path</span>: <span style="color:#e6db74">&#34;$[2]&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">json_attributes</span>:
+</span></span><span style="display:flex;"><span>        - <span style="color:#ae81ff">brightness</span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#f92672">name</span>: <span style="color:#ae81ff">Cob Light 4</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">value_template</span>: <span style="color:#e6db74">&#34;{{ value_json[3].on }}&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">json_attributes_path</span>: <span style="color:#e6db74">&#34;$[3]&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">json_attributes</span>:
+</span></span><span style="display:flex;"><span>        - <span style="color:#ae81ff">brightness</span>
+</span></span></code></pre></div><p>We&rsquo;ll come to the secrets file later, but for now all we need to know is that it contains URLs and passwords (because having that information here would be a bad idea). Each sensor has one value and one attribute. These can be accessed as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span>{{ <span style="color:#ae81ff">states(&#39;sensor.cob_light_1&#39;) }}</span>
+</span></span><span style="display:flex;"><span>{{ <span style="color:#ae81ff">state_attr(&#39;sensor.cob_light_1&#39;, &#39;brightness&#39;) }}</span>
+</span></span></code></pre></div><p>There is also a sensor in sensor.yaml. This is for the COB lights current and this is how it is defined:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span>- <span style="color:#f92672">platform</span>: <span style="color:#ae81ff">rest</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">name</span>: <span style="color:#e6db74">&#34;COB Lights Current&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">value_template</span>: <span style="color:#e6db74">&#34;{{value_json.current}}&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">unit_of_measurement</span>: <span style="color:#ae81ff">mA</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">scan_interval</span>: <span style="color:#ae81ff">60</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">resource</span>: !<span style="color:#ae81ff">secret cob_leds_status_url</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">username</span>: <span style="color:#ae81ff">apikey</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">password</span>: !<span style="color:#ae81ff">secret coblights_password</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">authentication</span>: <span style="color:#ae81ff">basic</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">json_attributes</span>:
+</span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">samples</span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">millis</span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">busvoltage</span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">maxcurrent</span>
+</span></span><span style="display:flex;"><span>    - <span style="color:#ae81ff">lastMessage</span>
+</span></span></code></pre></div><p>In this case we take one of the json attributes (current) and use this for the value. The other json values are presented as attributes. The value and attributes can be accessed in the same way as before.</p>
+<p>The next part of the REST devices is the controls. These are defined in rest_command.yaml as follows:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">cob_light_set</span>:
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">url</span>: !<span style="color:#ae81ff">secret cob_led_set_url</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">method</span>: <span style="color:#ae81ff">put</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">payload</span>: &gt;<span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    { {{ &#39;&#39; }}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      {%- if on is defined -%}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;on&#34;: {{ on|lower }},{{ &#39; &#39; }}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      {%- endif -%}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      {%- if brightness is defined -%}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">        &#34;brightness&#34;: {{ brightness }},{{ &#39; &#39; }}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">      {%- endif -%}
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">    }</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">username</span>: <span style="color:#e6db74">&#34;apikey&#34;</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">password</span>: !<span style="color:#ae81ff">secret coblights_password</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">content_type</span>: <span style="color:#e6db74">&#39;application/json; charset=utf-8&#39;</span>
+</span></span></code></pre></div><p>This is slightly more complicated than the sensors because we have a single service that takes three parameters - led, on and brightness. The led is mandatory, the on and brightness parameters are optional (in case you are wondering where the led parameter is, it is in the secrets.yaml file). So let&rsquo;s see what is in the secrets.yaml file now:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span><span style="color:#f92672">coblights_password</span>: <span style="color:#ae81ff">mypasswordhere</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">cob_leds_get_url</span>: <span style="color:#ae81ff">http://192.168.1.234:5678/leds</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">cob_led_set_url</span>: <span style="color:#ae81ff">http://192.168.1.234:5678/leds/{{ led }}</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">cob_leds_status_url</span>: <span style="color:#ae81ff">http://192.168.1.234:5678/status</span>
+</span></span></code></pre></div><p>Obviously there will be other secrets in here too, but this is the ones that are relevent to our REST API. Only one of these is a real secret, the others are URLs, but it is a good idea to have them here because then we are keeping implementation details out of the configuration files. Notice that the cob_led_set_url has a parameter in it. If you refer back to sensors.yaml you should be able to see how this allows us to call the relevant API service and control a specific group of COB lights (1, 2, 3 or 4). It would be nice to do a similar thing for the sensors (rather than having four very similar defintions), but unfortunately sensors cannot be parameterized.</p>
+<p>The final part of our REST devices is the actual definition of the devices. This is done in the lights.yaml file:</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-yaml" data-lang="yaml"><span style="display:flex;"><span>- <span style="color:#f92672">platform</span>: <span style="color:#ae81ff">template</span>
+</span></span><span style="display:flex;"><span>  <span style="color:#f92672">lights</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">cob_light_1</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">friendly_name</span>: <span style="color:#e6db74">&#34;COB Lights (Side)&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">value_template</span>: <span style="color:#e6db74">&#34;{{ states(&#39;sensor.cob_light_1&#39;) }}&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">level_template</span>: <span style="color:#e6db74">&#34;{{ state_attr(&#39;sensor.cob_light_1&#39;, &#39;brightness&#39;) / 4 }}&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">turn_off</span>:
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">service</span>: <span style="color:#ae81ff">rest_command.cob_light_set</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">data</span>: { <span style="color:#f92672">&#34;led&#34;: 1, &#34;on&#34;: </span><span style="color:#66d9ef">false</span> }
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">service</span>: <span style="color:#ae81ff">homeassistant.update_entity</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">entity_id</span>: <span style="color:#ae81ff">sensor.cob_light_1</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">turn_on</span>:
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">service</span>: <span style="color:#ae81ff">rest_command.cob_light_set</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">data</span>: { <span style="color:#f92672">&#34;led&#34;: 1, &#34;on&#34;: true, &#34;brightness&#34;: </span><span style="color:#ae81ff">132</span> }
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">service</span>: <span style="color:#ae81ff">homeassistant.update_entity</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">entity_id</span>: <span style="color:#ae81ff">sensor.cob_light_1</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">set_level</span>:
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">service</span>: <span style="color:#ae81ff">rest_command.cob_light_set</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">data</span>: { <span style="color:#f92672">&#34;led&#34;: 1, &#34;on&#34;: &#34;{{ &#39;true&#39; if brightness &gt; 0 else &#39;false&#39; }}&#34;, &#34;brightness&#34;: </span><span style="color:#e6db74">&#34;{{ brightness * 4 }}&#34;</span> }
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">service</span>: <span style="color:#ae81ff">homeassistant.update_entity</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">entity_id</span>: <span style="color:#ae81ff">sensor.cob_light_1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">cob_light_2</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">friendly_name</span>: <span style="color:#e6db74">&#34;COB Lights (Bins)&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">value_template</span>: <span style="color:#e6db74">&#34;{{ states(&#39;sensor.cob_light_2&#39;) }}&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">level_template</span>: <span style="color:#e6db74">&#34;{{ state_attr(&#39;sensor.cob_light_2&#39;, &#39;brightness&#39;) / 4 }}&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">turn_off</span>:
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">service</span>: <span style="color:#ae81ff">rest_command.cob_light_set</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">data</span>: { <span style="color:#f92672">&#34;led&#34;: 2, &#34;on&#34;: </span><span style="color:#66d9ef">false</span> }
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">service</span>: <span style="color:#ae81ff">homeassistant.update_entity</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">entity_id</span>: <span style="color:#ae81ff">sensor.cob_light_2</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">turn_on</span>:
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">service</span>: <span style="color:#ae81ff">rest_command.cob_light_set</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">data</span>: { <span style="color:#f92672">&#34;led&#34;: 2, &#34;on&#34;: true, &#34;brightness&#34;: </span><span style="color:#ae81ff">132</span> }
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">service</span>: <span style="color:#ae81ff">homeassistant.update_entity</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">entity_id</span>: <span style="color:#ae81ff">sensor.cob_light_2</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">set_level</span>:
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">service</span>: <span style="color:#ae81ff">rest_command.cob_light_set</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">data</span>: { <span style="color:#f92672">&#34;led&#34;: 2, &#34;on&#34;: &#34;{{ &#39;true&#39; if brightness &gt; 0 else &#39;false&#39; }}&#34;, &#34;brightness&#34;: </span><span style="color:#e6db74">&#34;{{ brightness * 4 }}&#34;</span> }
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">service</span>: <span style="color:#ae81ff">homeassistant.update_entity</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">entity_id</span>: <span style="color:#ae81ff">sensor.cob_light_2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">cob_light_3</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">friendly_name</span>: <span style="color:#e6db74">&#34;COB Lights (Front)&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">value_template</span>: <span style="color:#e6db74">&#34;{{ states(&#39;sensor.cob_light_3&#39;) }}&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">level_template</span>: <span style="color:#e6db74">&#34;{{ state_attr(&#39;sensor.cob_light_3&#39;, &#39;brightness&#39;) / 4 }}&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">turn_off</span>:
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">service</span>: <span style="color:#ae81ff">rest_command.cob_light_set</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">data</span>: { <span style="color:#f92672">&#34;led&#34;: 3, &#34;on&#34;: </span><span style="color:#66d9ef">false</span> }
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">service</span>: <span style="color:#ae81ff">homeassistant.update_entity</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">entity_id</span>: <span style="color:#ae81ff">sensor.cob_light_3</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">turn_on</span>:
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">service</span>: <span style="color:#ae81ff">rest_command.cob_light_set</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">data</span>: { <span style="color:#f92672">&#34;led&#34;: 3, &#34;on&#34;: true, &#34;brightness&#34;: </span><span style="color:#ae81ff">132</span> }
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">service</span>: <span style="color:#ae81ff">homeassistant.update_entity</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">entity_id</span>: <span style="color:#ae81ff">sensor.cob_light_3</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">set_level</span>:
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">service</span>: <span style="color:#ae81ff">rest_command.cob_light_set</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">data</span>: { <span style="color:#f92672">&#34;led&#34;: 3, &#34;on&#34;: &#34;{{ &#39;true&#39; if brightness &gt; 0 else &#39;false&#39; }}&#34;, &#34;brightness&#34;: </span><span style="color:#e6db74">&#34;{{ brightness * 4 }}&#34;</span> }
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">service</span>: <span style="color:#ae81ff">homeassistant.update_entity</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">entity_id</span>: <span style="color:#ae81ff">sensor.cob_light_3</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">cob_light_4</span>:
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">friendly_name</span>: <span style="color:#e6db74">&#34;COB Lights (Back)&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">value_template</span>: <span style="color:#e6db74">&#34;{{ states(&#39;sensor.cob_light_4&#39;) }}&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">level_template</span>: <span style="color:#e6db74">&#34;{{ state_attr(&#39;sensor.cob_light_4&#39;, &#39;brightness&#39;) / 4 }}&#34;</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">turn_off</span>:
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">service</span>: <span style="color:#ae81ff">rest_command.cob_light_set</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">data</span>: { <span style="color:#f92672">&#34;led&#34;: 4, &#34;on&#34;: </span><span style="color:#66d9ef">false</span> }
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">service</span>: <span style="color:#ae81ff">homeassistant.update_entity</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">entity_id</span>: <span style="color:#ae81ff">sensor.cob_light_4</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">turn_on</span>:
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">service</span>: <span style="color:#ae81ff">rest_command.cob_light_set</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">data</span>: { <span style="color:#f92672">&#34;led&#34;: 4, &#34;on&#34;: true, &#34;brightness&#34;: </span><span style="color:#ae81ff">132</span> }
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">service</span>: <span style="color:#ae81ff">homeassistant.update_entity</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">entity_id</span>: <span style="color:#ae81ff">sensor.cob_light_4</span>
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">set_level</span>:
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">service</span>: <span style="color:#ae81ff">rest_command.cob_light_set</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">data</span>: { <span style="color:#f92672">&#34;led&#34;: 4, &#34;on&#34;: &#34;{{ &#39;true&#39; if brightness &gt; 0 else &#39;false&#39; }}&#34;, &#34;brightness&#34;: </span><span style="color:#e6db74">&#34;{{ brightness * 4 }}&#34;</span> }
+</span></span><span style="display:flex;"><span>        - <span style="color:#f92672">service</span>: <span style="color:#ae81ff">homeassistant.update_entity</span>
+</span></span><span style="display:flex;"><span>          <span style="color:#f92672">entity_id</span>: <span style="color:#ae81ff">sensor.cob_light_4</span>
+</span></span></code></pre></div><p>As with the sensors, we can&rsquo;t parameterize these, unfortunately. Each light has two get values and three set values. We can get the on/off state and the brightness. We can set the lights on, set them off, or set the brightness. Notice that we multiply or divide the brightness by 4. That is because Home Assistant treats the brightness as between 0 and 255, whereas our REST API needs values between 0 and 1023 (the Home Assistant UI displays the brightness as 1 to 100 just to add a bit more confusion!).</p>
+<p>We now have some new devices which we can add to any dashboard. They will appear as follows:</p>
+<p><img src="/images/COBLightsInHASS/HACOBLightsAddToDashboard.png" alt="HA COB Light Add to Dashboard"></p>
+<p>As I said originally, it is far easier to use Tasmota or ESPHome, but this approach theoretically allows you to turn any REST API into a Home Assistant device, even ones where you only have access to the API not the source code.</p>
+
+    </div>
+</article>
+
+        </div>
+    </main>
+    <footer class="site-footer">
+        <div class="wrapper">
+            <div class="footer-col-wrapper">
+                <div class="footer-col">
+                    <p class="feed-subscribe">
+                        <a href="/index.xml">
+                            <svg class="svg-icon orange">
+                                <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+                            </svg><span>Subscribe</span>
+                        </a>
+                    </p>
+                </div>
+                <div class="footer-col">
+                    <p>C#, Python, VueJS, C&#43;&#43; for Linux, Windows, Raspberry Pi and Arduino. Real Projects from a software engineer who is also an amateur radio enthusiast</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,21 @@
+baseURL = "https://dev.codewrite.co.uk/"
+languageCode = "en-us"
+title = "Codewrite Dev Blog"
+theme = "minima"
+
+ignoreLogs = ["warning-goldmark-raw-html"]
+
+[params]
+  description = "C#, Python, VueJS, C++ for Linux, Windows, Raspberry Pi and Arduino. Real Projects from a software engineer who is also an amateur radio enthusiast"
+  email = "jon@codewrite.co.uk"
+  twitter = "codewrite"
+  github = "codewrite"
+
+[markup.goldmark.renderer]
+  unsafe = true
+
+[outputs]
+  home = ["HTML", "RSS"]
+  section = ["HTML", "RSS"]
+  taxonomy = ["HTML", "RSS"]
+  term = ["HTML", "RSS"]

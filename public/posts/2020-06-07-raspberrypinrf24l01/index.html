@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NRF24L01 on Raspberry Pi - Codewrite Dev Blog</title>
+    <meta name="description" content="C#, Python, VueJS, C&#43;&#43; for Linux, Windows, Raspberry Pi and Arduino. Real Projects from a software engineer who is also an amateur radio enthusiast">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="alternate" type="application/rss+xml" title="Codewrite Dev Blog" href="/index.xml">
+</head>
+<body>
+    <header class="site-header">
+    <div class="wrapper">
+        <a class="site-title" href="/">Codewrite Dev Blog</a>
+        
+        
+        <nav class="site-nav">
+            <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+            <label for="nav-trigger">
+                <span class="menu-icon">
+                    <svg viewBox="0 0 18 15" width="18px" height="15px">
+                        <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+                    </svg>
+                </span>
+            </label>
+            <div class="trigger">
+                
+                    
+                        <a class="page-link" href="/posts/2020-08-14-arduinodefaultlibraries/">Arduino Default Libraries</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2020-08-19-arduinolowpowerencryption/">Arduino Low Power Encryption</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2023-02-21-picamobjectdetection1/">Camera Object Detection in Python, Part 1</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2020-04-15-rasperrypianddotnet/">Dotnet Core on Raspberry Pi</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2020-08-13-arduinoclassdsound/">Generating sounds on the Arduino</a>
+                    
+                
+                    
+                        <a class="page-link" href="/rpi-dotnet/gpioboard-hardware/">GPIO Board Hardware</a>
+                    
+                
+                    
+                        <a class="page-link" href="/rpi-dotnet/gpioboard-software/">GPIO Board Software</a>
+                    
+                
+                    
+                        <a class="page-link" href="/rpi-dotnet/gpioboard-buildandrun/">GPIO Board Software - build and run</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2022-03-28-raspberrypihomeassistant/">Home Assistant on the Raspberry Pi</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2022-12-22-hassconfigfiles/">Home Assistant REST Devices and Sensors</a>
+                    
+                
+                    
+                        <a class="page-link" href="/general/marconi/">Marconi</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2020-04-02-post1/">My first post</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2020-06-07-raspberrypinrf24l01/">NRF24L01 on Raspberry Pi</a>
+                    
+                
+                    
+                        <a class="page-link" href="/general/overview/">Overview</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2020-04-02-setupjekyll/">Setting Up Jekyll</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2020-04-02-welcome-to-jekyll/">Welcome to Jekyll!</a>
+                    
+                
+            </div>
+        </nav>
+        
+    </div>
+</header>
+
+    <main class="page-content">
+        <div class="wrapper">
+            
+<article class="post">
+    <header class="post-header">
+        <h1 class="post-title">NRF24L01 on Raspberry Pi</h1>
+    </header>
+    <div class="post-content">
+        <p>OK, so just for the record, I&rsquo;ve tried using the NRF24L01 on the Raspberry Pi (via tha GPIO SPI pins) and I don&rsquo;t recommend it.</p>
+<p>So the following is just a record of what I did, in case I ever change my mind :).</p>
+<p><img src="/images/RPI-NRF24L01/wiring-photo.jpg" alt="RPI NRF Board Wiring"></p>
+<pre tabindex="0"><code>NRF24L01 Side  Wire   Raspberry Pi Side
+-------------  ----   -----------------
+MISO           White   GPIO  9 (SPI_MISO)
+SCK            Grey    GPIO 11 (SPI_SCLK)
+CE             Orange  GPIO 25
+GND            Black   GND     (PIN 20)
+IRQ            Brown   GPIO 22
+MOSI           Purple  GPIO 10 (SPI_MOSI)
+CSN            Yellow  GPIO  8 (SPI_CE0)
+VCC            Red     3.3V    (PIN 1)
+</code></pre><p>The Raspberry Pi code consisted of two python files which had to be in the same folder:</p>
+<details>
+<summary>nrf24TestSend.py:</summary>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/python3</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> RPi.GPIO <span style="color:#66d9ef">as</span> GPIO  <span style="color:#75715e"># import gpio</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> time      <span style="color:#75715e">#import time library</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> spidev
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> lib_nrf24 <span style="color:#f92672">import</span> NRF24   <span style="color:#75715e">#import NRF24 library</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Loosely based on: https://circuitdigest.com/microcontroller-projects/wireless-rf-communication-between-arduino-and-raspberry-pi-using-nrf24l01</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>GPIO<span style="color:#f92672">.</span>setmode(GPIO<span style="color:#f92672">.</span>BCM)       <span style="color:#75715e"># set the gpio mode</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e"># set the pipe address. this address shoeld be entered on the receiver alo</span>
+</span></span><span style="display:flex;"><span>pipes <span style="color:#f92672">=</span> [[<span style="color:#ae81ff">0xE0</span>, <span style="color:#ae81ff">0xE0</span>, <span style="color:#ae81ff">0xF1</span>, <span style="color:#ae81ff">0xF1</span>, <span style="color:#ae81ff">0xE0</span>], [<span style="color:#ae81ff">0xF1</span>, <span style="color:#ae81ff">0xF1</span>, <span style="color:#ae81ff">0xF0</span>, <span style="color:#ae81ff">0xF0</span>, <span style="color:#ae81ff">0xE0</span>]]
+</span></span><span style="display:flex;"><span>radio <span style="color:#f92672">=</span> NRF24(GPIO, spidev<span style="color:#f92672">.</span>SpiDev())   <span style="color:#75715e"># use the gpio pins</span>
+</span></span><span style="display:flex;"><span>radio<span style="color:#f92672">.</span>begin(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">25</span>)   <span style="color:#75715e"># start the radio and set the ce,csn pin ce= GPIO08, csn= GPIO25</span>
+</span></span><span style="display:flex;"><span>radio<span style="color:#f92672">.</span>setPayloadSize(<span style="color:#ae81ff">32</span>)  <span style="color:#75715e">#set the payload size as 32 bytes</span>
+</span></span><span style="display:flex;"><span>radio<span style="color:#f92672">.</span>setChannel(<span style="color:#ae81ff">0x76</span>) <span style="color:#75715e"># set the channel as 76 hex</span>
+</span></span><span style="display:flex;"><span>radio<span style="color:#f92672">.</span>setDataRate(NRF24<span style="color:#f92672">.</span>BR_1MBPS)    <span style="color:#75715e"># set radio data rate</span>
+</span></span><span style="display:flex;"><span>radio<span style="color:#f92672">.</span>setPALevel(NRF24<span style="color:#f92672">.</span>PA_MAX)  <span style="color:#75715e"># set PA level</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>radio<span style="color:#f92672">.</span>setAutoAck(<span style="color:#66d9ef">True</span>)       <span style="color:#75715e"># set acknowledgement as true </span>
+</span></span><span style="display:flex;"><span>radio<span style="color:#f92672">.</span>enableDynamicPayloads()
+</span></span><span style="display:flex;"><span>radio<span style="color:#f92672">.</span>enableAckPayload()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>radio<span style="color:#f92672">.</span>openWritingPipe(pipes[<span style="color:#ae81ff">0</span>])     <span style="color:#75715e"># open the defined pipe for writing</span>
+</span></span><span style="display:flex;"><span>radio<span style="color:#f92672">.</span>printDetails()      <span style="color:#75715e"># print basic detals of radio</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>sendMessage <span style="color:#f92672">=</span> list(<span style="color:#e6db74">&#34;Hi..Arduino UNO&#34;</span>)  <span style="color:#75715e">#the message to be sent</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> len(sendMessage) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">32</span>:    
+</span></span><span style="display:flex;"><span>    sendMessage<span style="color:#f92672">.</span>append(<span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+</span></span><span style="display:flex;"><span>    start <span style="color:#f92672">=</span> time<span style="color:#f92672">.</span>time()      <span style="color:#75715e">#start the time for checking delivery time</span>
+</span></span><span style="display:flex;"><span>    radio<span style="color:#f92672">.</span>write(sendMessage)   <span style="color:#75715e"># just write the message to radio</span>
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;Sent the message: </span><span style="color:#e6db74">{}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>format(sendMessage))  <span style="color:#75715e"># print a message after succesfull send</span>
+</span></span><span style="display:flex;"><span>    radio<span style="color:#f92672">.</span>startListening()        <span style="color:#75715e"># Start listening the radio</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">while</span> <span style="color:#f92672">not</span> radio<span style="color:#f92672">.</span>available(<span style="color:#ae81ff">0</span>):
+</span></span><span style="display:flex;"><span>        time<span style="color:#f92672">.</span>sleep(<span style="color:#ae81ff">1</span><span style="color:#f92672">/</span><span style="color:#ae81ff">100</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> time<span style="color:#f92672">.</span>time() <span style="color:#f92672">-</span> start <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">2</span>:
+</span></span><span style="display:flex;"><span>            print(<span style="color:#e6db74">&#34;Timed out.&#34;</span>)  <span style="color:#75715e"># print errror message if radio disconnected or not functioning anymore</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    radio<span style="color:#f92672">.</span>stopListening()     <span style="color:#75715e"># close radio</span>
+</span></span><span style="display:flex;"><span>    time<span style="color:#f92672">.</span>sleep(<span style="color:#ae81ff">3</span>)  <span style="color:#75715e"># give delay of 3 seconds</span>
+</span></span></code></pre></div></details>
+<details>
+<summary>lib_nrf24.py:</summary>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e">#!/usr/bin/python3</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># -*- coding: utf-8 -*-</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># This file lib_nrf24.py is a slightly tweaked version of Barraca&#39;s &#34;pynrf24&#34;.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># So this is my tweak for Raspberry Pi and &#34;Virtual GPIO&#34; ...</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#       ... of Barraca&#39;s port to BeagleBone python ...  (Joao Paulo Barraca &lt;jpbarraca@gmail.com&gt;)</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#                ... of maniacbug&#39;s NRF24L01 C++ library for Arduino.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Brian Lavery Oct 2014</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#    This program is free software: you can redistribute it and/or modify</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#    it under the terms of the GNU General Public License as published by</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#    the Free Software Foundation, either version 3 of the License, or</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#    (at your option) any later version.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#    This program is distributed in the hope that it will be useful,</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#    but WITHOUT ANY WARRANTY; without even the implied warranty of</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#    GNU General Public License for more details.</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> sys
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> time
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#39;__main__&#39;</span>:
+</span></span><span style="display:flex;"><span>    print (sys<span style="color:#f92672">.</span>argv[<span style="color:#ae81ff">0</span>], <span style="color:#e6db74">&#39;is an importable module:&#39;</span>)
+</span></span><span style="display:flex;"><span>    print (<span style="color:#e6db74">&#34;...  from&#34;</span>, sys<span style="color:#f92672">.</span>argv[<span style="color:#ae81ff">0</span>], <span style="color:#e6db74">&#34;import lib_nrf24&#34;</span>)
+</span></span><span style="display:flex;"><span>    print (<span style="color:#e6db74">&#34;&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    exit()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">_BV</span>(x):
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> x
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">NRF24</span>:
+</span></span><span style="display:flex;"><span>    MAX_CHANNEL <span style="color:#f92672">=</span> <span style="color:#ae81ff">127</span>
+</span></span><span style="display:flex;"><span>    MAX_PAYLOAD_SIZE <span style="color:#f92672">=</span> <span style="color:#ae81ff">32</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># PA Levels</span>
+</span></span><span style="display:flex;"><span>    PA_MIN <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    PA_LOW <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    PA_HIGH <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>    PA_MAX <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>    PA_ERROR <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Bit rates</span>
+</span></span><span style="display:flex;"><span>    BR_1MBPS <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    BR_2MBPS <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    BR_250KBPS <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># CRC</span>
+</span></span><span style="display:flex;"><span>    CRC_DISABLED <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    CRC_8 <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    CRC_16 <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>    CRC_ENABLED <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Registers</span>
+</span></span><span style="display:flex;"><span>    CONFIG <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x00</span>
+</span></span><span style="display:flex;"><span>    EN_AA <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x01</span>
+</span></span><span style="display:flex;"><span>    EN_RXADDR <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x02</span>
+</span></span><span style="display:flex;"><span>    SETUP_AW <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x03</span>
+</span></span><span style="display:flex;"><span>    SETUP_RETR <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x04</span>
+</span></span><span style="display:flex;"><span>    RF_CH <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x05</span>
+</span></span><span style="display:flex;"><span>    RF_SETUP <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x06</span>
+</span></span><span style="display:flex;"><span>    STATUS <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x07</span>
+</span></span><span style="display:flex;"><span>    OBSERVE_TX <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x08</span>
+</span></span><span style="display:flex;"><span>    CD <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x09</span>
+</span></span><span style="display:flex;"><span>    RX_ADDR_P0 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0A</span>
+</span></span><span style="display:flex;"><span>    RX_ADDR_P1 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0B</span>
+</span></span><span style="display:flex;"><span>    RX_ADDR_P2 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0C</span>
+</span></span><span style="display:flex;"><span>    RX_ADDR_P3 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0D</span>
+</span></span><span style="display:flex;"><span>    RX_ADDR_P4 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0E</span>
+</span></span><span style="display:flex;"><span>    RX_ADDR_P5 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x0F</span>
+</span></span><span style="display:flex;"><span>    TX_ADDR <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x10</span>
+</span></span><span style="display:flex;"><span>    RX_PW_P0 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x11</span>
+</span></span><span style="display:flex;"><span>    RX_PW_P1 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x12</span>
+</span></span><span style="display:flex;"><span>    RX_PW_P2 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x13</span>
+</span></span><span style="display:flex;"><span>    RX_PW_P3 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x14</span>
+</span></span><span style="display:flex;"><span>    RX_PW_P4 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x15</span>
+</span></span><span style="display:flex;"><span>    RX_PW_P5 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x16</span>
+</span></span><span style="display:flex;"><span>    FIFO_STATUS <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x17</span>
+</span></span><span style="display:flex;"><span>    DYNPD <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x1C</span>
+</span></span><span style="display:flex;"><span>    FEATURE <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x1D</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Bit Mnemonics */</span>
+</span></span><span style="display:flex;"><span>    MASK_RX_DR <span style="color:#f92672">=</span> <span style="color:#ae81ff">6</span>
+</span></span><span style="display:flex;"><span>    MASK_TX_DS <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span>    MASK_MAX_RT <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>
+</span></span><span style="display:flex;"><span>    EN_CRC <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>    CRCO <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>    PWR_UP <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    PRIM_RX <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    ENAA_P5 <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span>    ENAA_P4 <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>
+</span></span><span style="display:flex;"><span>    ENAA_P3 <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>    ENAA_P2 <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>    ENAA_P1 <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    ENAA_P0 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    ERX_P5 <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span>    ERX_P4 <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>
+</span></span><span style="display:flex;"><span>    ERX_P3 <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>    ERX_P2 <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>    ERX_P1 <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    ERX_P0 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    AW <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    ARD <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>
+</span></span><span style="display:flex;"><span>    ARC <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    PLL_LOCK <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>
+</span></span><span style="display:flex;"><span>    RF_DR <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>    RF_PWR <span style="color:#f92672">=</span> <span style="color:#ae81ff">6</span>
+</span></span><span style="display:flex;"><span>    RX_DR <span style="color:#f92672">=</span> <span style="color:#ae81ff">6</span>
+</span></span><span style="display:flex;"><span>    TX_DS <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span>    MAX_RT <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>
+</span></span><span style="display:flex;"><span>    RX_P_NO <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    TX_FULL <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    PLOS_CNT <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>
+</span></span><span style="display:flex;"><span>    ARC_CNT <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    TX_REUSE <span style="color:#f92672">=</span> <span style="color:#ae81ff">6</span>
+</span></span><span style="display:flex;"><span>    FIFO_FULL <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span>    TX_EMPTY <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>
+</span></span><span style="display:flex;"><span>    RX_FULL <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    RX_EMPTY <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    DPL_P5 <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span>    DPL_P4 <span style="color:#f92672">=</span> <span style="color:#ae81ff">4</span>
+</span></span><span style="display:flex;"><span>    DPL_P3 <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>    DPL_P2 <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>    DPL_P1 <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    DPL_P0 <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    EN_DPL <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>    EN_ACK_PAY <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    EN_DYN_ACK <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Instruction Mnemonics</span>
+</span></span><span style="display:flex;"><span>    R_REGISTER <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x00</span>
+</span></span><span style="display:flex;"><span>    W_REGISTER <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x20</span>
+</span></span><span style="display:flex;"><span>    REGISTER_MASK <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x1F</span>
+</span></span><span style="display:flex;"><span>    ACTIVATE <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x50</span>
+</span></span><span style="display:flex;"><span>    R_RX_PL_WID <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x60</span>
+</span></span><span style="display:flex;"><span>    R_RX_PAYLOAD <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x61</span>
+</span></span><span style="display:flex;"><span>    W_TX_PAYLOAD <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xA0</span>
+</span></span><span style="display:flex;"><span>    W_ACK_PAYLOAD <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xA8</span>
+</span></span><span style="display:flex;"><span>    FLUSH_TX <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xE1</span>
+</span></span><span style="display:flex;"><span>    FLUSH_RX <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xE2</span>
+</span></span><span style="display:flex;"><span>    REUSE_TX_PL <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xE3</span>
+</span></span><span style="display:flex;"><span>    NOP <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xFF</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Non-P omissions</span>
+</span></span><span style="display:flex;"><span>    LNA_HCURR <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x00</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># P model memory Map</span>
+</span></span><span style="display:flex;"><span>    RPD <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x09</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># P model bit Mnemonics</span>
+</span></span><span style="display:flex;"><span>    RF_DR_LOW <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>
+</span></span><span style="display:flex;"><span>    RF_DR_HIGH <span style="color:#f92672">=</span> <span style="color:#ae81ff">3</span>
+</span></span><span style="display:flex;"><span>    RF_PWR_LOW <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>    RF_PWR_HIGH <span style="color:#f92672">=</span> <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># Signal Mnemonics</span>
+</span></span><span style="display:flex;"><span>    LOW <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    HIGH <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    datarate_e_str_P <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;1MBPS&#34;</span>, <span style="color:#e6db74">&#34;2MBPS&#34;</span>, <span style="color:#e6db74">&#34;250KBPS&#34;</span>]
+</span></span><span style="display:flex;"><span>    model_e_str_P <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;nRF24L01&#34;</span>, <span style="color:#e6db74">&#34;nRF24l01+&#34;</span>]
+</span></span><span style="display:flex;"><span>    crclength_e_str_P <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;Disabled&#34;</span>, <span style="color:#e6db74">&#34;8 bits&#34;</span>, <span style="color:#e6db74">&#34;16 bits&#34;</span>]
+</span></span><span style="display:flex;"><span>    pa_dbm_e_str_P <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;PA_MIN&#34;</span>, <span style="color:#e6db74">&#34;PA_LOW&#34;</span>, <span style="color:#e6db74">&#34;PA_MED&#34;</span>, <span style="color:#e6db74">&#34;PA_HIGH&#34;</span>]
+</span></span><span style="display:flex;"><span>    child_pipe <span style="color:#f92672">=</span> [RX_ADDR_P0, RX_ADDR_P1, RX_ADDR_P2, RX_ADDR_P3, RX_ADDR_P4, RX_ADDR_P5]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    child_payload_size <span style="color:#f92672">=</span> [RX_PW_P0, RX_PW_P1, RX_PW_P2, RX_PW_P3, RX_PW_P4, RX_PW_P5]
+</span></span><span style="display:flex;"><span>    child_pipe_enable <span style="color:#f92672">=</span> [ERX_P0, ERX_P1, ERX_P2, ERX_P3, ERX_P4, ERX_P5]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    GPIO <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>    spidev <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">__init__</span>(self, gpio, spidev):
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># It should be possible to instantiate multiple objects, with different GPIO / spidev</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># EG on Raspberry, one could be RPI GPIO &amp; spidev module, other could be virtual-GPIO</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># On rpi, only bus 0 is supported here, not bus 1 of the model B plus</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>GPIO <span style="color:#f92672">=</span> gpio   <span style="color:#75715e"># the GPIO module</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>spidev <span style="color:#f92672">=</span> spidev <span style="color:#75715e"># the spidev object/instance</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>channel <span style="color:#f92672">=</span> <span style="color:#ae81ff">76</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>data_rate <span style="color:#f92672">=</span> NRF24<span style="color:#f92672">.</span>BR_1MBPS
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>wide_band <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span> <span style="color:#75715e"># 2Mbs data rate in use?</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>p_variant <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span> <span style="color:#75715e"># False for RF24L01 and true for RF24L01P (nrf24l01+)</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>payload_size <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span> <span style="color:#75715e">#*&lt; Fixed size of payloads</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>ack_payload_available <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span> <span style="color:#75715e">#*&lt; Whether there is an ack payload waiting</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>dynamic_payloads_enabled <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span> <span style="color:#75715e">#*&lt; Whether dynamic payloads are enabled.</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>ack_payload_length <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span> <span style="color:#75715e">#*&lt; Dynamic size of pending ack payload.</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>pipe0_reading_address <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span> <span style="color:#75715e">#*&lt; Last address set on pipe 0 for reading.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">ce</span>(self, level):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> self<span style="color:#f92672">.</span>ce_pin <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># rf24-CE is optional. Tie to HIGH if not used. (Altho, left floating seems to read HIGH anyway??? - risky!)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Some RF24 modes may NEED control over CE.</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># non-powerdown, fixed PTX or RTX role, dynamic payload size &amp; ack-payload:    does NOT need CE.</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> level <span style="color:#f92672">==</span> NRF24<span style="color:#f92672">.</span>HIGH:
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>GPIO<span style="color:#f92672">.</span>output(self<span style="color:#f92672">.</span>ce_pin, self<span style="color:#f92672">.</span>GPIO<span style="color:#f92672">.</span>HIGH)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>GPIO<span style="color:#f92672">.</span>output(self<span style="color:#f92672">.</span>ce_pin, self<span style="color:#f92672">.</span>GPIO<span style="color:#f92672">.</span>LOW)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">read_register</span>(self, reg, blen<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>):
+</span></span><span style="display:flex;"><span>        buf <span style="color:#f92672">=</span> [NRF24<span style="color:#f92672">.</span>R_REGISTER <span style="color:#f92672">|</span> ( NRF24<span style="color:#f92672">.</span>REGISTER_MASK <span style="color:#f92672">&amp;</span> reg )]
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> col <span style="color:#f92672">in</span> range(blen):
+</span></span><span style="display:flex;"><span>            buf<span style="color:#f92672">.</span>append(NRF24<span style="color:#f92672">.</span>NOP)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        resp <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>spidev<span style="color:#f92672">.</span>xfer2(buf)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> blen <span style="color:#f92672">==</span> <span style="color:#ae81ff">1</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> resp[<span style="color:#ae81ff">1</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> resp[<span style="color:#ae81ff">1</span>:blen <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">write_register</span>(self, reg, value, length<span style="color:#f92672">=-</span><span style="color:#ae81ff">1</span>):
+</span></span><span style="display:flex;"><span>        buf <span style="color:#f92672">=</span> [NRF24<span style="color:#f92672">.</span>W_REGISTER <span style="color:#f92672">|</span> ( NRF24<span style="color:#f92672">.</span>REGISTER_MASK <span style="color:#f92672">&amp;</span> reg )]
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">###if isinstance(value, (int, long)):   # ng for python3. but value should never be long anyway</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> isinstance(value, int):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> length <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>                length <span style="color:#f92672">=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            length <span style="color:#f92672">=</span> min(<span style="color:#ae81ff">4</span>, length)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(length):
+</span></span><span style="display:flex;"><span>                buf<span style="color:#f92672">.</span>insert(<span style="color:#ae81ff">1</span>, int(value <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0xff</span>))
+</span></span><span style="display:flex;"><span>                value <span style="color:#f92672">&gt;&gt;=</span> <span style="color:#ae81ff">8</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">elif</span> isinstance(value, list):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> length <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>                length <span style="color:#f92672">=</span> len(value)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(min(len(value), length)):
+</span></span><span style="display:flex;"><span>                buf<span style="color:#f92672">.</span>append(int(value[len(value) <span style="color:#f92672">-</span> i <span style="color:#f92672">-</span> <span style="color:#ae81ff">1</span>] <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0xff</span>))
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">Exception</span>(<span style="color:#e6db74">&#34;Value must be int or list&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>spidev<span style="color:#f92672">.</span>xfer2(buf)[<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">write_payload</span>(self, buf):
+</span></span><span style="display:flex;"><span>        data_len <span style="color:#f92672">=</span> min(self<span style="color:#f92672">.</span>payload_size, len(buf))
+</span></span><span style="display:flex;"><span>        blank_len <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> self<span style="color:#f92672">.</span>dynamic_payloads_enabled:
+</span></span><span style="display:flex;"><span>            blank_len <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>payload_size <span style="color:#f92672">-</span> data_len
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        txbuffer <span style="color:#f92672">=</span> [NRF24<span style="color:#f92672">.</span>W_TX_PAYLOAD]
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> n <span style="color:#f92672">in</span> buf:
+</span></span><span style="display:flex;"><span>            t <span style="color:#f92672">=</span> type(n)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> t <span style="color:#f92672">is</span> str:
+</span></span><span style="display:flex;"><span>                txbuffer<span style="color:#f92672">.</span>append(ord(n))
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">elif</span> t <span style="color:#f92672">is</span> int:
+</span></span><span style="display:flex;"><span>                txbuffer<span style="color:#f92672">.</span>append(n)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">raise</span> <span style="color:#a6e22e">Exception</span>(<span style="color:#e6db74">&#34;Only ints and chars are supported: Found &#34;</span> <span style="color:#f92672">+</span> str(t))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> blank_len <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>            blank <span style="color:#f92672">=</span> [<span style="color:#ae81ff">0x00</span> <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(blank_len)]
+</span></span><span style="display:flex;"><span>            txbuffer<span style="color:#f92672">.</span>extend(blank)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>spidev<span style="color:#f92672">.</span>xfer2(txbuffer)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">read_payload</span>(self, buf, buf_len<span style="color:#f92672">=-</span><span style="color:#ae81ff">1</span>):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> buf_len <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>            buf_len <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>payload_size
+</span></span><span style="display:flex;"><span>        data_len <span style="color:#f92672">=</span> min(self<span style="color:#f92672">.</span>payload_size, buf_len)
+</span></span><span style="display:flex;"><span>        blank_len <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> self<span style="color:#f92672">.</span>dynamic_payloads_enabled:
+</span></span><span style="display:flex;"><span>            blank_len <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>payload_size <span style="color:#f92672">-</span> data_len
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        txbuffer <span style="color:#f92672">=</span> [NRF24<span style="color:#f92672">.</span>NOP <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">0</span>, blank_len <span style="color:#f92672">+</span> data_len <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>)]
+</span></span><span style="display:flex;"><span>        txbuffer[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> NRF24<span style="color:#f92672">.</span>R_RX_PAYLOAD
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        payload <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>spidev<span style="color:#f92672">.</span>xfer2(txbuffer)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">del</span> buf[:]
+</span></span><span style="display:flex;"><span>        buf<span style="color:#f92672">.</span>extend(payload[<span style="color:#ae81ff">1</span>:data_len <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>])
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> data_len
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">flush_rx</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>spidev<span style="color:#f92672">.</span>xfer2([NRF24<span style="color:#f92672">.</span>FLUSH_RX])[<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">flush_tx</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>spidev<span style="color:#f92672">.</span>xfer2([NRF24<span style="color:#f92672">.</span>FLUSH_TX])[<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_status</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>spidev<span style="color:#f92672">.</span>xfer2([NRF24<span style="color:#f92672">.</span>NOP])[<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">print_status</span>(self, status):
+</span></span><span style="display:flex;"><span>        status_str <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;STATUS</span><span style="color:#ae81ff">\t</span><span style="color:#e6db74"> = 0x</span><span style="color:#e6db74">{0:02x}</span><span style="color:#e6db74"> RX_DR=</span><span style="color:#e6db74">{1:x}</span><span style="color:#e6db74"> TX_DS=</span><span style="color:#e6db74">{2:x}</span><span style="color:#e6db74"> MAX_RT=</span><span style="color:#e6db74">{3:x}</span><span style="color:#e6db74"> RX_P_NO=</span><span style="color:#e6db74">{4:x}</span><span style="color:#e6db74"> TX_FULL=</span><span style="color:#e6db74">{5:x}</span><span style="color:#e6db74">&#34;</span><span style="color:#f92672">.</span>format(
+</span></span><span style="display:flex;"><span>            status,
+</span></span><span style="display:flex;"><span>            <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">if</span> status <span style="color:#f92672">&amp;</span> _BV(NRF24<span style="color:#f92672">.</span>RX_DR) <span style="color:#66d9ef">else</span> <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">if</span> status <span style="color:#f92672">&amp;</span> _BV(NRF24<span style="color:#f92672">.</span>TX_DS) <span style="color:#66d9ef">else</span> <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">if</span> status <span style="color:#f92672">&amp;</span> _BV(NRF24<span style="color:#f92672">.</span>MAX_RT) <span style="color:#66d9ef">else</span> <span style="color:#ae81ff">0</span>,
+</span></span><span style="display:flex;"><span>            ((status <span style="color:#f92672">&gt;&gt;</span> NRF24<span style="color:#f92672">.</span>RX_P_NO) <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">7</span>),
+</span></span><span style="display:flex;"><span>            <span style="color:#ae81ff">1</span> <span style="color:#66d9ef">if</span> status <span style="color:#f92672">&amp;</span> _BV(NRF24<span style="color:#f92672">.</span>TX_FULL) <span style="color:#66d9ef">else</span> <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        print (status_str)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">print_observe_tx</span>(self, value):
+</span></span><span style="display:flex;"><span>        print (<span style="color:#e6db74">&#34;Observe Tx: </span><span style="color:#e6db74">%02x</span><span style="color:#e6db74">   Lost Pkts: </span><span style="color:#e6db74">%d</span><span style="color:#e6db74">    Retries: </span><span style="color:#e6db74">%d</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">%</span> (value, value <span style="color:#f92672">&gt;&gt;</span> NRF24<span style="color:#f92672">.</span>PLOS_CNT, value <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">15</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">print_byte_register</span>(self, name, reg, qty<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>):
+</span></span><span style="display:flex;"><span>        extra_tab <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\t</span><span style="color:#e6db74">&#39;</span> <span style="color:#66d9ef">if</span> len(name) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">8</span> <span style="color:#66d9ef">else</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>        print (<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">%s</span><span style="color:#ae81ff">\t</span><span style="color:#e6db74">%c</span><span style="color:#e6db74"> =&#34;</span> <span style="color:#f92672">%</span> (name, extra_tab)),
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">while</span> qty <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>            print (<span style="color:#e6db74">&#34;0x</span><span style="color:#e6db74">%02x</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">%</span> (self<span style="color:#f92672">.</span>read_register(reg))),
+</span></span><span style="display:flex;"><span>            qty <span style="color:#f92672">-=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>            reg <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        print (<span style="color:#e6db74">&#34;&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">print_address_register</span>(self, name, reg, qty<span style="color:#f92672">=</span><span style="color:#ae81ff">1</span>):
+</span></span><span style="display:flex;"><span>        extra_tab <span style="color:#f92672">=</span> <span style="color:#e6db74">&#39;</span><span style="color:#ae81ff">\t</span><span style="color:#e6db74">&#39;</span> <span style="color:#66d9ef">if</span> len(name) <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">8</span> <span style="color:#66d9ef">else</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>        print (<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">%s</span><span style="color:#ae81ff">\t</span><span style="color:#e6db74">%c</span><span style="color:#e6db74"> =&#34;</span> <span style="color:#f92672">%</span> (name, extra_tab)),
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">while</span> qty <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>            qty <span style="color:#f92672">-=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>            buf <span style="color:#f92672">=</span> reversed(self<span style="color:#f92672">.</span>read_register(reg, <span style="color:#ae81ff">5</span>))
+</span></span><span style="display:flex;"><span>            reg <span style="color:#f92672">+=</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>            sys<span style="color:#f92672">.</span>stdout<span style="color:#f92672">.</span>write(<span style="color:#e6db74">&#34; 0x&#34;</span>),
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> buf:
+</span></span><span style="display:flex;"><span>                sys<span style="color:#f92672">.</span>stdout<span style="color:#f92672">.</span>write(<span style="color:#e6db74">&#34;</span><span style="color:#e6db74">%02x</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">%</span> i)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        print (<span style="color:#e6db74">&#34;&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">setChannel</span>(self, channel):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>channel <span style="color:#f92672">=</span> min(max(<span style="color:#ae81ff">0</span>, channel), NRF24<span style="color:#f92672">.</span>MAX_CHANNEL)
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>write_register(NRF24<span style="color:#f92672">.</span>RF_CH, self<span style="color:#f92672">.</span>channel)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">getChannel</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>read_register(NRF24<span style="color:#f92672">.</span>RF_CH)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">setPayloadSize</span>(self, size):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>payload_size <span style="color:#f92672">=</span> min(max(size, <span style="color:#ae81ff">1</span>), NRF24<span style="color:#f92672">.</span>MAX_PAYLOAD_SIZE)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">getPayloadSize</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>payload_size
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">printDetails</span>(self):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>print_status(self<span style="color:#f92672">.</span>get_status())
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>print_address_register(<span style="color:#e6db74">&#34;RX_ADDR_P0-1&#34;</span>, NRF24<span style="color:#f92672">.</span>RX_ADDR_P0, <span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>print_byte_register(<span style="color:#e6db74">&#34;RX_ADDR_P2-5&#34;</span>, NRF24<span style="color:#f92672">.</span>RX_ADDR_P2, <span style="color:#ae81ff">4</span>)
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>print_address_register(<span style="color:#e6db74">&#34;TX_ADDR&#34;</span>, NRF24<span style="color:#f92672">.</span>TX_ADDR)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>print_byte_register(<span style="color:#e6db74">&#34;RX_PW_P0-6&#34;</span>, NRF24<span style="color:#f92672">.</span>RX_PW_P0, <span style="color:#ae81ff">6</span>)
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>print_byte_register(<span style="color:#e6db74">&#34;EN_AA&#34;</span>, NRF24<span style="color:#f92672">.</span>EN_AA)
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>print_byte_register(<span style="color:#e6db74">&#34;EN_RXADDR&#34;</span>, NRF24<span style="color:#f92672">.</span>EN_RXADDR)
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>print_byte_register(<span style="color:#e6db74">&#34;RF_CH&#34;</span>, NRF24<span style="color:#f92672">.</span>RF_CH)
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>print_byte_register(<span style="color:#e6db74">&#34;RF_SETUP&#34;</span>, NRF24<span style="color:#f92672">.</span>RF_SETUP)
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>print_byte_register(<span style="color:#e6db74">&#34;CONFIG&#34;</span>, NRF24<span style="color:#f92672">.</span>CONFIG)
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>print_byte_register(<span style="color:#e6db74">&#34;DYNPD/FEATURE&#34;</span>, NRF24<span style="color:#f92672">.</span>DYNPD, <span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">#</span>
+</span></span><span style="display:flex;"><span>        print (<span style="color:#e6db74">&#34;Data Rate</span><span style="color:#ae81ff">\t</span><span style="color:#e6db74"> = </span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">%</span> NRF24<span style="color:#f92672">.</span>datarate_e_str_P[self<span style="color:#f92672">.</span>getDataRate()])
+</span></span><span style="display:flex;"><span>        print (<span style="color:#e6db74">&#34;Model</span><span style="color:#ae81ff">\t\t</span><span style="color:#e6db74"> = </span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">%</span> NRF24<span style="color:#f92672">.</span>model_e_str_P[self<span style="color:#f92672">.</span>isPVariant()])
+</span></span><span style="display:flex;"><span>        print (<span style="color:#e6db74">&#34;CRC Length</span><span style="color:#ae81ff">\t</span><span style="color:#e6db74"> = </span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">%</span> NRF24<span style="color:#f92672">.</span>crclength_e_str_P[self<span style="color:#f92672">.</span>getCRCLength()])
+</span></span><span style="display:flex;"><span>        print (<span style="color:#e6db74">&#34;PA Power</span><span style="color:#ae81ff">\t</span><span style="color:#e6db74"> = </span><span style="color:#e6db74">%s</span><span style="color:#e6db74">&#34;</span> <span style="color:#f92672">%</span> NRF24<span style="color:#f92672">.</span>pa_dbm_e_str_P[self<span style="color:#f92672">.</span>getPALevel()])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">begin</span>(self, csn_pin, ce_pin<span style="color:#f92672">=</span><span style="color:#ae81ff">0</span>):   <span style="color:#75715e"># csn &amp; ce are RF24 terminology. csn = SPI&#39;s CE!</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Initialize SPI bus..</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># ce_pin is for the rx=listen or tx=trigger pin on RF24 (they call that ce !!!)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># CE optional (at least in some circumstances, eg fixed PTX PRX roles, no powerdown)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># CE seems to hold itself as (sufficiently) HIGH, but tie HIGH is safer!</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>spidev<span style="color:#f92672">.</span>open(<span style="color:#ae81ff">0</span>, csn_pin)
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>ce_pin <span style="color:#f92672">=</span> ce_pin
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> ce_pin:
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>GPIO<span style="color:#f92672">.</span>setup(self<span style="color:#f92672">.</span>ce_pin, self<span style="color:#f92672">.</span>GPIO<span style="color:#f92672">.</span>OUT)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>spidev<span style="color:#f92672">.</span>max_speed_hz <span style="color:#f92672">=</span> <span style="color:#ae81ff">8000000</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        time<span style="color:#f92672">.</span>sleep(<span style="color:#ae81ff">5</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">1000000.0</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Set 1500uS (minimum for 32B payload in ESB@250KBPS) timeouts, to make testing a little easier</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># WARNING: If this is ever lowered, either 250KBS mode with AA is broken or maximum packet</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># sizes must never be used. See documentation for a more complete explanation.</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>write_register(NRF24<span style="color:#f92672">.</span>SETUP_RETR, (<span style="color:#ae81ff">0b0100</span> <span style="color:#f92672">&lt;&lt;</span> NRF24<span style="color:#f92672">.</span>ARD) <span style="color:#f92672">|</span> <span style="color:#ae81ff">0b1111</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Restore our default PA level</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>setPALevel(NRF24<span style="color:#f92672">.</span>PA_MAX)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Determine if this is a p or non-p RF24 module and then</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># reset our data rate back to default value. This works</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># because a non-P variant won&#39;t allow the data rate to</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># be set to 250Kbps.</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> self<span style="color:#f92672">.</span>setDataRate(NRF24<span style="color:#f92672">.</span>BR_250KBPS):
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>p_variant <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Then set the data rate to the slowest (and most reliable) speed supported by all</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># hardware.</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>setDataRate(NRF24<span style="color:#f92672">.</span>BR_1MBPS)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Initialize CRC and request 2-byte (16bit) CRC</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>setCRCLength(NRF24<span style="color:#f92672">.</span>CRC_16)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Disable dynamic payloads, to match dynamic_payloads_enabled setting</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>write_register(NRF24<span style="color:#f92672">.</span>DYNPD, <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Reset current status</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Notice reset and flush is the last thing we do</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>write_register(NRF24<span style="color:#f92672">.</span>STATUS, _BV(NRF24<span style="color:#f92672">.</span>RX_DR) <span style="color:#f92672">|</span> _BV(NRF24<span style="color:#f92672">.</span>TX_DS) <span style="color:#f92672">|</span> _BV(NRF24<span style="color:#f92672">.</span>MAX_RT))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Set up default configuration.  Callers can always change it later.</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># This channel should be universally safe and not bleed over into adjacent</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># spectrum.</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>setChannel(self<span style="color:#f92672">.</span>channel)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Flush buffers</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>flush_rx()
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>flush_tx()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">end</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> self<span style="color:#f92672">.</span>spidev:
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>spidev<span style="color:#f92672">.</span>close()
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>spidev <span style="color:#f92672">=</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">startListening</span>(self):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>write_register(NRF24<span style="color:#f92672">.</span>CONFIG, self<span style="color:#f92672">.</span>read_register(NRF24<span style="color:#f92672">.</span>CONFIG) <span style="color:#f92672">|</span> _BV(NRF24<span style="color:#f92672">.</span>PWR_UP) <span style="color:#f92672">|</span> _BV(NRF24<span style="color:#f92672">.</span>PRIM_RX))
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>write_register(NRF24<span style="color:#f92672">.</span>STATUS, _BV(NRF24<span style="color:#f92672">.</span>RX_DR) <span style="color:#f92672">|</span> _BV(NRF24<span style="color:#f92672">.</span>TX_DS) <span style="color:#f92672">|</span> _BV(NRF24<span style="color:#f92672">.</span>MAX_RT))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Restore the pipe0 address, if exists</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> self<span style="color:#f92672">.</span>pipe0_reading_address:
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>write_register(self<span style="color:#f92672">.</span>RX_ADDR_P0, self<span style="color:#f92672">.</span>pipe0_reading_address, <span style="color:#ae81ff">5</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Go!</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>ce(NRF24<span style="color:#f92672">.</span>HIGH)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># wait for the radio to come up (130us actually only needed)</span>
+</span></span><span style="display:flex;"><span>        time<span style="color:#f92672">.</span>sleep(<span style="color:#ae81ff">130</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">1000000.0</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">stopListening</span>(self):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>ce(NRF24<span style="color:#f92672">.</span>LOW)
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>flush_tx()
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>flush_rx()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">powerDown</span>(self):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>write_register(NRF24<span style="color:#f92672">.</span>CONFIG, self<span style="color:#f92672">.</span>read_register(NRF24<span style="color:#f92672">.</span>CONFIG) <span style="color:#f92672">&amp;</span> <span style="color:#f92672">~</span>_BV(NRF24<span style="color:#f92672">.</span>PWR_UP))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">powerUp</span>(self):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>write_register(NRF24<span style="color:#f92672">.</span>CONFIG, self<span style="color:#f92672">.</span>read_register(NRF24<span style="color:#f92672">.</span>CONFIG) <span style="color:#f92672">|</span> _BV(NRF24<span style="color:#f92672">.</span>PWR_UP))
+</span></span><span style="display:flex;"><span>        time<span style="color:#f92672">.</span>sleep(<span style="color:#ae81ff">150</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">1000000.0</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">write</span>(self, buf):
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Begin the write</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>startWrite(buf)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        timeout <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>getMaxTimeout() <span style="color:#75715e">#s to wait for timeout</span>
+</span></span><span style="display:flex;"><span>        sent_at <span style="color:#f92672">=</span> time<span style="color:#f92672">.</span>time()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">while</span> <span style="color:#66d9ef">True</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">#status = self.read_register(NRF24.OBSERVE_TX, 1)</span>
+</span></span><span style="display:flex;"><span>            status <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>get_status()
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (status <span style="color:#f92672">&amp;</span> (_BV(NRF24<span style="color:#f92672">.</span>TX_DS) <span style="color:#f92672">|</span> _BV(NRF24<span style="color:#f92672">.</span>MAX_RT))) <span style="color:#f92672">or</span> (time<span style="color:#f92672">.</span>time() <span style="color:#f92672">-</span> sent_at <span style="color:#f92672">&gt;</span> timeout ):
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">break</span>
+</span></span><span style="display:flex;"><span>            time<span style="color:#f92672">.</span>sleep(<span style="color:#ae81ff">10</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">1000000.0</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">#obs = self.read_register(NRF24.OBSERVE_TX)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">#self.print_observe_tx(obs)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e">#self.print_status(status)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># (for debugging)</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        what <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>whatHappened()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        result <span style="color:#f92672">=</span> what[<span style="color:#e6db74">&#39;tx_ok&#39;</span>]
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> what[<span style="color:#e6db74">&#39;tx_fail&#39;</span>]:
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>flush_tx();    <span style="color:#75715e"># bl  - dont jam up the fifo</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Handle the ack packet</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> what[<span style="color:#e6db74">&#39;rx_ready&#39;</span>]:
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>ack_payload_length <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>getDynamicPayloadSize()
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>ack_payload_available <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>              <span style="color:#75715e">## bl</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> result
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">startWrite</span>(self, buf):
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Transmitter power-up</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>write_register(NRF24<span style="color:#f92672">.</span>CONFIG, (self<span style="color:#f92672">.</span>read_register(NRF24<span style="color:#f92672">.</span>CONFIG) <span style="color:#f92672">|</span> _BV(NRF24<span style="color:#f92672">.</span>PWR_UP) ) <span style="color:#f92672">&amp;</span> <span style="color:#f92672">~</span>_BV(NRF24<span style="color:#f92672">.</span>PRIM_RX))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Send the payload</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>write_payload(buf)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Allons!</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> self<span style="color:#f92672">.</span>ce_pin:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> self<span style="color:#f92672">.</span>GPIO<span style="color:#f92672">.</span>RPI_REVISION <span style="color:#f92672">&gt;</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>                self<span style="color:#f92672">.</span>ce(self<span style="color:#f92672">.</span>GPIO<span style="color:#f92672">.</span>HIGH)
+</span></span><span style="display:flex;"><span>                time<span style="color:#f92672">.</span>sleep(<span style="color:#ae81ff">10</span> <span style="color:#f92672">/</span> <span style="color:#ae81ff">1000000.0</span>)
+</span></span><span style="display:flex;"><span>                self<span style="color:#f92672">.</span>ce(self<span style="color:#f92672">.</span>GPIO<span style="color:#f92672">.</span>LOW)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># virtGPIO is slower. A 10 uSec pulse is better done with pulseOut():</span>
+</span></span><span style="display:flex;"><span>                self<span style="color:#f92672">.</span>GPIO<span style="color:#f92672">.</span>pulseOut(self<span style="color:#f92672">.</span>ce_pin, self<span style="color:#f92672">.</span>GPIO<span style="color:#f92672">.</span>HIGH, <span style="color:#ae81ff">10</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">getDynamicPayloadSize</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>spidev<span style="color:#f92672">.</span>xfer2([NRF24<span style="color:#f92672">.</span>R_RX_PL_WID, NRF24<span style="color:#f92672">.</span>NOP])[<span style="color:#ae81ff">1</span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">available</span>(self, pipe_num<span style="color:#f92672">=</span><span style="color:#66d9ef">None</span>):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> pipe_num:
+</span></span><span style="display:flex;"><span>            pipe_num <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        status <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>get_status()
+</span></span><span style="display:flex;"><span>        result <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Sometimes the radio specifies that there is data in one pipe but</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># doesn&#39;t set the RX flag...</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> status <span style="color:#f92672">&amp;</span> _BV(NRF24<span style="color:#f92672">.</span>RX_DR) <span style="color:#f92672">or</span> (status <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0b00001110</span> <span style="color:#f92672">!=</span> <span style="color:#ae81ff">0b00001110</span>):
+</span></span><span style="display:flex;"><span>            result <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> result:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># If the caller wants the pipe number, include that</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> len(pipe_num) <span style="color:#f92672">&gt;=</span> <span style="color:#ae81ff">1</span>:
+</span></span><span style="display:flex;"><span>                pipe_num[<span style="color:#ae81ff">0</span>] <span style="color:#f92672">=</span> ( status <span style="color:#f92672">&gt;&gt;</span> NRF24<span style="color:#f92672">.</span>RX_P_NO ) <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0b00000111</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># Clear the status bit</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># ??? Should this REALLY be cleared now?  Or wait until we</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># actually READ the payload?</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>write_register(NRF24<span style="color:#f92672">.</span>STATUS, _BV(NRF24<span style="color:#f92672">.</span>RX_DR))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Handle ack payload receipt</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> status <span style="color:#f92672">&amp;</span> _BV(NRF24<span style="color:#f92672">.</span>TX_DS):
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>write_register(NRF24<span style="color:#f92672">.</span>STATUS, _BV(NRF24<span style="color:#f92672">.</span>TX_DS))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> result
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">read</span>(self, buf, buf_len<span style="color:#f92672">=-</span><span style="color:#ae81ff">1</span>):
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Fetch the payload</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>read_payload(buf, buf_len)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># was this the last of the data available?</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>read_register(NRF24<span style="color:#f92672">.</span>FIFO_STATUS) <span style="color:#f92672">&amp;</span> _BV(NRF24<span style="color:#f92672">.</span>RX_EMPTY)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">whatHappened</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Read the status &amp; reset the status in one easy call</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Or is that such a good idea?</span>
+</span></span><span style="display:flex;"><span>        status <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>write_register(NRF24<span style="color:#f92672">.</span>STATUS, _BV(NRF24<span style="color:#f92672">.</span>RX_DR) <span style="color:#f92672">|</span> _BV(NRF24<span style="color:#f92672">.</span>TX_DS) <span style="color:#f92672">|</span> _BV(NRF24<span style="color:#f92672">.</span>MAX_RT))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Report to the user what happened</span>
+</span></span><span style="display:flex;"><span>        tx_ok <span style="color:#f92672">=</span> status <span style="color:#f92672">&amp;</span> _BV(NRF24<span style="color:#f92672">.</span>TX_DS)
+</span></span><span style="display:flex;"><span>        tx_fail <span style="color:#f92672">=</span> status <span style="color:#f92672">&amp;</span> _BV(NRF24<span style="color:#f92672">.</span>MAX_RT)
+</span></span><span style="display:flex;"><span>        rx_ready <span style="color:#f92672">=</span> status <span style="color:#f92672">&amp;</span> _BV(NRF24<span style="color:#f92672">.</span>RX_DR)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> {<span style="color:#e6db74">&#39;tx_ok&#39;</span>: tx_ok, <span style="color:#e6db74">&#34;tx_fail&#34;</span>: tx_fail, <span style="color:#e6db74">&#34;rx_ready&#34;</span>: rx_ready}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">openWritingPipe</span>(self, value):
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Note that the NRF24L01(+)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># expects it LSB first.</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>write_register(NRF24<span style="color:#f92672">.</span>RX_ADDR_P0, value, <span style="color:#ae81ff">5</span>)
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>write_register(NRF24<span style="color:#f92672">.</span>TX_ADDR, value, <span style="color:#ae81ff">5</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        max_payload_size <span style="color:#f92672">=</span> <span style="color:#ae81ff">32</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>write_register(NRF24<span style="color:#f92672">.</span>RX_PW_P0, min(self<span style="color:#f92672">.</span>payload_size, max_payload_size))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">openReadingPipe</span>(self, child, address):
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># If this is pipe 0, cache the address.  This is needed because</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># openWritingPipe() will overwrite the pipe 0 address, so</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># startListening() will have to restore it.</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> child <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>pipe0_reading_address <span style="color:#f92672">=</span> address
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> child <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">6</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># For pipes 2-5, only write the LSB</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> child <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">2</span>:
+</span></span><span style="display:flex;"><span>                self<span style="color:#f92672">.</span>write_register(NRF24<span style="color:#f92672">.</span>child_pipe[child], address, <span style="color:#ae81ff">5</span>)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>                self<span style="color:#f92672">.</span>write_register(NRF24<span style="color:#f92672">.</span>child_pipe[child], address, <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>write_register(NRF24<span style="color:#f92672">.</span>child_payload_size[child], self<span style="color:#f92672">.</span>payload_size)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Note it would be more efficient to set all of the bits for all open</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># pipes at once.  However, I thought it would make the calling code</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># more simple to do it this way.</span>
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>write_register(NRF24<span style="color:#f92672">.</span>EN_RXADDR,
+</span></span><span style="display:flex;"><span>                                self<span style="color:#f92672">.</span>read_register(NRF24<span style="color:#f92672">.</span>EN_RXADDR) <span style="color:#f92672">|</span> _BV(NRF24<span style="color:#f92672">.</span>child_pipe_enable[child]))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">closeReadingPipe</span>(self, pipe):
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>write_register(NRF24<span style="color:#f92672">.</span>EN_RXADDR,
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>read_register(EN_RXADDR) <span style="color:#f92672">&amp;</span> <span style="color:#f92672">~</span>_BV(NRF24<span style="color:#f92672">.</span>child_pipe_enable[pipe]))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">toggle_features</span>(self):
+</span></span><span style="display:flex;"><span>        buf <span style="color:#f92672">=</span> [NRF24<span style="color:#f92672">.</span>ACTIVATE, <span style="color:#ae81ff">0x73</span>]
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>spidev<span style="color:#f92672">.</span>xfer2(buf)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">enableDynamicPayloads</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Enable dynamic payload throughout the system</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>write_register(NRF24<span style="color:#f92672">.</span>FEATURE, self<span style="color:#f92672">.</span>read_register(NRF24<span style="color:#f92672">.</span>FEATURE) <span style="color:#f92672">|</span> _BV(NRF24<span style="color:#f92672">.</span>EN_DPL))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># If it didn&#39;t work, the features are not enabled</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> self<span style="color:#f92672">.</span>read_register(NRF24<span style="color:#f92672">.</span>FEATURE):
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># So enable them and try again</span>
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>toggle_features()
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>write_register(NRF24<span style="color:#f92672">.</span>FEATURE, self<span style="color:#f92672">.</span>read_register(NRF24<span style="color:#f92672">.</span>FEATURE) <span style="color:#f92672">|</span> _BV(NRF24<span style="color:#f92672">.</span>EN_DPL))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Enable dynamic payload on all pipes</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Not sure the use case of only having dynamic payload on certain</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># pipes, so the library does not support it.</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>write_register(NRF24<span style="color:#f92672">.</span>DYNPD, self<span style="color:#f92672">.</span>read_register(NRF24<span style="color:#f92672">.</span>DYNPD) <span style="color:#f92672">|</span> _BV(NRF24<span style="color:#f92672">.</span>DPL_P5) <span style="color:#f92672">|</span> _BV(NRF24<span style="color:#f92672">.</span>DPL_P4) <span style="color:#f92672">|</span> _BV(
+</span></span><span style="display:flex;"><span>            NRF24<span style="color:#f92672">.</span>DPL_P3) <span style="color:#f92672">|</span> _BV(NRF24<span style="color:#f92672">.</span>DPL_P2) <span style="color:#f92672">|</span> _BV(NRF24<span style="color:#f92672">.</span>DPL_P1) <span style="color:#f92672">|</span> _BV(NRF24<span style="color:#f92672">.</span>DPL_P0))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>dynamic_payloads_enabled <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">enableAckPayload</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># enable ack payload and dynamic payload features</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>write_register(NRF24<span style="color:#f92672">.</span>FEATURE,
+</span></span><span style="display:flex;"><span>                            self<span style="color:#f92672">.</span>read_register(NRF24<span style="color:#f92672">.</span>FEATURE) <span style="color:#f92672">|</span> _BV(NRF24<span style="color:#f92672">.</span>EN_ACK_PAY) <span style="color:#f92672">|</span> _BV(NRF24<span style="color:#f92672">.</span>EN_DPL))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># If it didn&#39;t work, the features are not enabled</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> self<span style="color:#f92672">.</span>read_register(NRF24<span style="color:#f92672">.</span>FEATURE):
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># So enable them and try again</span>
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>toggle_features()
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>write_register(NRF24<span style="color:#f92672">.</span>FEATURE,
+</span></span><span style="display:flex;"><span>                                self<span style="color:#f92672">.</span>read_register(NRF24<span style="color:#f92672">.</span>FEATURE) <span style="color:#f92672">|</span> _BV(NRF24<span style="color:#f92672">.</span>EN_ACK_PAY) <span style="color:#f92672">|</span> _BV(NRF24<span style="color:#f92672">.</span>EN_DPL))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Enable dynamic payload on pipes 0 &amp; 1</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>write_register(NRF24<span style="color:#f92672">.</span>DYNPD, self<span style="color:#f92672">.</span>read_register(NRF24<span style="color:#f92672">.</span>DYNPD) <span style="color:#f92672">|</span> _BV(NRF24<span style="color:#f92672">.</span>DPL_P1) <span style="color:#f92672">|</span> _BV(NRF24<span style="color:#f92672">.</span>DPL_P0))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">writeAckPayload</span>(self, pipe, buf, buf_len):
+</span></span><span style="display:flex;"><span>        txbuffer <span style="color:#f92672">=</span> [NRF24<span style="color:#f92672">.</span>W_ACK_PAYLOAD <span style="color:#f92672">|</span> ( pipe <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0x7</span> )]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        max_payload_size <span style="color:#f92672">=</span> <span style="color:#ae81ff">32</span>
+</span></span><span style="display:flex;"><span>        data_len <span style="color:#f92672">=</span> min(buf_len, max_payload_size)
+</span></span><span style="display:flex;"><span>        txbuffer<span style="color:#f92672">.</span>extend(buf[<span style="color:#ae81ff">0</span>:data_len])
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>spidev<span style="color:#f92672">.</span>xfer2(txbuffer)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">isAckPayloadAvailable</span>(self):
+</span></span><span style="display:flex;"><span>        result <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>ack_payload_available
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>ack_payload_available <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> result
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">isPVariant</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>p_variant
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">setAutoAck</span>(self, enable):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> enable:
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>write_register(NRF24<span style="color:#f92672">.</span>EN_AA, <span style="color:#ae81ff">0b111111</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>write_register(NRF24<span style="color:#f92672">.</span>EN_AA, <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">setAutoAckPipe</span>(self, pipe, enable):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> pipe <span style="color:#f92672">&lt;=</span> <span style="color:#ae81ff">6</span>:
+</span></span><span style="display:flex;"><span>            en_aa <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>read_register(NRF24<span style="color:#f92672">.</span>EN_AA)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> enable:
+</span></span><span style="display:flex;"><span>                en_aa <span style="color:#f92672">|=</span> _BV(pipe)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>                en_aa <span style="color:#f92672">&amp;=</span> <span style="color:#f92672">~</span>_BV(pipe)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>write_register(NRF24<span style="color:#f92672">.</span>EN_AA, en_aa)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">testCarrier</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>read_register(NRF24<span style="color:#f92672">.</span>CD) <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">testRPD</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>read_register(NRF24<span style="color:#f92672">.</span>RPD) <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">setPALevel</span>(self, level):
+</span></span><span style="display:flex;"><span>        setup <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>read_register(NRF24<span style="color:#f92672">.</span>RF_SETUP)
+</span></span><span style="display:flex;"><span>        setup <span style="color:#f92672">&amp;=</span> <span style="color:#f92672">~</span>( _BV(NRF24<span style="color:#f92672">.</span>RF_PWR_LOW) <span style="color:#f92672">|</span> _BV(NRF24<span style="color:#f92672">.</span>RF_PWR_HIGH))
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># switch uses RAM (evil!)</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> level <span style="color:#f92672">==</span> NRF24<span style="color:#f92672">.</span>PA_MAX:
+</span></span><span style="display:flex;"><span>            setup <span style="color:#f92672">|=</span> (_BV(NRF24<span style="color:#f92672">.</span>RF_PWR_LOW) <span style="color:#f92672">|</span> _BV(NRF24<span style="color:#f92672">.</span>RF_PWR_HIGH))
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">elif</span> level <span style="color:#f92672">==</span> NRF24<span style="color:#f92672">.</span>PA_HIGH:
+</span></span><span style="display:flex;"><span>            setup <span style="color:#f92672">|=</span> _BV(NRF24<span style="color:#f92672">.</span>RF_PWR_HIGH)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">elif</span> level <span style="color:#f92672">==</span> NRF24<span style="color:#f92672">.</span>PA_LOW:
+</span></span><span style="display:flex;"><span>            setup <span style="color:#f92672">|=</span> _BV(NRF24<span style="color:#f92672">.</span>RF_PWR_LOW)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">elif</span> level <span style="color:#f92672">==</span> NRF24<span style="color:#f92672">.</span>PA_MIN:
+</span></span><span style="display:flex;"><span>            nop <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">elif</span> level <span style="color:#f92672">==</span> NRF24<span style="color:#f92672">.</span>PA_ERROR:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># On error, go to maximum PA</span>
+</span></span><span style="display:flex;"><span>            setup <span style="color:#f92672">|=</span> (_BV(NRF24<span style="color:#f92672">.</span>RF_PWR_LOW) <span style="color:#f92672">|</span> _BV(NRF24<span style="color:#f92672">.</span>RF_PWR_HIGH))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>write_register(NRF24<span style="color:#f92672">.</span>RF_SETUP, setup)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">getPALevel</span>(self):
+</span></span><span style="display:flex;"><span>        power <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>read_register(NRF24<span style="color:#f92672">.</span>RF_SETUP) <span style="color:#f92672">&amp;</span> (_BV(NRF24<span style="color:#f92672">.</span>RF_PWR_LOW) <span style="color:#f92672">|</span> _BV(NRF24<span style="color:#f92672">.</span>RF_PWR_HIGH))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> power <span style="color:#f92672">==</span> (_BV(NRF24<span style="color:#f92672">.</span>RF_PWR_LOW) <span style="color:#f92672">|</span> _BV(NRF24<span style="color:#f92672">.</span>RF_PWR_HIGH)):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> NRF24<span style="color:#f92672">.</span>PA_MAX
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">elif</span> power <span style="color:#f92672">==</span> _BV(NRF24<span style="color:#f92672">.</span>RF_PWR_HIGH):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> NRF24<span style="color:#f92672">.</span>PA_HIGH
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">elif</span> power <span style="color:#f92672">==</span> _BV(NRF24<span style="color:#f92672">.</span>RF_PWR_LOW):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> NRF24<span style="color:#f92672">.</span>PA_LOW
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> NRF24<span style="color:#f92672">.</span>PA_MIN
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">setDataRate</span>(self, speed):
+</span></span><span style="display:flex;"><span>        result <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>        setup <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>read_register(NRF24<span style="color:#f92672">.</span>RF_SETUP)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># HIGH and LOW &#39;00&#39; is 1Mbs - our default</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>wide_band <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>        setup <span style="color:#f92672">&amp;=</span> <span style="color:#f92672">~</span>(_BV(NRF24<span style="color:#f92672">.</span>RF_DR_LOW) <span style="color:#f92672">|</span> _BV(NRF24<span style="color:#f92672">.</span>RF_DR_HIGH))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> speed <span style="color:#f92672">==</span> NRF24<span style="color:#f92672">.</span>BR_250KBPS:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Must set the RF_DR_LOW to 1 RF_DR_HIGH (used to be RF_DR) is already 0</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Making it &#39;10&#39;.</span>
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>wide_band <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>            setup <span style="color:#f92672">|=</span> _BV(NRF24<span style="color:#f92672">.</span>RF_DR_LOW)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Set 2Mbs, RF_DR (RF_DR_HIGH) is set 1</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Making it &#39;01&#39;</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> speed <span style="color:#f92672">==</span> NRF24<span style="color:#f92672">.</span>BR_2MBPS:
+</span></span><span style="display:flex;"><span>                self<span style="color:#f92672">.</span>wide_band <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>                setup <span style="color:#f92672">|=</span> _BV(NRF24<span style="color:#f92672">.</span>RF_DR_HIGH)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e"># 1Mbs</span>
+</span></span><span style="display:flex;"><span>                self<span style="color:#f92672">.</span>wide_band <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>write_register(NRF24<span style="color:#f92672">.</span>RF_SETUP, setup)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Verify our result</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> self<span style="color:#f92672">.</span>read_register(NRF24<span style="color:#f92672">.</span>RF_SETUP) <span style="color:#f92672">==</span> setup:
+</span></span><span style="display:flex;"><span>            result <span style="color:#f92672">=</span> <span style="color:#66d9ef">True</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>wide_band <span style="color:#f92672">=</span> <span style="color:#66d9ef">False</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> result
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">getDataRate</span>(self):
+</span></span><span style="display:flex;"><span>        dr <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>read_register(NRF24<span style="color:#f92672">.</span>RF_SETUP) <span style="color:#f92672">&amp;</span> (_BV(NRF24<span style="color:#f92672">.</span>RF_DR_LOW) <span style="color:#f92672">|</span> _BV(NRF24<span style="color:#f92672">.</span>RF_DR_HIGH))
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Order matters in our case below</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> dr <span style="color:#f92672">==</span> _BV(NRF24<span style="color:#f92672">.</span>RF_DR_LOW):
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># &#39;10&#39; = 250KBPS</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> NRF24<span style="color:#f92672">.</span>BR_250KBPS
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">elif</span> dr <span style="color:#f92672">==</span> _BV(NRF24<span style="color:#f92672">.</span>RF_DR_HIGH):
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># &#39;01&#39; = 2MBPS</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> NRF24<span style="color:#f92672">.</span>BR_2MBPS
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># &#39;00&#39; = 1MBPS</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> NRF24<span style="color:#f92672">.</span>BR_1MBPS
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">setCRCLength</span>(self, length):
+</span></span><span style="display:flex;"><span>        config <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>read_register(NRF24<span style="color:#f92672">.</span>CONFIG) <span style="color:#f92672">&amp;</span> <span style="color:#f92672">~</span>( _BV(NRF24<span style="color:#f92672">.</span>CRC_16) <span style="color:#f92672">|</span> _BV(NRF24<span style="color:#f92672">.</span>CRC_ENABLED))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> length <span style="color:#f92672">==</span> NRF24<span style="color:#f92672">.</span>CRC_DISABLED:
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e"># Do nothing, we turned it off above.</span>
+</span></span><span style="display:flex;"><span>            self<span style="color:#f92672">.</span>write_register(NRF24<span style="color:#f92672">.</span>CONFIG, config)
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">elif</span> length <span style="color:#f92672">==</span> NRF24<span style="color:#f92672">.</span>CRC_8:
+</span></span><span style="display:flex;"><span>            config <span style="color:#f92672">|=</span> _BV(NRF24<span style="color:#f92672">.</span>CRC_ENABLED)
+</span></span><span style="display:flex;"><span>            config <span style="color:#f92672">|=</span> _BV(NRF24<span style="color:#f92672">.</span>CRC_8)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>            config <span style="color:#f92672">|=</span> _BV(NRF24<span style="color:#f92672">.</span>CRC_ENABLED)
+</span></span><span style="display:flex;"><span>            config <span style="color:#f92672">|=</span> _BV(NRF24<span style="color:#f92672">.</span>CRC_16)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>write_register(NRF24<span style="color:#f92672">.</span>CONFIG, config)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">getCRCLength</span>(self):
+</span></span><span style="display:flex;"><span>        result <span style="color:#f92672">=</span> NRF24<span style="color:#f92672">.</span>CRC_DISABLED
+</span></span><span style="display:flex;"><span>        config <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>read_register(NRF24<span style="color:#f92672">.</span>CONFIG) <span style="color:#f92672">&amp;</span> ( _BV(NRF24<span style="color:#f92672">.</span>CRCO) <span style="color:#f92672">|</span> _BV(NRF24<span style="color:#f92672">.</span>EN_CRC))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> config <span style="color:#f92672">&amp;</span> _BV(NRF24<span style="color:#f92672">.</span>EN_CRC):
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> config <span style="color:#f92672">&amp;</span> _BV(NRF24<span style="color:#f92672">.</span>CRCO):
+</span></span><span style="display:flex;"><span>                result <span style="color:#f92672">=</span> NRF24<span style="color:#f92672">.</span>CRC_16
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>                result <span style="color:#f92672">=</span> NRF24<span style="color:#f92672">.</span>CRC_8
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> result
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">disableCRC</span>(self):
+</span></span><span style="display:flex;"><span>        disable <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>read_register(NRF24<span style="color:#f92672">.</span>CONFIG) <span style="color:#f92672">&amp;</span> <span style="color:#f92672">~</span>_BV(NRF24<span style="color:#f92672">.</span>EN_CRC)
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>write_register(NRF24<span style="color:#f92672">.</span>CONFIG, disable)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">setRetries</span>(self, delay, count):
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># see specs. Delay code below 5 can conflict with some ACK lengths</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># and count should be set = 0 for non-ACK modes</span>
+</span></span><span style="display:flex;"><span>        self<span style="color:#f92672">.</span>write_register(NRF24<span style="color:#f92672">.</span>SETUP_RETR, (delay <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0xf</span>) <span style="color:#f92672">&lt;&lt;</span> NRF24<span style="color:#f92672">.</span>ARD <span style="color:#f92672">|</span> (count <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0xf</span>))
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">getRetries</span>(self):
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> self<span style="color:#f92672">.</span>read_register(NRF24<span style="color:#f92672">.</span>SETUP_RETR)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">def</span> <span style="color:#a6e22e">getMaxTimeout</span>(self):        <span style="color:#75715e"># seconds</span>
+</span></span><span style="display:flex;"><span>        retries <span style="color:#f92672">=</span> self<span style="color:#f92672">.</span>getRetries()
+</span></span><span style="display:flex;"><span>        tout <span style="color:#f92672">=</span> (((<span style="color:#ae81ff">250</span><span style="color:#f92672">+</span>(<span style="color:#ae81ff">250</span><span style="color:#f92672">*</span>((retries<span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0xf0</span>)<span style="color:#f92672">&gt;&gt;</span><span style="color:#ae81ff">4</span> ))) <span style="color:#f92672">*</span> (retries <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">0x0f</span>)) <span style="color:#f92672">/</span> <span style="color:#ae81ff">1000000.0</span> <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span>) <span style="color:#f92672">+</span> <span style="color:#ae81ff">0.008</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Fudged up to about double Barraca&#39;s calculation</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># Was too short &amp; was timeing out wrongly.    BL</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> tout
+</span></span></code></pre></div></details>
+<br/>
+<p>On an Arduino Nano, I had this code:</p>
+<details>
+<summary>NRF24L01.ino:</summary>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#75715e">#include</span><span style="color:#75715e">&lt;SPI.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e">#include</span><span style="color:#75715e">&lt;RF24.h&gt;</span><span style="color:#75715e">
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Loosely based on: https://circuitdigest.com/microcontroller-projects/wireless-rf-communication-between-arduino-and-raspberry-pi-using-nrf24l01
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>RF24 <span style="color:#a6e22e">radio</span>(<span style="color:#ae81ff">7</span>, <span style="color:#ae81ff">8</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> count <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">unsigned</span> <span style="color:#66d9ef">long</span> lastTime <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup</span>()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">pinMode</span>(<span style="color:#ae81ff">2</span>, OUTPUT);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">pinMode</span>(<span style="color:#ae81ff">3</span>, OUTPUT);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">pinMode</span>(<span style="color:#ae81ff">4</span>, OUTPUT);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">//while (!Serial);
+</span></span></span><span style="display:flex;"><span>  Serial.<span style="color:#a6e22e">begin</span>(<span style="color:#ae81ff">9600</span>) ;     <span style="color:#75715e">// start serial monitor baud rate
+</span></span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  radio.<span style="color:#a6e22e">begin</span>();        
+</span></span><span style="display:flex;"><span>  radio.<span style="color:#a6e22e">setPALevel</span>(RF24_PA_MIN);   
+</span></span><span style="display:flex;"><span>  radio.<span style="color:#a6e22e">setChannel</span>(<span style="color:#ae81ff">0x76</span>);            
+</span></span><span style="display:flex;"><span>  radio.<span style="color:#a6e22e">setPayloadSize</span>(<span style="color:#ae81ff">15</span>);
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#66d9ef">uint64_t</span> pipe <span style="color:#f92672">=</span> <span style="color:#ae81ff">0xE0E0F1F1E0LL</span>;
+</span></span><span style="display:flex;"><span>  radio.<span style="color:#a6e22e">openReadingPipe</span>(<span style="color:#ae81ff">0</span>, pipe);
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">//radio.enableDynamicPayloads();
+</span></span></span><span style="display:flex;"><span>  radio.<span style="color:#a6e22e">powerUp</span>();
+</span></span><span style="display:flex;"><span>  radio.<span style="color:#a6e22e">startListening</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">loop</span>()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">bool</span> msgReceived <span style="color:#f92672">=</span> false;
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">digitalWrite</span>(<span style="color:#ae81ff">2</span>, count <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">?</span> HIGH : LOW);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">digitalWrite</span>(<span style="color:#ae81ff">3</span>, count <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">2</span> <span style="color:#f92672">?</span> HIGH : LOW);
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">digitalWrite</span>(<span style="color:#ae81ff">4</span>, count <span style="color:#f92672">&amp;</span> <span style="color:#ae81ff">4</span> <span style="color:#f92672">?</span> HIGH : LOW);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">while</span> (lastTime <span style="color:#f92672">+</span> <span style="color:#ae81ff">4000</span> <span style="color:#f92672">&gt;</span> <span style="color:#a6e22e">millis</span>())
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (radio.<span style="color:#a6e22e">available</span>())
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">char</span> receivedMessage[<span style="color:#ae81ff">32</span>] <span style="color:#f92672">=</span> {<span style="color:#ae81ff">0</span>} ;
+</span></span><span style="display:flex;"><span>      radio.<span style="color:#a6e22e">read</span>(receivedMessage, <span style="color:#66d9ef">sizeof</span>(receivedMessage));
+</span></span><span style="display:flex;"><span>      radio.<span style="color:#a6e22e">stopListening</span>();
+</span></span><span style="display:flex;"><span>      radio.<span style="color:#a6e22e">startListening</span>();
+</span></span><span style="display:flex;"><span>      Serial.<span style="color:#a6e22e">println</span>(receivedMessage);
+</span></span><span style="display:flex;"><span>      msgReceived <span style="color:#f92672">=</span> true;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>msgReceived)
+</span></span><span style="display:flex;"><span>    Serial.<span style="color:#a6e22e">println</span>(<span style="color:#e6db74">&#34;No message received &#34;</span> <span style="color:#f92672">+</span> <span style="color:#a6e22e">String</span>(count));
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span>  lastTime <span style="color:#f92672">=</span> <span style="color:#a6e22e">millis</span>();
+</span></span><span style="display:flex;"><span>  count<span style="color:#f92672">++</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div></details>
+<details>
+<summary>Arduino Nano Photos:</summary>
+<p><img src="/images/RPI-NRF24L01/ArduinoNano1.jpg" alt="RPI NRF Board Wiring">
+<img src="/images/RPI-NRF24L01/ArduinoNano2.jpg" alt="RPI NRF Board Wiring">
+<img src="/images/RPI-NRF24L01/ArduinoNano3.jpg" alt="RPI NRF Board Wiring"></p>
+</details>
+<p><br/>Because the Nano is 5V, I used a <a href="https://www.google.com/search?q=nrf24l01+adapter+module">NRF24L01 adapter module</a>.</p>
+<p>It did work, but I wanted to use C# and .Net and the NRF24L01 driver in the dotnet iot project didn&rsquo;t work without modification:</p>
+<details>
+<summary>.Net Code (using dotnet iot library):</summary>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-cs" data-lang="cs"><span style="display:flex;"><span><span style="color:#66d9ef">using</span> System;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> System.Text;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> System.Threading;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> System.Device.Gpio;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> System.Device.Spi;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> Iot.Device.Nrf24l01;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">using</span> System.Collections.Generic;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// See https://github.com/dotnet/iot for System.Device.Gpio source code and help</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">namespace</span> RF24Lib
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/// &lt;summary&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/// Control NRF24L01 board</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">/// &lt;/summary&gt;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">RF24Controller</span>
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> SpiDevice senderDevice;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> GpioController _controller;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">bool</span> _disposed = <span style="color:#66d9ef">false</span>;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> RF24Controller(GpioController controller)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            _controller = controller;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> Initialize()
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// SPI0 CS0</span>
+</span></span><span style="display:flex;"><span>            SpiConnectionSettings senderSettings = <span style="color:#66d9ef">new</span> SpiConnectionSettings(<span style="color:#ae81ff">0</span>, <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>            {
+</span></span><span style="display:flex;"><span>                ClockFrequency = Nrf24l01.SpiClockFrequency,
+</span></span><span style="display:flex;"><span>                Mode = Nrf24l01.SpiMode
+</span></span><span style="display:flex;"><span>            };
+</span></span><span style="display:flex;"><span>            senderDevice = SpiDevice.Create(senderSettings);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> SendMessage(<span style="color:#66d9ef">string</span> msg)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// SPI Device, CE Pin, IRQ Pin, Receive Packet Size</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//using (Nrf24l01 sender = new Nrf24l01(senderDevice, 25, 22, 32, 0x76, OutputPower.N18dBm, DataRate.Rate1Mbps)) //, PinNumberingScheme.Logical, _controller, false))</span>
+</span></span><span style="display:flex;"><span>            Nrf24l01 sender = <span style="color:#66d9ef">new</span> Nrf24l01(senderDevice, <span style="color:#ae81ff">25</span>, <span style="color:#ae81ff">22</span>, <span style="color:#ae81ff">15</span>, <span style="color:#ae81ff">0x76</span>, OutputPower.N18dBm, DataRate.Rate1Mbps);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">var</span> addr = <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">byte</span>[] { <span style="color:#ae81ff">0xE0</span>, <span style="color:#ae81ff">0xF1</span>, <span style="color:#ae81ff">0xF1</span>, <span style="color:#ae81ff">0xE0</span>, <span style="color:#ae81ff">0xE0</span> };
+</span></span><span style="display:flex;"><span>            sender.Address = addr; <span style="color:#75715e">//Encoding.UTF8.GetBytes(&#34;NRF24&#34;);</span>
+</span></span><span style="display:flex;"><span>            WriteRegister(<span style="color:#ae81ff">0</span>, (<span style="color:#66d9ef">byte</span>)(ReadRegister(<span style="color:#ae81ff">0</span>)[<span style="color:#ae81ff">0</span>] | <span style="color:#ae81ff">0x04</span>));        <span style="color:#75715e">// Set CRC to 2 bytes rather than 1 byte</span>
+</span></span><span style="display:flex;"><span>            WriteRegister(<span style="color:#ae81ff">0x1c</span>, <span style="color:#ae81ff">0x3f</span>);  <span style="color:#75715e">// Set dynamic payload for all pipes</span>
+</span></span><span style="display:flex;"><span>            WriteRegister(<span style="color:#ae81ff">0x1d</span>, <span style="color:#ae81ff">0x04</span>);  <span style="color:#75715e">// enable dynamic payload, disable payload with ACK, disable W_TX_PAYLOAD_NOACK command</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">var</span> sendStr = <span style="color:#66d9ef">new</span> <span style="color:#66d9ef">string</span>[] { <span style="color:#e6db74">&#34;test12345678901&#34;</span>, <span style="color:#e6db74">&#34;long string----&#34;</span>, <span style="color:#e6db74">&#34;short----------&#34;</span>, <span style="color:#e6db74">&#34;longer---------&#34;</span>, <span style="color:#e6db74">&#34;10 chars..-----&#34;</span>, <span style="color:#e6db74">&#34;four-----------&#34;</span> };   <span style="color:#75715e">// 11 chars max</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> i = <span style="color:#ae81ff">0</span>; i &lt; <span style="color:#ae81ff">6</span>; i++)
+</span></span><span style="display:flex;"><span>            {
+</span></span><span style="display:flex;"><span>                DisplayRegisters();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">// Set sender send address</span>
+</span></span><span style="display:flex;"><span>                <span style="color:#75715e">//sender.Send(Encoding.UTF8.GetBytes(&#34;Hello! .NET Core IoT&#34;));</span>
+</span></span><span style="display:flex;"><span>                sender.Send(Encoding.UTF8.GetBytes(sendStr[i]));
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>                Thread.Sleep(<span style="color:#ae81ff">1000</span>);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">byte</span>[] ReadRegister(<span style="color:#66d9ef">byte</span> register, <span style="color:#66d9ef">int</span> len = <span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            Span&lt;<span style="color:#66d9ef">byte</span>&gt; writeBuf = <span style="color:#66d9ef">stackalloc</span> <span style="color:#66d9ef">byte</span>[<span style="color:#ae81ff">1</span> + len];
+</span></span><span style="display:flex;"><span>            Span&lt;<span style="color:#66d9ef">byte</span>&gt; readBuf = <span style="color:#66d9ef">stackalloc</span> <span style="color:#66d9ef">byte</span>[<span style="color:#ae81ff">1</span> + len];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            writeBuf[<span style="color:#ae81ff">0</span>] = (<span style="color:#66d9ef">byte</span>)(register);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            senderDevice.TransferFullDuplex(writeBuf, readBuf);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> readBuf.Slice(<span style="color:#ae81ff">1</span>).ToArray();
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">internal</span> <span style="color:#66d9ef">void</span> WriteRegister(<span style="color:#66d9ef">byte</span> register, <span style="color:#66d9ef">byte</span> data)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            Span&lt;<span style="color:#66d9ef">byte</span>&gt; writeBuf = <span style="color:#66d9ef">stackalloc</span> <span style="color:#66d9ef">byte</span>[<span style="color:#ae81ff">2</span>]
+</span></span><span style="display:flex;"><span>            {
+</span></span><span style="display:flex;"><span>                (<span style="color:#66d9ef">byte</span>)(<span style="color:#ae81ff">0x20</span> + (<span style="color:#66d9ef">byte</span>)register),
+</span></span><span style="display:flex;"><span>                data
+</span></span><span style="display:flex;"><span>            };
+</span></span><span style="display:flex;"><span>            Span&lt;<span style="color:#66d9ef">byte</span>&gt; readBuf = <span style="color:#66d9ef">stackalloc</span> <span style="color:#66d9ef">byte</span>[<span style="color:#ae81ff">2</span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            senderDevice.TransferFullDuplex(writeBuf, readBuf);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> DisplayRegisters()
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">var</span> registers = <span style="color:#66d9ef">new</span> List&lt;<span style="color:#66d9ef">byte</span>&gt;();
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            Span&lt;<span style="color:#66d9ef">byte</span>&gt; writeBuf = <span style="color:#66d9ef">stackalloc</span> <span style="color:#66d9ef">byte</span>[<span style="color:#ae81ff">1</span> + <span style="color:#ae81ff">1</span>];
+</span></span><span style="display:flex;"><span>            Span&lt;<span style="color:#66d9ef">byte</span>&gt; readBuf = <span style="color:#66d9ef">stackalloc</span> <span style="color:#66d9ef">byte</span>[<span style="color:#ae81ff">1</span> + <span style="color:#ae81ff">1</span>];
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> reg = <span style="color:#ae81ff">0</span>; reg &lt;= <span style="color:#ae81ff">0x1d</span>; reg++)
+</span></span><span style="display:flex;"><span>            {
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">if</span> (reg &gt; <span style="color:#ae81ff">0x17</span> &amp;&amp; reg &lt; <span style="color:#ae81ff">0x1c</span>)
+</span></span><span style="display:flex;"><span>                {
+</span></span><span style="display:flex;"><span>                    registers.Add(<span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>                <span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>                {
+</span></span><span style="display:flex;"><span>                    registers.Add(ReadRegister((<span style="color:#66d9ef">byte</span>)reg)[<span style="color:#ae81ff">0</span>]);
+</span></span><span style="display:flex;"><span>                }
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">var</span> status = registers[<span style="color:#ae81ff">7</span>];
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">var</span> statStr = <span style="color:#e6db74">$&#34;RX_DR={((status &amp; 0x40) != 0 ? 1 : 0)} TX_DS={((status &amp; 0x20) != 0 ? 1 : 0)} MAX_RT={((status &amp; 0x10) != 0 ? 1 : 0)}&#34;</span> +
+</span></span><span style="display:flex;"><span>                          <span style="color:#e6db74">$&#34;RX_P_NO={status &amp; 0x0e &gt;&gt; 1} TX_FULL={((status &amp; 0x01) != 0 ? 1 : 0)}&#34;</span>;
+</span></span><span style="display:flex;"><span>            Console.WriteLine(<span style="color:#e6db74">$&#34;STATUS = 0x{status:x2} {statStr}&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Get RX and TX addresses</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">var</span> txAddrRaw = ReadRegister(<span style="color:#ae81ff">0x10</span>, <span style="color:#ae81ff">5</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">var</span> rxAddrP0Raw = ReadRegister(<span style="color:#ae81ff">0x0a</span>, <span style="color:#ae81ff">5</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">var</span> rxAddrP1Raw = ReadRegister(<span style="color:#ae81ff">0x0b</span>, <span style="color:#ae81ff">5</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">var</span> rxAddrP2Raw = ReadRegister(<span style="color:#ae81ff">0x0c</span>, <span style="color:#ae81ff">5</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">var</span> rxAddrP3Raw = ReadRegister(<span style="color:#ae81ff">0x0d</span>, <span style="color:#ae81ff">5</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">var</span> rxAddrP4Raw = ReadRegister(<span style="color:#ae81ff">0x0e</span>, <span style="color:#ae81ff">5</span>);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">var</span> rxAddrP5Raw = ReadRegister(<span style="color:#ae81ff">0x0f</span>, <span style="color:#ae81ff">5</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">long</span> txAddr = GetAddrFromRaw(txAddrRaw);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">long</span> rxAddrP0 = GetAddrFromRaw(rxAddrP0Raw);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">long</span> rxAddrP1 = GetAddrFromRaw(rxAddrP1Raw);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">long</span> rxAddrP2 = GetAddrFromRaw(rxAddrP2Raw);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">long</span> rxAddrP3 = GetAddrFromRaw(rxAddrP3Raw);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">long</span> rxAddrP4 = GetAddrFromRaw(rxAddrP4Raw);
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">long</span> rxAddrP5 = GetAddrFromRaw(rxAddrP5Raw);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//long txAddr = ((((rxAddrP0Raw[0] &lt;&lt; 8) + txAddrRaw[1] &lt;&lt; 8) + txAddrRaw[2] &lt;&lt; 8) + txAddrRaw[3] &lt;&lt; 8) + txAddrRaw[4];</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            Console.WriteLine(<span style="color:#e6db74">$&#34;RX_ADDR_P0-1 = 0x{rxAddrP0:x10} 0x{rxAddrP1:x10}&#34;</span>);
+</span></span><span style="display:flex;"><span>            Console.WriteLine(<span style="color:#e6db74">$&#34;RX_ADDR_P2-5 = 0x{rxAddrP2:x10} 0x{rxAddrP3:x10} 0x{rxAddrP4:x10} 0x{rxAddrP5:x10}&#34;</span>);
+</span></span><span style="display:flex;"><span>            Console.WriteLine(<span style="color:#e6db74">$&#34;TX_ADDR = 0x{txAddr:x10}&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            Console.WriteLine(<span style="color:#e6db74">$&#34;EN_AA         = 0x{registers[1]:x2}&#34;</span>);
+</span></span><span style="display:flex;"><span>            Console.WriteLine(<span style="color:#e6db74">$&#34;EN_RXADDR     = 0x{registers[2]:x2}&#34;</span>);
+</span></span><span style="display:flex;"><span>            Console.WriteLine(<span style="color:#e6db74">$&#34;RF_CH         = 0x{registers[5]:x2}&#34;</span>);
+</span></span><span style="display:flex;"><span>            Console.WriteLine(<span style="color:#e6db74">$&#34;RF_SETUP      = 0x{registers[6]:x2}&#34;</span>);
+</span></span><span style="display:flex;"><span>            Console.WriteLine(<span style="color:#e6db74">$&#34;CONFIG        = 0x{registers[0]:x2}&#34;</span>);
+</span></span><span style="display:flex;"><span>            Console.WriteLine(<span style="color:#e6db74">$&#34;DYNPD/FEATURE = 0x{registers[0x1c]:x2} 0x{registers[0x1d]:x2}&#34;</span>);
+</span></span><span style="display:flex;"><span>            Console.WriteLine(<span style="color:#e6db74">&#34;&#34;</span>);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">for</span> (<span style="color:#66d9ef">int</span> reg = <span style="color:#ae81ff">0</span>; reg &lt; registers.Count; reg++)
+</span></span><span style="display:flex;"><span>            {
+</span></span><span style="display:flex;"><span>                Console.Write(<span style="color:#e6db74">$&#34;Reg {reg:x2} = 0x{registers[reg]:x2}          &#34;</span>);
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>            Console.WriteLine(<span style="color:#e6db74">&#34;&#34;</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">private</span> <span style="color:#66d9ef">long</span> GetAddrFromRaw(<span style="color:#66d9ef">byte</span>[] raw)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">//return BitConverter.ToInt64(raw, 0);</span>
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> ((<span style="color:#66d9ef">long</span>)raw[<span style="color:#ae81ff">0</span>] &lt;&lt; <span style="color:#ae81ff">32</span>) + ((<span style="color:#66d9ef">long</span>)raw[<span style="color:#ae81ff">1</span>] &lt;&lt; <span style="color:#ae81ff">24</span>) + ((<span style="color:#66d9ef">long</span>)raw[<span style="color:#ae81ff">2</span>] &lt;&lt; <span style="color:#ae81ff">16</span>) + ((<span style="color:#66d9ef">long</span>)raw[<span style="color:#ae81ff">3</span>] &lt;&lt; <span style="color:#ae81ff">8</span>) + (<span style="color:#66d9ef">long</span>)raw[<span style="color:#ae81ff">4</span>];
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">public</span> <span style="color:#66d9ef">void</span> Dispose()
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            Dispose(<span style="color:#66d9ef">true</span>);
+</span></span><span style="display:flex;"><span>            GC.SuppressFinalize(<span style="color:#66d9ef">this</span>);     
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">protected</span> <span style="color:#66d9ef">virtual</span> <span style="color:#66d9ef">void</span> Dispose(<span style="color:#66d9ef">bool</span> disposing)
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (_disposed) <span style="color:#66d9ef">return</span>;
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> (disposing)
+</span></span><span style="display:flex;"><span>            {
+</span></span><span style="display:flex;"><span>                senderDevice.Dispose();
+</span></span><span style="display:flex;"><span>            }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>            <span style="color:#75715e">// Free any unmanaged objects here.</span>
+</span></span><span style="display:flex;"><span>            _disposed = <span style="color:#66d9ef">true</span>;
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>        ~RF24Controller()
+</span></span><span style="display:flex;"><span>        {
+</span></span><span style="display:flex;"><span>            Dispose(<span style="color:#66d9ef">false</span>);
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>   }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div></details>
+
+    </div>
+</article>
+
+        </div>
+    </main>
+    <footer class="site-footer">
+        <div class="wrapper">
+            <div class="footer-col-wrapper">
+                <div class="footer-col">
+                    <p class="feed-subscribe">
+                        <a href="/index.xml">
+                            <svg class="svg-icon orange">
+                                <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+                            </svg><span>Subscribe</span>
+                        </a>
+                    </p>
+                </div>
+                <div class="footer-col">
+                    <p>C#, Python, VueJS, C&#43;&#43; for Linux, Windows, Raspberry Pi and Arduino. Real Projects from a software engineer who is also an amateur radio enthusiast</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

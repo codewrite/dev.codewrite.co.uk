@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Generating sounds on the Arduino - Codewrite Dev Blog</title>
+    <meta name="description" content="C#, Python, VueJS, C&#43;&#43; for Linux, Windows, Raspberry Pi and Arduino. Real Projects from a software engineer who is also an amateur radio enthusiast">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="alternate" type="application/rss+xml" title="Codewrite Dev Blog" href="/index.xml">
+</head>
+<body>
+    <header class="site-header">
+    <div class="wrapper">
+        <a class="site-title" href="/">Codewrite Dev Blog</a>
+        
+        
+        <nav class="site-nav">
+            <input type="checkbox" id="nav-trigger" class="nav-trigger" />
+            <label for="nav-trigger">
+                <span class="menu-icon">
+                    <svg viewBox="0 0 18 15" width="18px" height="15px">
+                        <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
+                    </svg>
+                </span>
+            </label>
+            <div class="trigger">
+                
+                    
+                        <a class="page-link" href="/posts/2020-08-14-arduinodefaultlibraries/">Arduino Default Libraries</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2020-08-19-arduinolowpowerencryption/">Arduino Low Power Encryption</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2023-02-21-picamobjectdetection1/">Camera Object Detection in Python, Part 1</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2020-04-15-rasperrypianddotnet/">Dotnet Core on Raspberry Pi</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2020-08-13-arduinoclassdsound/">Generating sounds on the Arduino</a>
+                    
+                
+                    
+                        <a class="page-link" href="/rpi-dotnet/gpioboard-hardware/">GPIO Board Hardware</a>
+                    
+                
+                    
+                        <a class="page-link" href="/rpi-dotnet/gpioboard-software/">GPIO Board Software</a>
+                    
+                
+                    
+                        <a class="page-link" href="/rpi-dotnet/gpioboard-buildandrun/">GPIO Board Software - build and run</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2022-03-28-raspberrypihomeassistant/">Home Assistant on the Raspberry Pi</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2022-12-22-hassconfigfiles/">Home Assistant REST Devices and Sensors</a>
+                    
+                
+                    
+                        <a class="page-link" href="/general/marconi/">Marconi</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2020-04-02-post1/">My first post</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2020-06-07-raspberrypinrf24l01/">NRF24L01 on Raspberry Pi</a>
+                    
+                
+                    
+                        <a class="page-link" href="/general/overview/">Overview</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2020-04-02-setupjekyll/">Setting Up Jekyll</a>
+                    
+                
+                    
+                        <a class="page-link" href="/posts/2020-04-02-welcome-to-jekyll/">Welcome to Jekyll!</a>
+                    
+                
+            </div>
+        </nav>
+        
+    </div>
+</header>
+
+    <main class="page-content">
+        <div class="wrapper">
+            
+<article class="post">
+    <header class="post-header">
+        <h1 class="post-title">Generating sounds on the Arduino</h1>
+    </header>
+    <div class="post-content">
+        <p><img src="/images/arduinoSoundClassD/ArduinoWAVPlayer1.jpg" alt="Arduino WAV Player 1">
+<img src="/images/arduinoSoundClassD/ArduinoWAVPlayer2.jpg" alt="Arduino WAV Player 2"></p>
+<p>This is a small project to read wav files from a micro SD card via an Arduino Nano and then play them directly to a loudspeaker.
+I&rsquo;ll state upfront that this isn&rsquo;t the easiest way to do this (there are MP3 modules and libraries), but I wanted to:</p>
+<ol>
+<li>Understand sound generation using a microcontroller from first principles</li>
+<li>Have some tools / ideas about how to generate sounds for any future projects</li>
+</ol>
+<p>As an idea of the sort of thing I was thinking of - I&rsquo;ve been thinking of a DIY &ldquo;ring&rdquo; doorbell. I already have a camera that can see anyone approaching the front door. A 433.92MHz receiver could detect when the doorbell is pressed (so no new doorbell required). A Raspberry Pi (i.e. the one with the camera) controlling it all and sending and receiving to my mobile phone. A lot more work than just buying a Ring doorbell - but a lot more satisfying!</p>
+<p>To drive the loudspeaker I used a power MOSFET. Ideally I would use two (or maybe four) MOSFETs in a push pull arrangement. I was more interested in getting the software right however, so I didn&rsquo;t spend a lot of time getting the hardware correct. <a href="https://www.analog.com/en/analog-dialogue/articles/class-d-audio-amplifiers.html">Figure 3 on this page</a> would seem be the ideal solution, but I suspect that if I went down this route it would need four independently controllable PWM inputs - and having given this a bit of thought - I think this would be best done with an FPGA. That&rsquo;s a project for another day! (but it would be pretty awesome). &hellip;or maybe I&rsquo;ll just buy an audio amplifier module from Aliexpress :)</p>
+<details>
+<summary>Hardware:</summary>
+<p><img src="/images/arduinoSoundClassD/ArduinoClassDSchematic.png" alt="Arduino Loudspeaker Driver"></p>
+<p>&hellip;and an SD card module for the Arduino. They cost about 50p if you get them directly from China.</p>
+</details>
+<br/>
+I realized early on that PWM was the easiest way to generate the sound - and after some investigation and calculations worked out that I could have 8 bit audio with a PWM running at 62.5KHz (16MHz clock divided by 256).<br/><br/>
+<details>
+<summary>PWM code (62.5KHz):</summary>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#66d9ef">inline</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">fastWriteD3</span>(<span style="color:#66d9ef">int</span> value)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (value) PORTD <span style="color:#f92672">|=</span> <span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">3</span>;
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">else</span> PORTD <span style="color:#f92672">&amp;=</span> <span style="color:#f92672">~</span>(<span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#ae81ff">3</span>);
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Using Timer 2 B = pin D3, 62.5KHz i.e. no prescaler
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setupPWMTimer</span>()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">pinMode</span>(<span style="color:#ae81ff">3</span>, OUTPUT);
+</span></span><span style="display:flex;"><span>  <span style="color:#75715e">//pinMode(11, OUTPUT);
+</span></span></span><span style="display:flex;"><span>  TCCR2A <span style="color:#f92672">=</span> <span style="color:#a6e22e">_BV</span>(COM2B1) <span style="color:#f92672">|</span> <span style="color:#a6e22e">_BV</span>(WGM21) <span style="color:#f92672">|</span> <span style="color:#a6e22e">_BV</span>(WGM20);
+</span></span><span style="display:flex;"><span>  TCCR2B <span style="color:#f92672">=</span> <span style="color:#a6e22e">_BV</span>(CS20);
+</span></span><span style="display:flex;"><span>  OCR2B <span style="color:#f92672">=</span> <span style="color:#ae81ff">0x80</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">updatePWMTimer</span>(<span style="color:#66d9ef">uint8_t</span> val)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (val <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    TCCR2A <span style="color:#f92672">&amp;=</span> <span style="color:#f92672">~</span><span style="color:#a6e22e">_BV</span>(COM2B1);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fastWriteD3</span>(<span style="color:#ae81ff">0</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (val <span style="color:#f92672">==</span> <span style="color:#ae81ff">0xff</span>)
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    TCCR2A <span style="color:#f92672">&amp;=</span> <span style="color:#f92672">~</span><span style="color:#a6e22e">_BV</span>(COM2B1);
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">fastWriteD3</span>(<span style="color:#ae81ff">1</span>);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">else</span>
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    TCCR2A <span style="color:#f92672">|=</span> <span style="color:#a6e22e">_BV</span>(COM2B1);
+</span></span><span style="display:flex;"><span>    OCR2B <span style="color:#f92672">=</span> val;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div></details>
+<br/>
+The next thing I needed was to play each sample. I probably could do one channel at 44KHz but decided to use 16KHz - which would mean the upper frequency limit would be 8KHz. Nowhere near HiFi, but easily good enough for what I was trying to achieve. So I created an interrupt routine that occurred 16,000 times a second with the following code:<br/><br/>
+<details>
+<summary>Interrupt code (16KHz):</summary>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-c" data-lang="c"><span style="display:flex;"><span><span style="color:#a6e22e">ISR</span>(TIMER1_COMPA_vect)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">if</span> (dataFirst <span style="color:#f92672">!=</span> dataLast)
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">uint8_t</span> val <span style="color:#f92672">=</span> dataBuffer[dataFirst<span style="color:#f92672">++</span>];
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> (dataFirst <span style="color:#f92672">==</span> DATA_BUFFER_SIZE)
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>      dataFirst <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    <span style="color:#a6e22e">updatePWMTimer</span>(val);
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">else</span> <span style="color:#66d9ef">if</span> (<span style="color:#f92672">!</span>paused)
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    noData <span style="color:#f92672">=</span> true;
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e">// Set timer1 interrupt at 16kHz
+</span></span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setup16KHzTimer</span>()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  TCCR1A <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>  TCCR1B <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>  TCNT1  <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;               <span style="color:#75715e">//initialize counter value to 0
+</span></span></span><span style="display:flex;"><span>  OCR1A <span style="color:#f92672">=</span> <span style="color:#ae81ff">1000</span>;             <span style="color:#75715e">// = (16*10^6) / (1 * 16000) - 1 (must be &lt;65536)
+</span></span></span><span style="display:flex;"><span>  TCCR1B <span style="color:#f92672">|=</span> (<span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> WGM12);   <span style="color:#75715e">// turn on CTC mode
+</span></span></span><span style="display:flex;"><span>  TCCR1B <span style="color:#f92672">|=</span> (<span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> CS10);    <span style="color:#75715e">// Set CS10 bit for no prescaler
+</span></span></span><span style="display:flex;"><span>  TIMSK1 <span style="color:#f92672">|=</span> (<span style="color:#ae81ff">1</span> <span style="color:#f92672">&lt;&lt;</span> OCIE1A);  <span style="color:#75715e">// enable timer compare interrupt
+</span></span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">sei</span>();
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div></details>
+<br/>
+Every time the interrupt occurs one sample of the WAV file should be sent to the PWM. You can see this in the ISR.
+<p>I haven&rsquo;t included the SD card reading code here (because it&rsquo;s not the reason for this article), but the entire sketch can be be found <a href="https://github.com/codewrite/ArduinoNanoWavPlayer">on this github repo</a>.</p>
+<br/>
+And this is what it sounds like:
+<p><audio src="/sounds/ArduinoWavPlayer1.mp3" controls>Radiohead</audio>
+<audio src="/sounds/ArduinoWavPlayer2.mp3" controls>Billy Joel</audio></p>
+<p>There seems to be lots of noise in the background of both tracks - but it was raining very hard outside when I recorded them - so it might be that.</p>
+<p>I created the WAV files using Audacity - 8 bit @ 16,000 samples per second - which works out to about 1 MByte / minute.
+I&rsquo;ll be the first to admit it&rsquo;s not HiFi quality - but it&rsquo;s not bad considering how it&rsquo;s being generated (well I think anyway :))</p>
+<h2 id="what-i-learnt">What I learnt</h2>
+<p>I did some tests and found that I could read the data from the SD card about 7 times faster than I needed it.</p>
+<p>Therefore I should be able to do stereo (although I&rsquo;m not sure what the point would be) but I would need another PWM channel.</p>
+<h2 id="references-websites">References (websites)</h2>
+<ul>
+<li><a href="https://www.arduino.cc/en/Tutorial/SecretsOfArduinoPWM">Secrets of Arduino PWM</a></li>
+<li><a href="https://www.instructables.com/id/Arduino-Timer-Interrupts/">Arduino Interrupts</a></li>
+<li><a href="http://soundfile.sapp.org/doc/WaveFormat/">Wav File format</a></li>
+</ul>
+
+    </div>
+</article>
+
+        </div>
+    </main>
+    <footer class="site-footer">
+        <div class="wrapper">
+            <div class="footer-col-wrapper">
+                <div class="footer-col">
+                    <p class="feed-subscribe">
+                        <a href="/index.xml">
+                            <svg class="svg-icon orange">
+                                <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
+                            </svg><span>Subscribe</span>
+                        </a>
+                    </p>
+                </div>
+                <div class="footer-col">
+                    <p>C#, Python, VueJS, C&#43;&#43; for Linux, Windows, Raspberry Pi and Arduino. Real Projects from a software engineer who is also an amateur radio enthusiast</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{{ define "main" }}
+<div class="home">
+    {{ if .Title }}<h1 class="page-heading">{{ .Title }}</h1>{{ end }}
+    {{ .Content }}
+    
+    {{ $paginator := .Paginator }}
+    {{ if $paginator.Pages }}
+        <h2 class="post-list-heading">Posts</h2>
+        <ul class="post-list">
+            {{ range $paginator.Pages }}
+                {{ if not .Params.Hidden }}
+                    <li>
+                        <span class="post-meta">{{ .Date.Format "Jan 2, 2006" }}</span>
+                        <h3>
+                            <a class="post-link" href="{{ .RelPermalink }}">
+                                {{ .Title }}
+                            </a>
+                        </h3>
+                        {{ if .Params.ShowExcerpts }}{{ .Summary }}{{ end }}
+                    </li>
+                {{ end }}
+            {{ end }}
+        </ul>
+    {{ end }}
+</div>
+{{ end }}

@@ -1,0 +1,13 @@
+{{ define "main" }}
+<div class="posts">
+    {{ range .Paginator.Pages }}
+        {{ if not .Params.Hidden }}
+            <article>
+                <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+                <p class="post-meta">{{ .Date.Format "Jan 2, 2006" }}</p>
+                {{ if .Params.ShowExcerpts }}{{ .Summary }}{{ end }}
+            </article>
+        {{ end }}
+    {{ end }}
+</div>
+{{ end }}
