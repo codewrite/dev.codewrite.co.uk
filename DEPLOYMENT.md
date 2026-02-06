@@ -33,16 +33,26 @@ The generated static site will be in the `docs/` directory.
 
 #### Automatic Deployment (Recommended)
 
-This site is configured for automatic deployment to GitHub Pages via GitHub Actions:
+This site is configured for automatic deployment to GitHub Pages via GitHub Actions using GitHub's native Pages environment:
 
 1. Push changes to the `main` branch
 2. GitHub Actions automatically builds and deploys the site
 3. Site is published to `https://dev.codewrite.co.uk`
 
-**Requirements:**
-- Repository must be public
-- Enable GitHub Pages in repository settings (Source: Deploy from a branch, branch: gh-pages)
-- Ensure the custom domain points to your GitHub Pages URL
+**Setup Requirements:**
+1. Go to repository Settings → Pages
+2. Under "Build and deployment":
+   - Source: **GitHub Actions**
+3. Ensure custom domain is configured to point to `dev.codewrite.co.uk`
+
+The workflow will:
+- Build the Hugo site with minification
+- Upload artifacts to GitHub Pages
+- Deploy automatically using GitHub's Pages deployment API
+
+**Trigger Deployment:**
+- Push to `main` branch (automatic)
+- Or manually trigger from Actions tab
 
 #### Manual Deployment (Local)
 
