@@ -1,0 +1,21 @@
+<div class="sidebar-inner">
+  <section class="widget">
+    <h3>Recent posts</h3>
+    <ul class="recent-posts">
+      {{ range first 6 .Site.RegularPages.ByDate.Reverse }}
+        {{ if not .Params.Hidden }}
+          <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+        {{ end }}
+      {{ end }}
+    </ul>
+  </section>
+
+  <section class="widget">
+    <h3>Categories</h3>
+    <ul class="category-list">
+      {{ range $name, $taxonomy := .Site.Taxonomies.categories }}
+        <li><a href="{{ (printf "/categories/%s/" $name) | relURL }}">{{ $name }}</a></li>
+      {{ end }}
+    </ul>
+  </section>
+</div>

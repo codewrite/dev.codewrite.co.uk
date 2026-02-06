@@ -11,86 +11,82 @@
 </head>
 <body>
     <header class="site-header">
-    <div class="wrapper">
+    <div class="wrapper header-inner">
         <a class="site-title" href="/">Codewrite Dev Blog</a>
         
         
-        <nav class="site-nav">
+        <nav class="site-nav" aria-label="Primary navigation">
             <input type="checkbox" id="nav-trigger" class="nav-trigger" />
-            <label for="nav-trigger">
-                <span class="menu-icon">
-                    <svg viewBox="0 0 18 15" width="18px" height="15px">
-                        <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"/>
-                    </svg>
-                </span>
-            </label>
-            <div class="trigger">
+            <label for="nav-trigger" class="nav-toggle">Menu</label>
+            <ul class="nav-list" id="nav-list">
+                <li><a href="/">Home</a></li>
                 
                     
-                        <a class="page-link" href="/posts/2020-08-14-arduinodefaultlibraries/">Arduino Default Libraries</a>
+                        <li><a href="/posts/2023-02-21-picamobjectdetection1/">Camera Object Detection in Python, Part 1</a></li>
                     
                 
                     
-                        <a class="page-link" href="/posts/2020-08-19-arduinolowpowerencryption/">Arduino Low Power Encryption</a>
+                        <li><a href="/posts/2022-12-22-hassconfigfiles/">Home Assistant REST Devices and Sensors</a></li>
                     
                 
                     
-                        <a class="page-link" href="/posts/2023-02-21-picamobjectdetection1/">Camera Object Detection in Python, Part 1</a>
+                        <li><a href="/posts/2022-03-28-raspberrypihomeassistant/">Home Assistant on the Raspberry Pi</a></li>
                     
                 
                     
-                        <a class="page-link" href="/posts/2020-04-15-rasperrypianddotnet/">Dotnet Core on Raspberry Pi</a>
+                        <li><a href="/posts/2020-08-19-arduinolowpowerencryption/">Arduino Low Power Encryption</a></li>
                     
                 
                     
-                        <a class="page-link" href="/posts/2020-08-13-arduinoclassdsound/">Generating sounds on the Arduino</a>
+                        <li><a href="/posts/2020-08-14-arduinodefaultlibraries/">Arduino Default Libraries</a></li>
                     
                 
                     
-                        <a class="page-link" href="/rpi-dotnet/gpioboard-hardware/">GPIO Board Hardware</a>
+                        <li><a href="/posts/2020-08-13-arduinoclassdsound/">Generating sounds on the Arduino</a></li>
                     
                 
                     
-                        <a class="page-link" href="/rpi-dotnet/gpioboard-software/">GPIO Board Software</a>
+                        <li><a href="/posts/2020-06-07-raspberrypinrf24l01/">NRF24L01 on Raspberry Pi</a></li>
                     
                 
                     
-                        <a class="page-link" href="/rpi-dotnet/gpioboard-buildandrun/">GPIO Board Software - build and run</a>
+                        <li><a href="/posts/2020-04-15-rasperrypianddotnet/">Dotnet Core on Raspberry Pi</a></li>
                     
                 
                     
-                        <a class="page-link" href="/posts/2022-03-28-raspberrypihomeassistant/">Home Assistant on the Raspberry Pi</a>
+                        <li><a href="/posts/2020-04-02-post1/">My first post</a></li>
                     
                 
                     
-                        <a class="page-link" href="/posts/2022-12-22-hassconfigfiles/">Home Assistant REST Devices and Sensors</a>
+                        <li><a href="/posts/2020-04-02-setupjekyll/">Setting Up Jekyll</a></li>
                     
                 
                     
-                        <a class="page-link" href="/general/marconi/">Marconi</a>
+                        <li><a href="/posts/2020-04-02-welcome-to-jekyll/">Welcome to Jekyll!</a></li>
                     
                 
                     
-                        <a class="page-link" href="/posts/2020-04-02-post1/">My first post</a>
+                        <li><a href="/rpi-dotnet/gpioboard-hardware/">GPIO Board Hardware</a></li>
                     
                 
                     
-                        <a class="page-link" href="/posts/2020-06-07-raspberrypinrf24l01/">NRF24L01 on Raspberry Pi</a>
+                        <li><a href="/rpi-dotnet/gpioboard-software/">GPIO Board Software</a></li>
                     
                 
                     
-                        <a class="page-link" href="/general/overview/">Overview</a>
+                        <li><a href="/rpi-dotnet/gpioboard-buildandrun/">GPIO Board Software - build and run</a></li>
                     
                 
                     
-                        <a class="page-link" href="/posts/2020-04-02-setupjekyll/">Setting Up Jekyll</a>
+                        <li><a href="/general/marconi/">Marconi</a></li>
                     
                 
                     
-                        <a class="page-link" href="/posts/2020-04-02-welcome-to-jekyll/">Welcome to Jekyll!</a>
+                        <li><a href="/general/overview/">Overview</a></li>
                     
                 
-            </div>
+            </ul>
+            <button class="nav-toggle" aria-controls="nav-list" aria-expanded="false">Menu</button>
         </nav>
         
     </div>
@@ -99,6 +95,22 @@
     <main class="page-content">
         <div class="wrapper">
             
+<nav class="breadcrumbs" aria-label="Breadcrumbs">
+  <div class="breadcrumbs-inner">
+    <a href="/">Home</a>
+    
+      <span class="sep">›</span>
+      <a href="/posts/">Posts</a>
+    
+    <span class="sep">›</span>
+    <span class="current">Arduino Low Power Encryption</span>
+  </div>
+</nav>
+
+
+            <div class="content-area">
+                <div class="main-column">
+                    
 <article class="post">
     <header class="post-header">
         <h1 class="post-title">Arduino Low Power Encryption</h1>
@@ -119,6 +131,74 @@ With a message every four seconds the battery should last two months or so - I h
     </div>
 </article>
 
+                </div>
+                <aside class="sidebar">
+                    <div class="sidebar-inner">
+  <section class="widget">
+    <h3>Recent posts</h3>
+    <ul class="recent-posts">
+      
+        
+          <li><a href="/posts/2023-02-21-picamobjectdetection1/">Camera Object Detection in Python, Part 1</a></li>
+        
+      
+        
+          <li><a href="/posts/2022-12-22-hassconfigfiles/">Home Assistant REST Devices and Sensors</a></li>
+        
+      
+        
+          <li><a href="/posts/2022-03-28-raspberrypihomeassistant/">Home Assistant on the Raspberry Pi</a></li>
+        
+      
+        
+          <li><a href="/posts/2020-08-19-arduinolowpowerencryption/">Arduino Low Power Encryption</a></li>
+        
+      
+        
+          <li><a href="/posts/2020-08-14-arduinodefaultlibraries/">Arduino Default Libraries</a></li>
+        
+      
+        
+          <li><a href="/posts/2020-08-13-arduinoclassdsound/">Generating sounds on the Arduino</a></li>
+        
+      
+    </ul>
+  </section>
+
+  <section class="widget">
+    <h3>Categories</h3>
+    <ul class="category-list">
+      
+        <li><a href="/categories/arduino/">arduino</a></li>
+      
+        <li><a href="/categories/dotnet/">dotnet</a></li>
+      
+        <li><a href="/categories/encryption/">encryption</a></li>
+      
+        <li><a href="/categories/jekyll/">jekyll</a></li>
+      
+        <li><a href="/categories/libraries/">libraries</a></li>
+      
+        <li><a href="/categories/low/">low</a></li>
+      
+        <li><a href="/categories/mosfet/">mosfet</a></li>
+      
+        <li><a href="/categories/nrf24l01/">nrf24l01</a></li>
+      
+        <li><a href="/categories/power/">power</a></li>
+      
+        <li><a href="/categories/raspberrypi/">raspberrypi</a></li>
+      
+        <li><a href="/categories/update/">update</a></li>
+      
+        <li><a href="/categories/wav/">wav</a></li>
+      
+    </ul>
+  </section>
+</div>
+
+                </aside>
+            </div>
         </div>
     </main>
     <footer class="site-footer">

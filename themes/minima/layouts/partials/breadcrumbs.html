@@ -1,0 +1,13 @@
+{{ if not .IsHome }}
+<nav class="breadcrumbs" aria-label="Breadcrumbs">
+  <div class="breadcrumbs-inner">
+    <a href="{{ "/" | relURL }}">Home</a>
+    {{ if .Section }}
+      <span class="sep">›</span>
+      <a href="{{ (printf "/%s/" .Section) | relURL }}">{{ .Section | title }}</a>
+    {{ end }}
+    <span class="sep">›</span>
+    <span class="current">{{ .Title }}</span>
+  </div>
+</nav>
+{{ end }}
