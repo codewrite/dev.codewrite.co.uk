@@ -176,6 +176,18 @@ body {
   margin-top: 30px;
 }
 
+.post-content > p,blockquote,pre,ul,ol,dl,div {
+  margin-bottom: 15px;
+}
+
+.post-content > ul {
+  margin-left: 30px;
+}
+
+.post-content > p > img {
+    max-width: 100%;
+    vertical-align: middle
+}
 .site-footer {
   border-top: 1px solid #e8e8e8;
   padding: 30px 0;

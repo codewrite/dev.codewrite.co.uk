@@ -20,6 +20,4 @@ I realized that the layout of the old site wasn't brilliant, although I think so
 
 I am on the free Github Copilot plan, and this has used about 42% of my monthly allowance. I have been considering upgrading to the paid plan, but need to be sure I will use it enough. I'm nearly there... ;)
 
-<br/>
-
 I've left the old website at "dev-old.codewrite.co.uk" and you can see both code bases in Github.
