@@ -25,19 +25,11 @@ I noticed that SDFat has a lot more stars than SD - which I guess is a big clue 
 
 ![SDLibStars](/images/ArduinoLibraries/SDvsSdFat.png)
 
-## References (websites)
+## References
 
-- [Arduino Library List][Arduio-Libraries]
-- [Built In Libraries][Built-in-libraries]
-
-
-[//]: # (# -------------)
-[//]: # (#  References)
-[//]: # (# -------------)
-
-[HID-Project]: https://www.arduinolibraries.info/libraries/hid-project
-[SDFat]: https://www.arduinolibraries.info/libraries/sd-fat
-[Arduino-SD]: https://www.arduino.cc/en/Reference/SD
-[Arduio-Libraries]: https://www.arduinolibraries.info/
-[Built-in-libraries]: https://www.arduino.cc/en/reference/libraries
+- [HID-Project](https://www.arduinolibraries.info/libraries/hid-project)
+- [SdFat](https://www.arduinolibraries.info/libraries/sd-fat)
+- [Arduino-SD](https://www.arduino.cc/en/Reference/SD)
+- [Arduino Library List](https://www.arduinolibraries.info/)
+- [Built In Libraries](https://www.arduino.cc/en/reference/libraries)
 

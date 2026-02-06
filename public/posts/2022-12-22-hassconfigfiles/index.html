@@ -65,7 +65,7 @@
         <p>A while back (before I was using Home Assistant) I built a COB light controller board. The idea was to have lights under the eaves all round the outside of our house (bungalow). They look like this:</p>
 <p><img src="/images/COBLightsInHASS/LightsUnderEaves.jpg" alt="COB Lights under Eaves"></p>
 <p>In this picture there are three lights, but around the rest of the house there are about 15 in total on 4 different circuits. I won&rsquo;t go into the detail here other than to say that there is a controller board up in the loft that uses a Wemos D1 mini which serves up a REST interface to turn the lights on and off. I did a presentation for the London Raspberry Pi group. The link to my GitHub page is here:</p>
-<p><a href="https://github.com/codewrite/COBHouseLights">COBHouseLights github repo</a></p>
+<p>[COBHouseLights github repo][COBLights Github Repo]</p>
 <p>The Doc folder contains the presentation (.pptx) which describes how it all works. I added current monitoring that also switches all the lights off in the unlikely event that a short occurs in the wiring or lights (the whole thing is powered by a 12V 5A transformer). I created a VueJS front end that was hosted on a Raspberry Pi using Nginx.</p>
 <p>The web page looked like this (there&rsquo;s actually two pages, this is one of them):</p>
 <p><img src="/images/COBLightsInHASS/COBLightWebsite.png" alt="COB Lights Web Page"></p>
@@ -248,6 +248,10 @@
 <p>We now have some new devices which we can add to any dashboard. They will appear as follows:</p>
 <p><img src="/images/COBLightsInHASS/HACOBLightsAddToDashboard.png" alt="HA COB Light Add to Dashboard"></p>
 <p>As I said originally, it is far easier to use Tasmota or ESPHome, but this approach theoretically allows you to turn any REST API into a Home Assistant device, even ones where you only have access to the API not the source code.</p>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://github.com/codewrite/COBHouseLights">COBLights Github Repo</a></li>
+</ul>
 
     </div>
 </article>
@@ -325,17 +329,22 @@
     <footer class="site-footer">
         <div class="wrapper">
             <div class="footer-col-wrapper">
-                <div class="footer-col">
-                    <p class="feed-subscribe">
-                        <a href="/index.xml">
-                            <svg class="svg-icon orange">
-                                <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
-                            </svg><span>Subscribe</span>
-                        </a>
-                    </p>
+                <div class="footer-col footer-col-left">
+                    <ul class="footer-links">
+                        
+                            <li><a href="mailto:jon@codewrite.co.uk">Email</a></li>
+                        
+                        
+                            <li><a href="https://github.com/codewrite" target="_blank">GitHub</a></li>
+                        
+                        
+                            <li><a href="https://twitter.com/codewrite" target="_blank">Twitter</a></li>
+                        
+                        <li><a href="/index.xml">RSS Feed</a></li>
+                    </ul>
                 </div>
-                <div class="footer-col">
-                    <p>C#, Python, VueJS, C&#43;&#43; for Linux, Windows, Raspberry Pi and Arduino. Real Projects from a software engineer who is also an amateur radio enthusiast</p>
+                <div class="footer-col footer-col-right">
+                    <p class="footer-description">C#, Python, VueJS, C&#43;&#43; for Linux, Windows, Raspberry Pi and Arduino. Real Projects from a software engineer who is also an amateur radio enthusiast</p>
                 </div>
             </div>
         </div>

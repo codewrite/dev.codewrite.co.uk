@@ -256,9 +256,7 @@ We now have some new devices which we can add to any dashboard. They will appear
 
 As I said originally, it is far easier to use Tasmota or ESPHome, but this approach theoretically allows you to turn any REST API into a Home Assistant device, even ones where you only have access to the API not the source code.
 
-[//]: # (# -------------)
-[//]: # (#  References)
-[//]: # (# -------------)
+## References
 
-[COBLights Github Repo]: https://github.com/codewrite/COBHouseLights
+- [COBLights Github Repo](https://github.com/codewrite/COBHouseLights)
 

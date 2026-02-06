@@ -133,19 +133,10 @@ I did some tests and found that I could read the data from the SD card about 7 t
 
 Therefore I should be able to do stereo (although I'm not sure what the point would be) but I would need another PWM channel.
 
-## References (websites)
+## References
 
-- [Secrets of Arduino PWM][Arduino PWM]
-- [Arduino Interrupts][Arduino Interrupts]
-- [Wav File format][WAV Format]
-
-[//]: # (# -------------)
-[//]: # (#  References)
-[//]: # (# -------------)
-
-[Class D Audio Amplifiers]: https://www.analog.com/en/analog-dialogue/articles/class-d-audio-amplifiers.html
-[Arduino Code Github Repo]: https://github.com/codewrite/ArduinoNanoWavPlayer
-
-[Arduino PWM]: https://www.arduino.cc/en/Tutorial/SecretsOfArduinoPWM
-[Arduino Interrupts]: https://www.instructables.com/id/Arduino-Timer-Interrupts/
-[WAV Format]: http://soundfile.sapp.org/doc/WaveFormat/
+- [Secrets of Arduino PWM](https://www.arduino.cc/en/Tutorial/SecretsOfArduinoPWM)
+- [Arduino Interrupts](https://www.instructables.com/id/Arduino-Timer-Interrupts/)
+- [Wav File format](http://soundfile.sapp.org/doc/WaveFormat/)
+- [Class D Audio Amplifiers](https://www.analog.com/en/analog-dialogue/articles/class-d-audio-amplifiers.html)
+- [Arduino Code Github Repo](https://github.com/codewrite/ArduinoNanoWavPlayer)

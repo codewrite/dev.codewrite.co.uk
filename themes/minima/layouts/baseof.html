@@ -31,17 +31,22 @@
     <footer class="site-footer">
         <div class="wrapper">
             <div class="footer-col-wrapper">
-                <div class="footer-col">
-                    <p class="feed-subscribe">
-                        <a href="{{ "/index.xml" | relURL }}">
-                            <svg class="svg-icon orange">
-                                <use xlink:href="{{ "/assets/minima-social-icons.svg#rss" | relURL }}"></use>
-                            </svg><span>Subscribe</span>
-                        </a>
-                    </p>
+                <div class="footer-col footer-col-left">
+                    <ul class="footer-links">
+                        {{ if .Site.Params.Email }}
+                            <li><a href="mailto:{{ .Site.Params.Email }}">Email</a></li>
+                        {{ end }}
+                        {{ if .Site.Params.Github }}
+                            <li><a href="https://github.com/{{ .Site.Params.Github }}" target="_blank">GitHub</a></li>
+                        {{ end }}
+                        {{ if .Site.Params.Twitter }}
+                            <li><a href="https://twitter.com/{{ .Site.Params.Twitter }}" target="_blank">Twitter</a></li>
+                        {{ end }}
+                        <li><a href="{{ "/index.xml" | relURL }}">RSS Feed</a></li>
+                    </ul>
                 </div>
-                <div class="footer-col">
-                    <p>{{ .Site.Params.Description }}</p>
+                <div class="footer-col footer-col-right">
+                    <p class="footer-description">{{ .Site.Params.Description }}</p>
                 </div>
             </div>
         </div>

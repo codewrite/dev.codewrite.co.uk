@@ -19,13 +19,13 @@ Simply put, object detection is the process of isolating areas within the image 
 
 Object detection on a single frame is much more difficult than on a video stream. That is because on a video stream we can look for areas by detecting movement. For this I used OpenCV in Python3 as shown below:
 
-{% highlight python3 linenos %}
+```python
 import numpy as np
 import cv2
 
 stream = cv2.VideoCapture('http://rpi3b:5000/media/video_feed/')
 previous_frame = None
-while ( stream.isOpened() ):
+while (stream.isOpened()):
     ret, img = stream.read()
     if ret:
         bw_frame = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -52,20 +52,17 @@ The basic idea is to take the video stream and process each frame to detect chan
 
 I've created a video that shows the results of steps 1, 3 and 4:
 
-<video width="100%" controls="controls">
-  <source src="/assets/images/PiCamObjectDetection1/Rpi3bObjectDetectionWeb.mp4" type="video/mp4" preload ="auto" muted="true">
+<video width="100%" controls="controls" poster="/images/PiCamObjectDetection1/Rpi3bObjectDetectionWeb-poster.jpg">
+  <source src="/images/PiCamObjectDetection1/Rpi3bObjectDetectionWeb.mp4" type="video/mp4" preload="auto">
+  Your browser does not support the video tag.
 </video>
 
 I think this works pretty well. I use a threshold of 50 pixels (line 15), but I think I could increase that. The downside is that if you increase it too much you could miss changes, but it just depends whether you want to detect cars and people or animals and birds, for example. Also, at about 35 seconds into the video, there is a gust of wind that blows the bush around. This creates a lot of changes that we aren't interested in. Increasing the threshold could help here, but we could also solve this by having a mask that we use on the black and white image (by ANDing it).
 
 I am quite happy with how well this works, and given how little code there is and how fast it runs, I will probably build this into the Raspberry Pi camera code. I could then have an API endpoint that fires events (e.g. by websockets or SSE) when changes are detected. I could then do the TensorFlow processing on a more powerful server - probably my Home Assistant server.
 
-This article was based on and inspired by: [Detecting Motion with OpenCV][OpenCV Motion Detection]
+## References
 
-[//]: # (# -------------)
-[//]: # (#  References)
-[//]: # (# -------------)
-
-[TensorFlow Object Detection]: https://www.tensorflow.org/hub/tutorials/object_detection
-[OpenCV Motion Detection]: https://towardsdatascience.com/image-analysis-for-beginners-creating-a-motion-detector-with-opencv-4ca6faba4b42
+- [Detecting Motion with OpenCV](https://towardsdatascience.com/image-analysis-for-beginners-creating-a-motion-detector-with-opencv-4ca6faba4b42)
+- [TensorFlow Object Detection](https://www.tensorflow.org/hub/tutorials/object_detection)
 

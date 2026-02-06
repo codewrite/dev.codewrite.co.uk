@@ -66,13 +66,16 @@
 <h2 id="what-libraries">What libraries?</h2>
 <p>What am I talking about? Well the two that have better alternatives are:</p>
 <h3 id="keyboard">Keyboard</h3>
-<p>The reason why this didn&rsquo;t work for me was because the BIOS on my desktop PC didn&rsquo;t recognize the Arduino Leonardo as a keyboard. So I tried <a href="https://www.arduinolibraries.info/libraries/hid-project">the HID project</a> - which works flawlessly.</p>
+<p>The reason why this didn&rsquo;t work for me was because the BIOS on my desktop PC didn&rsquo;t recognize the Arduino Leonardo as a keyboard. So I tried [the HID project][HID-Project] - which works flawlessly.</p>
 <h3 id="sd">SD</h3>
-<p>This didn&rsquo;t seem to work very well for me, so I tried <a href="https://www.arduinolibraries.info/libraries/sd-fat">SdFat</a>. That worked much better. I guess I can understand that the Arduino people don&rsquo;t want to break things by replacing SD with SDFat, but I think they should mention SDFat on <a href="https://www.arduino.cc/en/Reference/SD">their reference page</a>.</p>
+<p>This didn&rsquo;t seem to work very well for me, so I tried [SdFat][SDFat]. That worked much better. I guess I can understand that the Arduino people don&rsquo;t want to break things by replacing SD with SDFat, but I think they should mention SDFat on [their reference page][Arduino-SD].</p>
 <p>I noticed that SDFat has a lot more stars than SD - which I guess is a big clue as to which one is better:</p>
 <p><img src="/images/ArduinoLibraries/SDvsSdFat.png" alt="SDLibStars"></p>
-<h2 id="references-websites">References (websites)</h2>
+<h2 id="references">References</h2>
 <ul>
+<li><a href="https://www.arduinolibraries.info/libraries/hid-project">HID-Project</a></li>
+<li><a href="https://www.arduinolibraries.info/libraries/sd-fat">SdFat</a></li>
+<li><a href="https://www.arduino.cc/en/Reference/SD">Arduino-SD</a></li>
 <li><a href="https://www.arduinolibraries.info/">Arduino Library List</a></li>
 <li><a href="https://www.arduino.cc/en/reference/libraries">Built In Libraries</a></li>
 </ul>
@@ -153,17 +156,22 @@
     <footer class="site-footer">
         <div class="wrapper">
             <div class="footer-col-wrapper">
-                <div class="footer-col">
-                    <p class="feed-subscribe">
-                        <a href="/index.xml">
-                            <svg class="svg-icon orange">
-                                <use xlink:href="/assets/minima-social-icons.svg#rss"></use>
-                            </svg><span>Subscribe</span>
-                        </a>
-                    </p>
+                <div class="footer-col footer-col-left">
+                    <ul class="footer-links">
+                        
+                            <li><a href="mailto:jon@codewrite.co.uk">Email</a></li>
+                        
+                        
+                            <li><a href="https://github.com/codewrite" target="_blank">GitHub</a></li>
+                        
+                        
+                            <li><a href="https://twitter.com/codewrite" target="_blank">Twitter</a></li>
+                        
+                        <li><a href="/index.xml">RSS Feed</a></li>
+                    </ul>
                 </div>
-                <div class="footer-col">
-                    <p>C#, Python, VueJS, C&#43;&#43; for Linux, Windows, Raspberry Pi and Arduino. Real Projects from a software engineer who is also an amateur radio enthusiast</p>
+                <div class="footer-col footer-col-right">
+                    <p class="footer-description">C#, Python, VueJS, C&#43;&#43; for Linux, Windows, Raspberry Pi and Arduino. Real Projects from a software engineer who is also an amateur radio enthusiast</p>
                 </div>
             </div>
         </div>
