@@ -4,7 +4,6 @@ date: 2020-08-14
 draft: false
 categories:
   - arduino
-  - libraries
 ---
 
 I used to think that the default libraries in the Arduino IDE would be the best available but having come across a couple of cases where this isn't true I would definitely search for better lib libraries now...
