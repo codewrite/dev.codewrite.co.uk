@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Generals on Codewrite Dev Blog</title><link>https://dev.codewrite.co.uk/general/</link><description>Recent content in Generals on Codewrite Dev Blog</description><generator>Hugo</generator><language>en-us</language><atom:link href="https://dev.codewrite.co.uk/general/index.xml" rel="self" type="application/rss+xml"/><item><title>Overview</title><link>https://dev.codewrite.co.uk/general/overview/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://dev.codewrite.co.uk/general/overview/</guid><description>&lt;p&gt;This blog is really for my benefit. In years to come I&amp;rsquo;ll forget how I did some of this stuff. If I&amp;rsquo;ve got it written down somewhere I&amp;rsquo;ll be able to figure it out again. If it helps you too that&amp;rsquo;s just a bonus!&lt;/p&gt;
+&lt;p&gt;The topics I am hoping to cover are:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;C# and dotnet core&lt;/li&gt;
+&lt;li&gt;Visual Studio Code&lt;/li&gt;
+&lt;li&gt;MySQL and SQL server&lt;/li&gt;
+&lt;li&gt;Amazon Web Services (AWS)&lt;/li&gt;
+&lt;li&gt;Raspberry Pi&lt;/li&gt;
+&lt;li&gt;Arduino(s)&lt;/li&gt;
+&lt;li&gt;Docker&lt;/li&gt;
+&lt;li&gt;VueJS&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I&amp;rsquo;ve been using &lt;a href="https://code.visualstudio.com/"&gt;Visual Studio Code&lt;/a&gt; the last year and a half, so most of my code will be using that.&lt;/p&gt;</description></item></channel></rss>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Nrf24l01 on Codewrite Dev Blog</title><link>https://dev.codewrite.co.uk/categories/nrf24l01/</link><description>Recent content in Nrf24l01 on Codewrite Dev Blog</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Sun, 07 Jun 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://dev.codewrite.co.uk/categories/nrf24l01/index.xml" rel="self" type="application/rss+xml"/><item><title>NRF24L01 on Raspberry Pi</title><link>https://dev.codewrite.co.uk/posts/2020-06-07-raspberrypinrf24l01/</link><pubDate>Sun, 07 Jun 2020 00:00:00 +0000</pubDate><guid>https://dev.codewrite.co.uk/posts/2020-06-07-raspberrypinrf24l01/</guid><description>&lt;p&gt;OK, so just for the record, I&amp;rsquo;ve tried using the NRF24L01 on the Raspberry Pi (via tha GPIO SPI pins) and I don&amp;rsquo;t recommend it.&lt;/p&gt;
+&lt;p&gt;So the following is just a record of what I did, in case I ever change my mind :).&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://dev.codewrite.co.uk/images/RPI-NRF24L01/wiring-photo.jpg" alt="RPI NRF Board Wiring"&gt;&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;NRF24L01 Side Wire Raspberry Pi Side
+------------- ---- -----------------
+MISO White GPIO 9 (SPI_MISO)
+SCK Grey GPIO 11 (SPI_SCLK)
+CE Orange GPIO 25
+GND Black GND (PIN 20)
+IRQ Brown GPIO 22
+MOSI Purple GPIO 10 (SPI_MOSI)
+CSN Yellow GPIO 8 (SPI_CE0)
+VCC Red 3.3V (PIN 1)
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The Raspberry Pi code consisted of two python files which had to be in the same folder:&lt;/p&gt;</description></item></channel></rss>

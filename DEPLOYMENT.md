@@ -19,15 +19,51 @@ hugo server -D
 
 This will start a local server at `http://localhost:1313` with draft content enabled.
 
-### Production Build
+### Production Build (Local)
 
-To build the site for production:
+To build the site for GitHub Pages deployment:
 
 ```bash
-hugo
+hugo --minify
 ```
 
-The generated static site will be in the `public/` directory.
+The generated static site will be in the `docs/` directory.
+
+### GitHub Pages Deployment
+
+#### Automatic Deployment (Recommended)
+
+This site is configured for automatic deployment to GitHub Pages via GitHub Actions:
+
+1. Push changes to the `main` branch
+2. GitHub Actions automatically builds and deploys the site
+3. Site is published to `https://dev.codewrite.co.uk`
+
+**Requirements:**
+- Repository must be public
+- Enable GitHub Pages in repository settings (Source: Deploy from a branch, branch: gh-pages)
+- Ensure the custom domain points to your GitHub Pages URL
+
+#### Manual Deployment (Local)
+
+To manually build and deploy:
+
+```bash
+# Build the site
+./deploy.sh
+
+# Commit and push
+git add docs/
+git commit -m "Deploy site [skip ci]"
+git push origin main
+```
+
+### Configuration
+
+- **Base URL:** `https://dev.codewrite.co.uk/`
+- **Output Directory:** `docs/` (for GitHub Pages)
+- **Theme:** Minima (custom Hugo conversion)
+- **Hugo Version:** 0.155.2+ (extended recommended)
 
 ### Directory Structure
 

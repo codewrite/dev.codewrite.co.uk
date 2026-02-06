@@ -1,4 +1,9 @@
 resources/
+/public/
+/public/*
+.venv/
+__pycache__/
+*.pyc
 .DS_Store
 *.swp
 *~
