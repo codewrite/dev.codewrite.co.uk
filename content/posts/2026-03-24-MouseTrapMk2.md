@@ -11,15 +11,28 @@ It turned out that the original
 [mouse trap]({{% ref "2026-03-11-MouseTrap.md" %}})
 wasn't sensitive enough. Very small mice just didn't trigger it. So I decided to improve the design.
 
-This was my first prototype:
+The case of the trap is clear, so I thought I could have a beam of light going from one side to the other. When the mouse broke the beam, it would trigger a solenoid that would close the door. After some thought, I decided to use a white LED and LDR (so no lasers or signal modulation). The LED was quite bright (even though it was only driven by 5mA) but bright lights don't seem to put the mice off. The LED illuminated the LDR much more than ambient light (except in bright sunlight - but that's not the best conditions to catch mice, and even if it did need to work in sunlight the case could be covered to reduce the ambient light falling on the LDR).
+
+![Mk2 Modifications](/images/HA-MouseTrap2/Modified-MouseTrap.png)
+
+The design I came up with is as follows:
+
+![Mk2 Block Diagram](/images/HA-MouseTrap2/MT2-Block-Diagram.png)
+
+
+This was my first prototype (using an Arduino Nano):
 
 ![Mk2 Prototype](/images/HA-MouseTrap2/MT2-Prototype.jpg)
+
+I decided to use a Raspberry Pi Pico W so that I could control it directly from Home Assistant. I thought about using an ESP32, but based on my experiments, the Pico W ADC was much more accurate - and stable.
 
 Based on this, I came up with this design (in LTSpice):
 
 ![Schematic](/images/HA-MouseTrap2/MouseTrap2Schematic.png)
 
-And then worked out how to make this on a bit of Veroboard:
+The reason for the capacitor and DC-DC conveter was because I bought a 3V solenoid (which needs 1.3A according to the manufacturer). In my tests the pull wasn't strong enough, so I decided to overdrive it. The DC-DC converter allowed me to provide any voltage I wanted to (up to 40V). I used a 10,000uF 25V capacitor, which proved more than sufficient. I estimated that the activation time was in the order of about 10 - 20 ms, so the capacitor easily held enough charge. The manufacturer suggested not powering the solenoid for more than about 3 seconds - which I worked out was about 5 joules. A 10,000uF capacitor charged to 15V would hold about 1 joule, so well within the manufacturer's limit.
+
+I then worked out how to make this on a bit of Veroboard:
 
 ![Veroboard Layout](/images/HA-MouseTrap2/MouseTrap2VeroBoard.png)
 
