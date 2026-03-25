@@ -150,3 +150,10 @@ mode: single
 I added the controls to a dashboard which looked like this:
 
 ![Dashboard](/images/HA-MouseTrap2/MTMk2-Dashboard.png)
+
+This all worked very well, and we managed to capture three mice (over three nights). They were quickly taken taken to their new home a couple of miles away without any undue stress to them.
+
+<video width="100%" controls="controls" poster="/images/PiCamObjectDetection1/Rpi3bObjectDetectionWeb-poster.jpg">
+  <source src="/images/HA-MouseTrap2/Mouse1.mp4" type="video/mp4" preload="auto">
+  Your browser does not support the video tag.
+</video>
