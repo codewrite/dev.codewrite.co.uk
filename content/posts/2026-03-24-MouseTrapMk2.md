@@ -153,7 +153,9 @@ I added the controls to a dashboard which looked like this:
 
 This all worked very well, and we managed to capture three mice (over three nights). They were quickly taken taken to their new home a couple of miles away without any undue stress to them.
 
-<video width="100%" controls="controls" poster="/images/PiCamObjectDetection1/Rpi3bObjectDetectionWeb-poster.jpg">
+<video width="100%" controls="controls" poster="/images/HA-MouseTrap2/Mouse1-Still-Image.jpg">
   <source src="/images/HA-MouseTrap2/Mouse1.mp4" type="video/mp4" preload="auto">
   Your browser does not support the video tag.
 </video>
+
+You can see the mouse was very curious about the trap, but it didn't put it off taking the food (which was two small bits of cracker, one in the middle and one at the back). The mice are facinating to watch, and I have a lot of respect for their stealth and resourcefulness, but they are no match for technology!
