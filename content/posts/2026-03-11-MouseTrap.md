@@ -1,5 +1,5 @@
 ---
-title: "Mouse Capture Using Home Assistant"
+title: "Mouse Trap Mk I"
 date: 2026-03-11
 draft: false
 categories:
@@ -54,73 +54,52 @@ switch:
     name: "Mouse Alarm"
     on_turn_on:
       then:
-        - script.execute: alarmbeep1
-        - script.wait: alarmbeep1
-        - if:
-            condition:
-              switch.is_on: MouseAlarm
-            then:
-              - script.execute: alarmbeep2
-              - script.wait: alarmbeep2
-        - script.execute: alarmbeep99
+        - script.execute: continuous_alarm
     on_turn_off: 
       then:
-        - script.stop: alarmbeep1
-        - script.stop: alarmbeep2
-        - script.stop: alarmbeep99
+        - script.stop: continuous_alarm
+        - script.stop: alarm_beep
   - platform: gpio
     pin: GPIO14
     id: GPIO14
 
 script:
-  - id: alarmbeep1
+  - id: alarm_beep
+    parameters:
+      on_time: int
+      off_time: int
+      num_repeats: int
     then:
       - repeat:
-          count: 60
+          count: !lambda return num_repeats;
           then:
             - switch.turn_on: GPIO14
-            - delay: 0.1s
+            - delay: !lambda return on_time;
             - switch.turn_off: GPIO14
-            - delay: 1.9s
-  - id: alarmbeep2
+            - delay: !lambda return off_time;
+
+  - id: continuous_alarm
     then:
-      - repeat:
-          count: 60
-          then:
-            - switch.turn_on: GPIO14
-            - delay: 0.3s
-            - switch.turn_off: GPIO14
-            - delay: 0.7s
-  - id: alarmbeep99
-    then:
-      - while:
-          condition:
-            switch.is_on: MouseAlarm
-          then:
-            - repeat:
-                count: 11
-                then:
-                  - switch.turn_on: GPIO14
-                  - delay: 0.2s
-                  - switch.turn_off: GPIO14
-                  - delay: 0.2s
-            - repeat:
-                count: 7
-                then:
-                  - switch.turn_on: GPIO14
-                  - delay: 0.1s
-                  - switch.turn_off: GPIO14
-                  - delay: 0.1s
-            - repeat:
-                count: 5
-                then:
-                  - switch.turn_on: GPIO14
-                  - delay: 0.4s
-                  - switch.turn_off: GPIO14
-                  - delay: 0.4s
+      - script.execute:
+          id: alarm_beep
+          on_time: 100
+          off_time: 1900
+          num_repeats: 30
+      - script.wait: alarm_beep
+      - script.execute:
+          id: alarm_beep
+          on_time: 300
+          off_time: 700
+          num_repeats: 60
+      - script.wait: alarm_beep
+      - script.execute:
+          id: alarm_beep
+          on_time: 200
+          off_time: 200
+          num_repeats: 10000
 ```
 
-It's a bit complicated (and needs to be simplified) but the idea is that it starts off quietly and then gets louder. That way, if it goes off in the middle of the night, it will wake me in a reasonable manner.
+The idea is that it starts off quietly and then gets louder. That way, if it goes off in the middle of the night, it will wake me in a reasonable manner.
 
 I wrote an automation to connect the detector up to the alarm:
 

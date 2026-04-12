@@ -1,5 +1,5 @@
 ---
-title: "Mouse Trap Mk2"
+title: "Mouse Trap Mk II"
 date: 2026-03-24
 draft: false
 categories:
