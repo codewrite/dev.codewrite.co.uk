@@ -1,4 +1,4 @@
-baseURL = 'https://example.org/'
+baseURL = 'https://dev.codewrite.co.uk/'
 locale = 'en-us'
 title = 'Codewrite Dev Doc'
 theme = 'hugo-book'
