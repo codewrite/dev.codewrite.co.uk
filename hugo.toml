@@ -1,0 +1,16 @@
+baseURL = 'https://example.org/'
+locale = 'en-us'
+title = 'Codewrite Dev Doc'
+theme = 'hugo-book'
+pygmentsStyle = "github"
+
+[params]
+  BookToC = true
+  BookSection = '/'
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.highlight]
+    linenos = true
