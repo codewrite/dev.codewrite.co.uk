@@ -3,6 +3,7 @@ locale = 'en-us'
 title = 'Codewrite Dev Doc'
 theme = 'hugo-book'
 pygmentsStyle = "github"
+enableEmoji = true
 
 [params]
   BookToC = true
