@@ -18,6 +18,8 @@ So I decided to look at what was happening on a oscilloscope. This is what I got
 
 The yellow trace is the battery voltage, the blue trace is the voltage on the input of the MOSFET (M1).
 
-Rather than 12us, the MOSFET was on for about 400us. Looking at the schematic it was clear that 100kΩ combined with the MOSFET gate capacitance meant that the MOSFET switched off far too slowly. I replaced the resistor with a 5kΩ resistor, and things looked a lot better:
+Rather than 12us, the MOSFET was on for about 400us. The switch on time is about 0.5us, but the switch off time was more than 380us. Looking at the schematic it was clear that 100kΩ combined with the MOSFET gate capacitance meant that the MOSFET switched off far too slowly. I replaced the resistor with a 5kΩ resistor, and things looked a lot better:
 
 ![HA UPS Mk2 Charging Scope 2](/images/HA-UPS-mk2/ha-ups2-charging-scope2.png)
+
+I estimate that the switch off time is now about 12us.

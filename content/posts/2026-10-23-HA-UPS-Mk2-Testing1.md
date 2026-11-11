@@ -57,3 +57,5 @@ With a few changes to the software, I made it keep a running total of the curren
 | 15:40:23 |  11.744  |  424.5	 |   1470.1 |
 
 At a C/10 discharge rate The battery should be capable of delivering 3Ah. I didn't test this fully (deep discharge is very bad for lead acid batteries) but it does seem to hold quite a large capacity.
+
+I checked the current draw from the battery when the supply was disconnected. At 12.7V and no load (i.e. Raspberry Pi powered down - sp0 and sb0) the current was  16mA. This is equivalent to about 10% of the battery charge per day.
