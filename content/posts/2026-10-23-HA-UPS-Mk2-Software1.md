@@ -26,3 +26,4 @@ It should be noted that this value is only valid if the battery has been at rest
 
 Lead acid batteries lose about 3% - 5% of their charge a month. For a 4Ah battery that equates to a constant discharge current of about 277uA. I also measured 120uA through the UPS circuit (when M5 is on, which it should be to ensure that the battery takes over immediately if there is a power cut). So the battery will lose about 25% of it's charge every 3 months. Charging the battery every month would seem like a good idea (maybe at 30mA for 10 hours).
 
+The entire software solution [is on GitHub](https://github.com/codewrite/HomeAssistant-UPS-PIO).
