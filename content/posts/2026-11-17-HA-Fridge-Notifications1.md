@@ -127,6 +127,6 @@ It was then an easy case of creating automations that checked if the values were
 
 You can see from this that the freezer turns on and off quite frequently, but the fridge can be off for nearly two hours.
 
-You can see from the integral chart that the on and off times do vary - maybe because the door has been opened or closed a few times, or if something has been put in a fridge that needs to be cooled down.
+The on and off times do vary - maybe because the door has been opened or closed a few times, or if something has been put in a fridge that needs to be cooled down.
 
 The other problem with this is that in the summer the fridge/freezers will have to work harder - and therefore will be on for longer than we expect - but that's not a problem at the moment!
