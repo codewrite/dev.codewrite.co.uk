@@ -4,6 +4,7 @@ date: 2026-10-23
 draft: false
 categories:
   - arduino
+  - home assistant
 ---
 
 This was my test setup:

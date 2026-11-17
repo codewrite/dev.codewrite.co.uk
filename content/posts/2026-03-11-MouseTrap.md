@@ -4,7 +4,7 @@ date: 2026-03-11
 draft: false
 categories:
   - raspberryPi
-  - homeAssistant
+  - home assistant
 ---
 
 So we thought we might have a mouse under the kitchen units...

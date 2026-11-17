@@ -4,6 +4,7 @@ date: 2026-11-11
 draft: false
 categories:
   - arduino
+  - home assistant
 ---
 
 ## Determining the Battery State of Charge (SOC)

@@ -4,6 +4,7 @@ date: 2022-03-28
 draft: false
 categories:
   - raspberryPi
+  - home assistant
 ---
 
 I use Home Assistant (HASS) around the house to switch some of the lights on and off automatically and to monitor the temperature. I plan to use HASS for other automation tasks, maybe controlling things in the garden (e.g. watering plants in the greenhouse) and inside to turn the heating on and off. In this post will describe what I currently have and some ideas for the future.

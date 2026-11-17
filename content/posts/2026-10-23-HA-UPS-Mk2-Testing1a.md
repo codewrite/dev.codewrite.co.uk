@@ -4,6 +4,7 @@ date: 2026-11-06
 draft: false
 categories:
   - arduino
+  - home assistant
 ---
 
 Something I noticed when I connected and disconnected the USB serial port on the Arduino Nano was that the Nano would reset. After a bit of googling it turned out that this was caused by DTR on the CH340 serial chip being connected to the RESET pin (via a capacitor). So although I was powering the Nano from the UPS, when I shut down Home Assistant on the Raspberry Pi, HA would toggle DTR causing the Nano to reset.

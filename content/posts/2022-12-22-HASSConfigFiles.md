@@ -4,6 +4,7 @@ date: 2022-12-22
 draft: false
 categories:
   - raspberryPi
+  - home assistant
 ---
 
 A while back (before I was using Home Assistant) I built a COB light controller board. The idea was to have lights under the eaves all round the outside of our house (bungalow). They look like this:

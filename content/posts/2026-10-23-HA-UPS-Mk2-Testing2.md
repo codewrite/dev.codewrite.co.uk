@@ -4,6 +4,7 @@ date: 2026-11-07
 draft: false
 categories:
   - arduino
+  - home assistant
 ---
 
 When testing the charge circuit, something didn't seem quite right...

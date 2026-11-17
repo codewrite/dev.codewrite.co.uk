@@ -5,7 +5,7 @@ draft: false
 categories:
   - arduino
   - raspberryPi
-  - homeAssistant
+  - home assistant
 ---
 
 The purpose of this project was to connect an Arduino Nano to the USB port that Home Assistant was running on. For me that is a Raspberry Pi 4 but this solution should work with any Home Assistant hardware. And the reason for using a serial connection over USB (rather than wirelessly with WiFi or similar) could be for many reasons:

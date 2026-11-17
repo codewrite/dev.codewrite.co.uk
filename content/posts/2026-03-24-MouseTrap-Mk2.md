@@ -4,7 +4,7 @@ date: 2026-03-24
 draft: false
 categories:
   - raspberryPi
-  - homeAssistant
+  - home assistant
 ---
 
 It turned out that the original 
