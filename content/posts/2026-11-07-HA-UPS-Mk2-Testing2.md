@@ -23,4 +23,4 @@ Rather than 12us, the MOSFET was on for about 400us. The switch on time is about
 
 ![HA UPS Mk2 Charging Scope 2](/images/HA-UPS-mk2/ha-ups2-charging-scope2.png)
 
-I estimate that the switch off time is now about 12us.
+I estimate that the switch off time is now about 12us. BTW, the original (slow) switching would mean that the MOSFET would have dissipated a lot more power than if it switched fast; I haven't worked out the exact power but it would be well within the capabilities of the TO220 device that I am using.
