@@ -18,15 +18,15 @@ So the first step was to flash this with the latest version of Raspberry Pi OS w
 - The wifi SSID and password
 - SSH access
 
-I then connected it up and started it running. I connected to an HDMI display because I have found that it can be a bit slow to start, and it's nice to see that it is actually working. I connected up via SSH once the desktop had started though. I then went into raspi-config and enabled VNC. I also copied the SSH keys from computers that I wanted to have access so that I didn't have to type in the password every time I logged in. This also made it easier for other tools such as filezilla:
+I then connected it up and started it running. I connected to an HDMI display because I have found that it can be a bit slow to start, and it's nice to see that it is actually working. I connected up via SSH once the desktop had started though. I then went into raspi-config and enabled VNC. I also copied the SSH keys from computers that I wanted to have access so that I didn't have to type in the password every time I logged in. This also made it easier for other tools such as filezilla and VS Code remote access:
 
-In GIT bash I typed this:
+To copy my public key to the Raspberry Pi I typed this on the client computer:
 
 ```bash
 ssh-copy-id pi@rpi3pw
 ```
 
-and followed the instructions to copy my public key to the Raspberry Pi. I had already setup my hosts file and router to make sure that I could use an mDNS name rather than an IP address.
+...and followed the instructions. I had already setup my hosts file and router to make sure that I could use an mDNS name rather than an IP address.
 
 I used this (in a terminal window in a VNC client) to make sure the camera was working:
 
@@ -34,7 +34,10 @@ I used this (in a terminal window in a VNC client) to make sure the camera was w
 rpicam-still -o ~/Desktop/image.jpg
 ```
 
-I then copied the files from [the repository above](https://github.com/codewrite/rpi4-cvstream1) to a folder in the Home directory.
+I then copied the files from [the repository above](https://github.com/codewrite/rpi4-cvstream1) to a folder in the Home directory. The only files I had to modify were:
+
+- systemdata.py - changed the name from *rpi4* to *rpi3pw*
+- static/rpi4-mask.png - renamed to rpi3pw-mask.png with an appropriate mask (all white for no mask)
 
 Python was already installed, so all I needed to add was the dependencies for OpenCV and Flask:
 
